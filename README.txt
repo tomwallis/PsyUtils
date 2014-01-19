@@ -17,8 +17,9 @@ Modules
 * ``data``. The ``data`` module includes functions for data munging,
   for example for formatting data usefully for import in ``pandas``
   or to R.
-* ``filtering``. The ``filtering`` module includes functions for filtering
-  images and creating filtered noise stimuli.
+* ``image``. The ``image`` module includes functions for filtering
+  images and creating filtered noise stimuli, and otherwise interacting
+  with images.
 * ``misc``. This is a miscellaneous module for things like ramp
   functions, e.g. creating 1D Gaussian or cosine windows for
   ramping stimuli on and off.
@@ -27,7 +28,7 @@ Example Use
 ============
 You could do things like this::
 
-    from psyutils import filtering
+    from psyutils import image
 
     blah blah
 
