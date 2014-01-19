@@ -1,0 +1,4 @@
+Design document for the psyutils package
+=========================================
+
+The psyutils package is a collection of utility functions to facilitate doing psychophysical experiments in Python.
