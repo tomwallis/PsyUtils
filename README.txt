@@ -12,15 +12,15 @@ filtered noise) and other stimulus-related functions.
 It is **NOT** an experimental display software package. It is intended
 to compliment something like `PsychoPy <http://www.psychopy.org>`_.
 
-Modules
+Subpackages
 ==========
-* ``data``. The ``data`` module includes functions for data munging,
+* ``data``. The ``data`` subpackage includes functions for data munging,
   for example for formatting data usefully for import in ``pandas``
   or to R.
-* ``image``. The ``image`` module includes functions for filtering
+* ``image``. The ``image`` subpackage includes functions for filtering
   images and creating filtered noise stimuli, and otherwise interacting
   with images.
-* ``misc``. This is a miscellaneous module for things like ramp
+* ``misc``. This is a miscellaneous subpackage for things like ramp
   functions, e.g. creating 1D Gaussian or cosine windows for
   ramping stimuli on and off.
 
