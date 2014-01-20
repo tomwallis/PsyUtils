@@ -88,7 +88,7 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
 
     """
 
-    image = img_as_float(image)
+    image = img_as_float(np.copy(image))
 
     if img_dims is None:
         im_type = guess_dims(image)
@@ -100,40 +100,37 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
 
     if im_type is "greyscale" :
         channel_means = image.mean()
-        mod_im = image - channel_means
-        mod_im = mod_im * factor
+        image = image - channel_means
+        image = image * factor
 
     elif im_type is "RGB" :
         channel_means = np.zeros(3)
-        mod_im = image
         for i in range(0,3):
             channel_means[i] = image[:,:,i].mean()
-            mod_im[:,:,i] = image[:,:,i] - channel_means[i]
-            mod_im[:,:,i] = mod_im[:,:,i] * factor
+            image[:,:,i] = image[:,:,i] - channel_means[i]
+            image[:,:,i] = image[:,:,i] * factor
 
     elif im_type is "IA":
         channel_means = image.mean()
-        mod_im = image
-        mod_im[:,:,0] = image[:,:,0] - channel_means
-        mod_im[:,:,0] = mod_im[:,:,0] * factor
+        image[:,:,0] = image[:,:,0] - channel_means
+        image[:,:,0] = image[:,:,0] * factor
 
     elif im_type is "RGBA":
         channel_means = np.zeros(3)
-        mod_im = image
         for i in range(0,3):
             channel_means[i] = image[:,:,i].mean()
-            mod_im[:,:,i] = image[:,:,i] - channel_means[i]
-            mod_im[:,:,i] = mod_im[:,:,i] * factor
+            image[:,:,i] = image[:,:,i] - channel_means[i]
+            image[:,:,i] = image[:,:,i] * factor
     else :
         raise ValueError("Not sure what to do with image type " + im_type)
 
     if returns is "intensity" :
         for i in range(0, len(channel_means)):
-            mod_im[:,:,i] = mod_im[:,:,i] + channel_means[i]
-        return(mod_im)
+            image[:,:,i] = image[:,:,i] + channel_means[i]
+        return(image)
 
     elif returns is "contrast" :
-        return(mod_im)
+        return(image)
 
     else :
         raise ValueError("Not sure what to return from " + returns)
