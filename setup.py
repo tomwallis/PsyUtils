@@ -9,7 +9,7 @@ setup(
     #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
     #url='http://pypi.python.org/pypi/TowelStuff/',
     license='LICENSE.txt',
-    description='Utility functions for conducting psychophysical experiments.',
+    description='Utility functions for psychophysical experiments and stimuli.',
     long_description=open('README.txt').read(),
     install_requires=[
         "Python >= 2.7.0",

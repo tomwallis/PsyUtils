@@ -17,6 +17,8 @@ Subpackages
 * ``data``. The ``data`` subpackage includes functions for data munging,
   for example for formatting data usefully for import in ``pandas``
   or to R.
+* ``im_data``. The ``im_data`` subpackage includes images and data for 
+  testing purposes.
 * ``image``. The ``image`` subpackage includes functions for filtering
   images and creating filtered noise stimuli, and otherwise interacting
   with images.
@@ -32,11 +34,15 @@ You could do things like this::
 
     blah blah
 
+Dependencies
+============
+Psyutils depends on numpy, scipy, and scikit-image.
 
 Contributions
 ============
 Thomas Wallis wrote these functions based on shared code used in Matlab
-by Peter Bex's lab at the Schepens Eye Research Institute.
+by Peter Bex's lab at the Schepens Eye Research Institute. I also 
+borrowed some stuff from the scikit-image package.
 
 Thanks To
 ============

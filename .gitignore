@@ -2,3 +2,7 @@
 *.ipynb
 
 *.pyc
+
+psyutils.sublime-project
+
+psyutils.sublime-workspace
