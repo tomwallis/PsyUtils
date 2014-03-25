@@ -17,10 +17,9 @@ from skimage.io import imread as _imread
 from psyutils import _im_data_dir
 
 
-
 __all__ = ['tiger',
-           'tiger_square'
-           ]
+           'tiger_square',
+           'tiger_rgba']
 
 
 def _load(f):
@@ -29,6 +28,7 @@ def _load(f):
         
     Parameters
     ----------
+    :rtype : ndarray
     f : string
         File name.
 
@@ -47,14 +47,14 @@ def tiger():
     """
     return _load("tiger.png")
 
+
 def tiger_rgba():
     """Tiger image with alpha channel.
     """
-    return _load("tiger.png")    
+    return _load("tiger.png")
+
 
 def tiger_square():
     """Square version of tiger image (RGB).
     """
     return _load("tiger_square.png")
-
-
