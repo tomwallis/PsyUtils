@@ -99,7 +99,7 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
         print("Image is assumed to be " + im_type)
 
     if im_type is "greyscale" :
-        channel_means = image.mean()
+        channel_means = np.array(image.mean())
         image = image - channel_means
         image = image * factor
 
@@ -111,7 +111,7 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
             image[:,:,i] = image[:,:,i] * factor
 
     elif im_type is "IA":
-        channel_means = image.mean()
+        channel_means = image[:,:,0].mean()
         image[:,:,0] = image[:,:,0] - channel_means
         image[:,:,0] = image[:,:,0] * factor
 
@@ -125,8 +125,11 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
         raise ValueError("Not sure what to do with image type " + im_type)
 
     if returns is "intensity" :
-        for i in range(0, len(channel_means)):
-            image[:,:,i] = image[:,:,i] + channel_means[i]
+        if im_type is "greyscale":
+            image = image + channel_means
+        else:
+            for i in range(0, np.size(channel_means)):
+                image[:,:,i] = image[:,:,i] + channel_means[i]
         return(image)
 
     elif returns is "contrast" :
@@ -134,3 +137,31 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
 
     else :
         raise ValueError("Not sure what to return from " + returns)
+
+
+# helper function to show an image and report some stats about it:
+def show_im(im):
+    """ A helper function to show an image (using imshow)
+    and report some stats about it.
+
+    Parameters
+    ----------
+    image : ndarray
+        The input image.
+    """
+    from matplotlib.pyplot import imshow
+    from matplotlib.pyplot import cm
+
+    dims = guess_dims(im)
+    if dims is "greyscale" or "IA":
+        imshow(im, cmap = cm.gray)
+        print("note that imshow normalises this for display")
+    elif dims is "RGB" or "RGBA":
+        imshow(im)
+    else :
+        raise ValueError("Not sure what to do with image type " + dims)
+    print("image is of type " + str(type(im)))
+    print("image has dimensions " + str(im.shape))
+    print("image has range from " + str(round(im.min(), ndigits = 2)) + " to max " + str(round(im.max(), ndigits = 2)))
+    print("the mean of the image is " + str(round(im.mean(), ndigits = 2)))
+    print("the SD of the image is " + str(round(im.std(), ndigits = 2)))
