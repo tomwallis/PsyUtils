@@ -6,3 +6,5 @@
 psyutils.sublime-project
 
 psyutils.sublime-workspace
+
+.idea*
