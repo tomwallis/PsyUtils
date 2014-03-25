@@ -3,21 +3,20 @@ import warnings as warnings
 import numpy as np
 from skimage import img_as_float
 
+
 def guess_dims(image):
     """Make an educated guess about an image's dimensions and what they mean.
     Modified from skimage.color.guess_spatial_dimensions.
 
-	If the image has two dimensions, it is assumed to contain intensity values
-	(i.e. be a greyscale image).
+    If the image has two dimensions, it is assumed to contain intensity values (i.e. be a greyscale image).
 
-	If the image has three dimensions and the third is length 3, it is assumed to
-	be an RGB or similar tri-colour image (third dimension indexes colour channel).
+    If the image has three dimensions and the third is length 3, it is assumed to be an RGB or similar tri-colour image
+    (third dimension indexes colour channel).
 
-	If the image is 3D with the third dimension	length 2, it is assumed to be an
-	IA image (I = intensity, A = alpha (transparency)).
+    If the image is 3D with the third dimension	length 2, it is assumed to be an IA image
+    (I = intensity, A = alpha (transparency)).
 
-	If the image is 3D with the third dimension	length 4, it is assumed to be an
-	RGBA image.
+    If the image is 3D with the third dimension	length 4, it is assumed to be an RGBA image.
 
     Parameters
     ----------
@@ -51,10 +50,8 @@ def guess_dims(image):
         raise ValueError("Expected 2D or 3D array, got %iD." % image.ndim)
 
 
-
-
-def contrast_image (image, factor = 1.0, returns = "intensity",
-                    img_dims = None, verbose = False):
+def contrast_image(image, factor=1.0, returns="intensity",
+                   img_dims=None, verbose=False):
     """
     Takes an input image, takes a guess at its spatial dimensions
     (see guess_dims), applies a multiplicative factor to each
@@ -92,50 +89,50 @@ def contrast_image (image, factor = 1.0, returns = "intensity",
 
     if img_dims is None:
         im_type = guess_dims(image)
-    else :
+    else:
         im_type = img_dims
 
-    if verbose is True :
+    if verbose is True:
         print("Image is assumed to be " + im_type)
 
-    if im_type is "greyscale" :
+    if im_type is "greyscale":
         channel_means = np.array(image.mean())
         image = image - channel_means
         image = image * factor
 
-    elif im_type is "RGB" :
+    elif im_type is "RGB":
         channel_means = np.zeros(3)
-        for i in range(0,3):
-            channel_means[i] = image[:,:,i].mean()
-            image[:,:,i] = image[:,:,i] - channel_means[i]
-            image[:,:,i] = image[:,:,i] * factor
+        for i in range(0, 3):
+            channel_means[i] = image[:, :, i].mean()
+            image[:, :, i] = image[:, :, i] - channel_means[i]
+            image[:, :, i] = image[:, :, i] * factor
 
     elif im_type is "IA":
-        channel_means = image[:,:,0].mean()
-        image[:,:,0] = image[:,:,0] - channel_means
-        image[:,:,0] = image[:,:,0] * factor
+        channel_means = image[:, :, 0].mean()
+        image[:, :, 0] = image[:, :, 0] - channel_means
+        image[:, :, 0] = image[:, :, 0] * factor
 
     elif im_type is "RGBA":
         channel_means = np.zeros(3)
-        for i in range(0,3):
-            channel_means[i] = image[:,:,i].mean()
-            image[:,:,i] = image[:,:,i] - channel_means[i]
-            image[:,:,i] = image[:,:,i] * factor
-    else :
+        for i in range(0, 3):
+            channel_means[i] = image[:, :, i].mean()
+            image[:, :, i] = image[:, :, i] - channel_means[i]
+            image[:, :, i] = image[:, :, i] * factor
+    else:
         raise ValueError("Not sure what to do with image type " + im_type)
 
-    if returns is "intensity" :
+    if returns is "intensity":
         if im_type is "greyscale":
             image = image + channel_means
         else:
             for i in range(0, np.size(channel_means)):
-                image[:,:,i] = image[:,:,i] + channel_means[i]
-        return(image)
+                image[:, :, i] = image[:, :, i] + channel_means[i]
+        return image
 
-    elif returns is "contrast" :
-        return(image)
+    elif returns is "contrast":
+        return image
 
-    else :
+    else:
         raise ValueError("Not sure what to return from " + returns)
 
 
@@ -154,14 +151,14 @@ def show_im(im):
 
     dims = guess_dims(im)
     if dims is "greyscale" or "IA":
-        imshow(im, cmap = cm.gray)
+        imshow(im, cmap=cm.gray)
         print("note that imshow normalises this for display")
     elif dims is "RGB" or "RGBA":
         imshow(im)
-    else :
+    else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
     print("image has dimensions " + str(im.shape))
-    print("image has range from " + str(round(im.min(), ndigits = 2)) + " to max " + str(round(im.max(), ndigits = 2)))
-    print("the mean of the image is " + str(round(im.mean(), ndigits = 2)))
-    print("the SD of the image is " + str(round(im.std(), ndigits = 2)))
+    print("image has range from " + str(round(im.min(), ndigits=2)) + " to max " + str(round(im.max(), ndigits=2)))
+    print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
+    print("the SD of the image is " + str(round(im.std(), ndigits=2)))
