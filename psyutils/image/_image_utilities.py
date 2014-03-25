@@ -58,11 +58,12 @@ def contrast_image(image, factor=1.0, returns="intensity",
     colour channel then returns either the image in intensity units or in
     zero-mean (contrast) units. The latter can be useful if you intend to
     multiply the image by any filters in the non-fourier domain.
+    Note: the image will be converted to float, if it wasn't already.
 
     :type factor: float
         A multiplicative contrast change factor. Values less than one will reduce
         global contrast; values greater than one will increase global contrast.
-    Note: the image will be converted to float, if it wasn't already.
+
 
     Parameters
     ----------
