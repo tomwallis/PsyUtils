@@ -12,9 +12,10 @@ setup(
     description='Utility functions for psychophysical experiments and stimuli.',
     long_description=open('README.txt').read(),
     install_requires=[
-        "Python >= 2.7.0",
-        "numpy >= 1.8.0",
-        "scipy >= 0.13.0",
-        "skimage >= 0.9.0"
+        'Python >= 2.7.0',
+        'numpy >= 1.8.0',
+        'scipy >= 0.13.0',
+        'matplotlib',
+        'skimage >= 0.9.0'
     ],
 )
