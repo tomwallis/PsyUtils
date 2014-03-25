@@ -59,6 +59,9 @@ def contrast_image(image, factor=1.0, returns="intensity",
     zero-mean (contrast) units. The latter can be useful if you intend to
     multiply the image by any filters in the non-fourier domain.
 
+    :type factor: float
+        A multiplicative contrast change factor. Values less than one will reduce
+        global contrast; values greater than one will increase global contrast.
     Note: the image will be converted to float, if it wasn't already.
 
     Parameters
@@ -66,8 +69,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
     image : ndarray
         The input image.
     factor : float
-        A multiplicative contrast change factor. Values less than one will reduce
-        global contrast; values greater than one will increase global contrast.
+
     returns: string
         Which image to return. If "intensity" (the default), the image is returned
         in intensity units (the original scale) after contrast scaling.
@@ -98,7 +100,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
     if im_type is "greyscale":
         channel_means = np.array(image.mean())
         image = image - channel_means
-        image = image * factor
+        image *= factor
 
     elif im_type is "RGB":
         channel_means = np.zeros(3)
@@ -146,15 +148,14 @@ def show_im(im):
     image : ndarray
         The input image.
     """
-    from matplotlib.pyplot import imshow
-    from matplotlib.pyplot import cm
+    import matplotlib.pyplot
 
     dims = guess_dims(im)
     if dims is "greyscale" or "IA":
-        imshow(im, cmap=cm.gray)
+        matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
         print("note that imshow normalises this for display")
     elif dims is "RGB" or "RGBA":
-        imshow(im)
+        matplotlib.pyplot.imshow(im)
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
