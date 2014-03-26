@@ -36,6 +36,11 @@ You could do things like this::
 
 Psyutils depends on numpy, scipy, and scikit-image.
 
+## Testing
+
+You can run unit tests by typing `nosetests -v` from the command line
+in the project's parent directory.
+
 ## Contributions
 
 Thomas Wallis wrote these functions based on shared code used in Matlab
@@ -45,4 +50,5 @@ borrowed some stuff from the scikit-image package.
 ## Thanks To
 
 Many of these functions are based on Matlab functions originally written
-by Peter Bex.
+by Peter Bex. Tom Wallis also thanks Matthias Kümmerer for Python help
+and suggestions.
