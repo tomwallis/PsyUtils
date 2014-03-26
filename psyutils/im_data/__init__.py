@@ -4,7 +4,7 @@ Much of the code in here was taken from skimage.data.__init__.py
 
 Tiger
 ---------
-Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license. 
+Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license.
 This image can be freely shared and adapted.
 License: https://creativecommons.org/licenses/by/2.0/legalcode
 
@@ -25,7 +25,7 @@ __all__ = ['tiger',
 def _load(f):
     """Load an image file located in the data directory.
 
-        
+
     Parameters
     ----------
     :rtype : ndarray
@@ -45,13 +45,13 @@ def tiger():
     Released and used here under a CC by 2.0 license.
     License: https://creativecommons.org/licenses/by/2.0/legalcode
     """
-    return _load("tiger.png")
+    return _load("tiger_rgb.png")
 
 
 def tiger_rgba():
     """Tiger image with alpha channel.
     """
-    return _load("tiger.png")
+    return _load("tiger_rgba.png")
 
 
 def tiger_square():
