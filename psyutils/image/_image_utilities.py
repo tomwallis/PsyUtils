@@ -1,5 +1,3 @@
-import math as math
-import warnings as warnings
 import numpy as np
 from skimage import img_as_float
 
@@ -96,12 +94,14 @@ def contrast_image(image, factor=1.0, returns="intensity",
         im_type = img_dims
 
     if verbose is True:
-        print("Image is assumed to be " + im_type)
+        print("contrast_image function assumes image to be " + im_type)
 
     if im_type is "greyscale":
         channel_means = np.array(image.mean())
         image = image - channel_means
         image *= factor
+        if returns is "intensity":
+            image = image + channel_means
 
     elif im_type is "RGB":
         channel_means = np.zeros(3)
@@ -109,11 +109,15 @@ def contrast_image(image, factor=1.0, returns="intensity",
             channel_means[i] = image[:, :, i].mean()
             image[:, :, i] = image[:, :, i] - channel_means[i]
             image[:, :, i] = image[:, :, i] * factor
+            if returns is "intensity":
+                image[:, :, i] = image[:, :, i] + channel_means[i]
 
     elif im_type is "IA":
         channel_means = image[:, :, 0].mean()
         image[:, :, 0] = image[:, :, 0] - channel_means
         image[:, :, 0] = image[:, :, 0] * factor
+        if returns is "intensity":
+            image[:, :, 0] = image[:, :, 0] + channel_means
 
     elif im_type is "RGBA":
         channel_means = np.zeros(3)
@@ -121,20 +125,13 @@ def contrast_image(image, factor=1.0, returns="intensity",
             channel_means[i] = image[:, :, i].mean()
             image[:, :, i] = image[:, :, i] - channel_means[i]
             image[:, :, i] = image[:, :, i] * factor
+            if returns is "intensity":
+                image[:, :, i] = image[:, :, i] + channel_means[i]
     else:
         raise ValueError("Not sure what to do with image type " + im_type)
 
-    if returns is "intensity":
-        if im_type is "greyscale":
-            image = image + channel_means
-        else:
-            for i in range(0, np.size(channel_means)):
-                image[:, :, i] = image[:, :, i] + channel_means[i]
+    if returns is "intensity" or "contrast":
         return image
-
-    elif returns is "contrast":
-        return image
-
     else:
         raise ValueError("Not sure what to return from " + returns)
 
@@ -154,7 +151,7 @@ def show_im(im):
     dims = guess_dims(im)
     if dims is "greyscale" or "IA":
         matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
-        print("note that imshow normalises this for display")
+        print("note that imshow normalises greyscale image for display")
     elif dims is "RGB" or "RGBA":
         matplotlib.pyplot.imshow(im)
     else:
