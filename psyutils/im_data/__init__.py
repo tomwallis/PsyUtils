@@ -19,7 +19,8 @@ from psyutils import _im_data_dir
 
 __all__ = ['tiger',
            'tiger_square',
-           'tiger_rgba']
+           'tiger_rgba',
+           'tiger_grey']
 
 
 def _load(f):
@@ -58,3 +59,8 @@ def tiger_square():
     """Square version of tiger image (RGB).
     """
     return _load("tiger_square.png")
+
+def tiger_grey():
+    """Grey, square tiger image (RGB).
+    """
+    return _load("tiger_grey.png")
