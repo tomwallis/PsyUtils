@@ -16,13 +16,6 @@ import os as _os
 from skimage.io import imread as _imread
 from psyutils import _im_data_dir
 
-
-__all__ = ['tiger',
-           'tiger_square',
-           'tiger_rgba',
-           'tiger_grey']
-
-
 def _load(f):
     """Load an image file located in the data directory.
 
