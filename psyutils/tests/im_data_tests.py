@@ -1,8 +1,8 @@
 # tests for image data.
 
-import numpy as np
 from skimage import img_as_float
 import psyutils as pu
+
 
 def test_tiger_rgb():
     im = img_as_float(pu.im_data.tiger())
@@ -19,6 +19,7 @@ def test_tiger_rgb():
         and mean == 0.39 \
         and sd == 0.21
 
+
 def test_tiger_square():
     im = img_as_float(pu.im_data.tiger_square())
     correct_type = "<class 'numpy.ndarray'>"
@@ -33,6 +34,7 @@ def test_tiger_square():
         and max_range == 1.0 \
         and mean == 0.45 \
         and sd == 0.23
+
 
 def test_tiger_grey():
     im = img_as_float(pu.im_data.tiger_grey())
@@ -49,6 +51,7 @@ def test_tiger_grey():
         and mean == 0.51 \
         and sd == 0.2
 
+
 def test_tiger_rgba():
     im = img_as_float(pu.im_data.tiger_rgba())
     correct_type = "<class 'numpy.ndarray'>"
@@ -63,6 +66,3 @@ def test_tiger_rgba():
         and max_range == 1.0 \
         and mean == 0.54 \
         and sd == 0.32
-
-
-

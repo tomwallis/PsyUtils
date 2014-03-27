@@ -5,7 +5,7 @@ setup(
     version='0.1.0',
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
-    packages=['psyutils','psyutils.data','psyutils.image','psyutils.misc'],
+    packages=['psyutils', 'psyutils.data', 'psyutils.image', 'psyutils.misc', 'psyutils.im_data'],
     #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
     #url='http://pypi.python.org/pypi/TowelStuff/',
     license='LICENSE.txt',
