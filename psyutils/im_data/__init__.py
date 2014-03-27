@@ -1,20 +1,27 @@
-"""Test images.
+"""
+Test images
+-----------
 
-Much of the code in here was taken from skimage.data.__init__.py
+This submodule contains some images that we will use for demo and test purposes.
 
-Tiger
----------
-Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license.
+Much of the code in here was adapted from skimage.data.__init__.py
+
+Tiger image Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license.
 This image can be freely shared and adapted.
 License: https://creativecommons.org/licenses/by/2.0/legalcode
 
-
+----------
 """
 
 import os as _os
 
 from skimage.io import imread as _imread
-from psyutils import _im_data_dir
+_this_dir = _os.path.abspath(_os.path.dirname(__file__))
+
+__all__ = ['tiger',
+            'tiger_rgba',
+            'tiger_square',
+            'tiger_grey']
 
 def _load(f):
     """Load an image file located in the data directory.
@@ -31,44 +38,33 @@ def _load(f):
     img : ndarray
     Image loaded from psyutils.im_data_dir.
     """
-    return _imread(_os.path.join(_im_data_dir, f))
+    return _imread(_os.path.join(_this_dir, f))
 
 
 def tiger():
-    """Tiger image by Phalinn Ooi (flickr).
-    Released and used here under a CC by 2.0 license.
-    License: https://creativecommons.org/licenses/by/2.0/legalcode
+    """
+    Load the Tiger image (RGB file).
     """
     return _load("tiger_rgb.png")
 
 
 def tiger_rgba():
-    """Tiger image with alpha channel.
-
-    Tiger image by Phalinn Ooi (flickr).
-    Released and used here under a CC by 2.0 license.
-    License: https://creativecommons.org/licenses/by/2.0/legalcode
-
+    """
+    Load the tiger image with alpha channel (RGBA file).
     """
     return _load("tiger_rgba.png")
 
 
 def tiger_square():
-    """Square version of tiger image (RGB).
-
-    Tiger image by Phalinn Ooi (flickr).
-    Released and used here under a CC by 2.0 license.
-    License: https://creativecommons.org/licenses/by/2.0/legalcode
+    """
+    Load square version of tiger image (RGB), 256 by 256.
 
     """
     return _load("tiger_square.png")
 
 def tiger_grey():
-    """Grey, square tiger image (RGB).
-
-    Tiger image by Phalinn Ooi (flickr).
-    Released and used here under a CC by 2.0 license.
-    License: https://creativecommons.org/licenses/by/2.0/legalcode
+    """
+    Grey, square tiger image (RGB), 256 by 256.
 
     """
     return _load("tiger_grey.png")
