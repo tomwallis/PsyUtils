@@ -10,5 +10,5 @@ This submodule contains functions for working with images and creating stimuli f
 from ._image_utilities import (guess_type, contrast_image, show_im)
 
 __all__ = ['guess_type',
-            'contrast_image',
-            'show_im']
+           'contrast_image',
+           'show_im']

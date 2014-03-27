@@ -14,11 +14,11 @@ def guess_type(image):
     If the image is 3D with the third dimension	length 4, it is assumed to be an RGBA image.
 
     Args:
-        image : ndarray
+        image: ndarray
             The input image.
 
     Returns:
-        assumption (string) : how to treat the image in the future.
+        assumption (string): how to treat the image in the future.
             Returns a string telling future scripts how to treat the image for
             filtering. Can be:
             "greyscale", "IA" (intensity, alpha), "RGB", "RGBA" (rgb, alpha).
@@ -49,7 +49,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
     Note: the image will be converted to float, if it wasn't already.
 
     Args:
-        image : ndarray
+        image: ndarray
             The input image.
         factor (float, optional): the contrast scale factor.
             A multiplicative contrast change factor. Values less
@@ -67,7 +67,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
         verbose (bool, optional): If True, print additional information.
 
     Returns:
-        image : ndarray
+        image: ndarray
             the modified image. Either zero mean (if "returns" == "contrast")
             or with the original mean.
 
@@ -129,7 +129,7 @@ def show_im(im):
     and report some stats about it.
 
     Args:
-        image : ndarray
+        image: ndarray
             The input image.
     """
     import matplotlib.pyplot

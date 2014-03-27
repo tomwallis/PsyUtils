@@ -16,12 +16,14 @@ License: https://creativecommons.org/licenses/by/2.0/legalcode
 import os as _os
 
 from skimage.io import imread as _imread
+
 _this_dir = _os.path.abspath(_os.path.dirname(__file__))
 
 __all__ = ['tiger',
-            'tiger_rgba',
-            'tiger_square',
-            'tiger_grey']
+           'tiger_rgba',
+           'tiger_square',
+           'tiger_grey']
+
 
 def _load(f):
     """Load an image file located in the data directory.
@@ -74,6 +76,7 @@ def tiger_square():
 
     """
     return _load("tiger_square.png")
+
 
 def tiger_grey():
     """Grey, square tiger image (RGB), 256 by 256.
