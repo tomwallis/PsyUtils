@@ -4,6 +4,21 @@ import numpy as np
 from skimage import img_as_float
 import psyutils as pu
 
+def test_tiger_rgb():
+    im = img_as_float(pu.im_data.tiger())
+    correct_type = "<class 'numpy.ndarray'>"
+    string_type = str(type(im))
+    min_range = round(im.min(), ndigits=2)
+    max_range = round(im.max(), ndigits=2)
+    mean = round(im.mean(), ndigits=2)
+    sd = round(im.std(), ndigits=2)
+    assert string_type == correct_type \
+        and im.shape == (427, 640, 3) \
+        and min_range == 0.0 \
+        and max_range == 1.0 \
+        and mean == 0.39 \
+        and sd == 0.21
+
 def test_tiger_square():
     im = img_as_float(pu.im_data.tiger_square())
     correct_type = "<class 'numpy.ndarray'>"
@@ -48,4 +63,6 @@ def test_tiger_rgba():
         and max_range == 1.0 \
         and mean == 0.54 \
         and sd == 0.32
+
+
 
