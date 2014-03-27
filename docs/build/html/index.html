@@ -49,13 +49,35 @@
             
   <div class="section" id="welcome-to-psyutils-documentation">
 <h1>Welcome to psyutils&#8217; documentation!<a class="headerlink" href="#welcome-to-psyutils-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
+<p>The <tt class="docutils literal"><span class="pre">psyutils</span></tt> package is a collection of utility functions useful
+for generating visual stimuli and analysing the results of
+psychophysical experiments. It will eventually include modules
+for data munging, image processing (such as filtering images
+in the fourier domain, for example for creating
+filtered noise) and other stimulus-related functions.</p>
+<p>It is <strong>NOT</strong> an experimental display software package. It is intended
+to compliment something like <a class="reference external" href="http://www.psychopy.org">PsychoPy</a>.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">data</span></tt>. The <tt class="docutils literal"><span class="pre">data</span></tt> subpackage includes functions for data munging,
+for example for formatting data usefully for import in <tt class="docutils literal"><span class="pre">pandas</span></tt>
+or to R.</li>
+<li><tt class="docutils literal"><span class="pre">im_data</span></tt>. The <tt class="docutils literal"><span class="pre">im_data</span></tt> subpackage includes images and data for
+testing purposes.</li>
+<li><tt class="docutils literal"><span class="pre">image</span></tt>. The <tt class="docutils literal"><span class="pre">image</span></tt> subpackage includes functions for filtering
+images and creating filtered noise stimuli, and otherwise interacting
+with images.</li>
+<li><tt class="docutils literal"><span class="pre">misc</span></tt>. This is a miscellaneous subpackage for things like ramp
+functions, e.g. creating 1D Gaussian or cosine windows for
+ramping stimuli on and off.</li>
+</ul>
 <div class="toctree-wrapper compound">
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-im_data"></span><div class="section" id="test-images">
-<h2>Test images<a class="headerlink" href="#test-images" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-im_data"></span><div class="section" id="im-data">
+<h3>im_data<a class="headerlink" href="#im-data" title="Permalink to this headline">¶</a></h3>
 <p>This submodule contains some images that we will use for demo and test purposes.</p>
 <p>Much of the code in here was adapted from skimage.data.__init__.py</p>
 <p>Tiger image Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license.
@@ -112,7 +134,7 @@ none</p>
 
 </div>
 <span class="target" id="module-image"></span><div class="section" id="image-submodule">
-<h2>Image submodule<a class="headerlink" href="#image-submodule" title="Permalink to this headline">¶</a></h2>
+<h3>Image submodule<a class="headerlink" href="#image-submodule" title="Permalink to this headline">¶</a></h3>
 <p>This submodule contains functions for working with images and creating stimuli for psychophysical experiments.</p>
 <hr class="docutils" />
 <dl class="function">
@@ -129,13 +151,13 @@ If the image is 3D with the third dimension length 4, it is assumed to be an RGB
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
-<dt>image <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dt>image: ndarray</dt>
 <dd>The input image.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
 <dd><dl class="first last docutils">
-<dt>assumption (string) <span class="classifier-delimiter">:</span> <span class="classifier">how to treat the image in the future.</span></dt>
+<dt>assumption (string): how to treat the image in the future.</dt>
 <dd>Returns a string telling future scripts how to treat the image for
 filtering. Can be:
 &#8220;greyscale&#8221;, &#8220;IA&#8221; (intensity, alpha), &#8220;RGB&#8221;, &#8220;RGBA&#8221; (rgb, alpha).</dd>
@@ -158,7 +180,7 @@ Note: the image will be converted to float, if it wasn&#8217;t already.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><dl class="first docutils">
-<dt>image <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dt>image: ndarray</dt>
 <dd>The input image.</dd>
 <dt>factor (float, optional): the contrast scale factor.</dt>
 <dd>A multiplicative contrast change factor. Values less
@@ -178,7 +200,7 @@ See guess_type? for more details.</dd>
 </dd>
 <dt>Returns:</dt>
 <dd><dl class="first last docutils">
-<dt>image <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dt>image: ndarray</dt>
 <dd>the modified image. Either zero mean (if &#8220;returns&#8221; == &#8220;contrast&#8221;)
 or with the original mean.</dd>
 </dl>
@@ -194,7 +216,7 @@ and report some stats about it.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
-<dt>image <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dt>image: ndarray</dt>
 <dd>The input image.</dd>
 </dl>
 </dd>
@@ -202,59 +224,36 @@ and report some stats about it.</p>
 </dd></dl>
 
 </div>
-<p>The <tt class="docutils literal"><span class="pre">psyutils</span></tt> package is a collection of utility functions useful
-for generating visual stimuli and analysing the results of
-psychophysical experiments. It will eventually include modules
-for data munging, image processing (such as filtering images
-in the fourier domain, for example for creating
-filtered noise) and other stimulus-related functions.</p>
-<p>It is <strong>NOT</strong> an experimental display software package. It is intended
-to compliment something like <cite>PsychoPy &lt;http://www.psychopy.org&gt;</cite>.</p>
-<p>## Subpackages</p>
-<blockquote>
-<div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">data</span></tt>. The <tt class="docutils literal"><span class="pre">data</span></tt> subpackage includes functions for data munging,</li>
-</ul>
-<blockquote>
-<div>for example for formatting data usefully for import in <tt class="docutils literal"><span class="pre">pandas</span></tt>
-or to R.</div></blockquote>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">im_data</span></tt>. The <tt class="docutils literal"><span class="pre">im_data</span></tt> subpackage includes images and data for</li>
-</ul>
-<blockquote>
-<div>testing purposes.</div></blockquote>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">image</span></tt>. The <tt class="docutils literal"><span class="pre">image</span></tt> subpackage includes functions for filtering</li>
-</ul>
-<blockquote>
-<div>images and creating filtered noise stimuli, and otherwise interacting
-with images.</div></blockquote>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">misc</span></tt>. This is a miscellaneous subpackage for things like ramp</li>
-</ul>
-<blockquote>
-<div>functions, e.g. creating 1D Gaussian or cosine windows for
-ramping stimuli on and off.</div></blockquote>
-</div></blockquote>
-<p>## Example Use</p>
+</div>
+<div class="section" id="example-use">
+<h2>Example Use<a class="headerlink" href="#example-use" title="Permalink to this headline">¶</a></h2>
 <p>You could do things like this:</p>
 <div class="highlight-python"><pre>from psyutils import image
 
 blah blah</pre>
 </div>
-<p>## Dependencies</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>Psyutils depends on numpy, scipy, and scikit-image.</p>
-<p>## Testing</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>You can run unit tests by typing <cite>nosetests -v</cite> from the command line
 in the project&#8217;s parent directory.</p>
-<p>## Contributions</p>
+</div>
+<div class="section" id="contributions">
+<h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h2>
 <p>Thomas Wallis wrote these functions based on shared code used in Matlab
 by Peter Bex&#8217;s lab at the Schepens Eye Research Institute. I also
 borrowed some stuff from the scikit-image package.</p>
-<p>## Thanks To</p>
+</div>
+<div class="section" id="thanks-to">
+<h2>Thanks To<a class="headerlink" href="#thanks-to" title="Permalink to this headline">¶</a></h2>
 <p>Many of these functions are based on Matlab functions originally written
 by Peter Bex. Tom Wallis also thanks Matthias Kümmerer for Python help
 and suggestions.</p>
+</div>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -274,8 +273,16 @@ and suggestions.</p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Welcome to psyutils&#8217; documentation!</a><ul>
-<li><a class="reference internal" href="#test-images">Test images</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li><a class="reference internal" href="#im-data">im_data</a></li>
 <li><a class="reference internal" href="#image-submodule">Image submodule</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-use">Example Use</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#contributions">Contributions</a></li>
+<li><a class="reference internal" href="#thanks-to">Thanks To</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>

@@ -1,5 +1,5 @@
 """
-Test images
+im_data
 -----------
 
 This submodule contains some images that we will use for demo and test purposes.
