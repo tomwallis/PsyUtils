@@ -21,14 +21,14 @@ def guess_type(image):
         assumption (string): how to treat the image in the future.
             Returns a string telling future scripts how to treat the image for
             filtering. Can be:
-            "greyscale", "IA" (intensity, alpha), "RGB", "RGBA" (rgb, alpha).
+            "I" (intensity), "IA" (intensity, alpha), "RGB", "RGBA" (rgb, alpha).
 
     Raises:
         ValueError: If the image array has less than two or more than three dimensions.
 
     """
     if image.ndim == 2:
-        return "greyscale"
+        return "I"
     if image.ndim == 3 and image.shape[-1] == 2:
         return "IA"
     if image.ndim == 3 and image.shape[-1] == 3:
@@ -62,7 +62,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
             in each colour channel.
         img_dims (string, optional): specify image type.
             If "None", check image dimensions with guess_type. Otherwise,
-            specify either "greyscale", "IA", "RGB", "RGBA".
+            specify either "I", "IA", "RGB", "RGBA".
             See guess_type? for more details.
         verbose (bool, optional): If True, print additional information.
 
@@ -83,7 +83,7 @@ def contrast_image(image, factor=1.0, returns="intensity",
     if verbose is True:
         print("contrast_image function assumes image to be " + im_type)
 
-    if im_type is "greyscale":
+    if im_type is "I":
         channel_means = np.array(image.mean())
         image = image - channel_means
         image *= factor
@@ -135,9 +135,9 @@ def show_im(im):
     import matplotlib.pyplot
 
     dims = guess_type(im)
-    if dims is "greyscale" or "IA":
+    if dims is "I" or "IA":
         matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
-        #print("note that imshow normalises greyscale image for display")
+        #print("note that imshow normalises I image for display")
     elif dims is "RGB" or "RGBA":
         matplotlib.pyplot.imshow(im)
     else:
