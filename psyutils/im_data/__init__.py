@@ -26,45 +26,63 @@ __all__ = ['tiger',
 def _load(f):
     """Load an image file located in the data directory.
 
+    Args:
+        f (string): File name.
 
-    Parameters
-    ----------
-    :rtype : ndarray
-    f : string
-        File name.
+    Returns:
+        img : ndarray
+        An image loaded from the psyutils.im_data directory.
 
-    Returns
-    -------
-    img : ndarray
-    Image loaded from psyutils.im_data_dir.
     """
     return _imread(_os.path.join(_this_dir, f))
 
 
 def tiger():
-    """
-    Load the Tiger image (RGB file).
+    """Load the Tiger image (RGB file).
+
+    Args:
+        none
+
+    Returns:
+        img : ndarray
+
     """
     return _load("tiger_rgb.png")
 
 
 def tiger_rgba():
-    """
-    Load the tiger image with alpha channel (RGBA file).
+    """Load the tiger image with alpha channel (RGBA file).
+
+    Args:
+    none
+
+    Returns:
+        img : ndarray
+
     """
     return _load("tiger_rgba.png")
 
 
 def tiger_square():
-    """
-    Load square version of tiger image (RGB), 256 by 256.
+    """Load square version of tiger image (RGB), 256 by 256.
+
+    Args:
+    none
+
+    Returns:
+        img : ndarray
 
     """
     return _load("tiger_square.png")
 
 def tiger_grey():
-    """
-    Grey, square tiger image (RGB), 256 by 256.
+    """Grey, square tiger image (RGB), 256 by 256.
+
+    Args:
+    none
+
+    Returns:
+        img : ndarray
 
     """
     return _load("tiger_grey.png")

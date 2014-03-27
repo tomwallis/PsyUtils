@@ -2,39 +2,30 @@ import numpy as np
 from skimage import img_as_float
 
 
-def guess_dims(image):
+def guess_type(image):
     """Make an educated guess about an image's dimensions and what they mean.
     Modified from skimage.color.guess_spatial_dimensions.
 
     If the image has two dimensions, it is assumed to contain intensity values (i.e. be a greyscale image).
-
     If the image has three dimensions and the third is length 3, it is assumed to be an RGB or similar tri-colour image
     (third dimension indexes colour channel).
-
     If the image is 3D with the third dimension	length 2, it is assumed to be an IA image
     (I = intensity, A = alpha (transparency)).
-
     If the image is 3D with the third dimension	length 4, it is assumed to be an RGBA image.
 
-    Parameters
-    ----------
-    image : ndarray
-        The input image.
+    Args:
+        image : ndarray
+            The input image.
 
-    Returns
-    -------
-    assumption : string
-        Returns a string telling future scripts how to treat the image for
-        filtering. Can be:
-        "greyscale"
-        "IA"
-        "RGB"
-        "RGBA"
+    Returns:
+        assumption (string) : how to treat the image in the future.
+            Returns a string telling future scripts how to treat the image for
+            filtering. Can be:
+            "greyscale", "IA" (intensity, alpha), "RGB", "RGBA" (rgb, alpha).
 
-    Raises
-    ------
-    ValueError
-        If the image array has less than two or more than three dimensions.
+    Raises:
+        ValueError: If the image array has less than two or more than three dimensions.
+
     """
     if image.ndim == 2:
         return "greyscale"
@@ -50,46 +41,42 @@ def guess_dims(image):
 
 def contrast_image(image, factor=1.0, returns="intensity",
                    img_dims=None, verbose=False):
-    """
-    Takes an input image, takes a guess at its spatial dimensions
-    (see guess_dims), applies a multiplicative factor to each
-    colour channel then returns either the image in intensity units or in
+    """Takes an input image, takes a guess at its spatial dimensions
+    (see guess_type), applies a multiplicative factor to each
+    colour channel, then returns either the image in intensity units or in
     zero-mean (contrast) units. The latter can be useful if you intend to
     multiply the image by any filters in the non-fourier domain.
     Note: the image will be converted to float, if it wasn't already.
 
-    :type factor: float
-        A multiplicative contrast change factor. Values less than one will reduce
-        global contrast; values greater than one will increase global contrast.
+    Args:
+        image : ndarray
+            The input image.
+        factor (float, optional): the contrast scale factor.
+            A multiplicative contrast change factor. Values less
+            than one will reduce global contrast, values greater
+            than one will increase global contrast.
+        returns (string, optional): which image to return.
+            If "intensity" (the default), the image is returned
+            in intensity units (the original scale) after contrast scaling.
+            If returns = "contrast", the array returned has mean zero
+            in each colour channel.
+        img_dims (string, optional): specify image type.
+            If "None", check image dimensions with guess_type. Otherwise,
+            specify either "greyscale", "IA", "RGB", "RGBA".
+            See guess_type? for more details.
+        verbose (bool, optional): If True, print additional information.
 
-
-    Parameters
-    ----------
-    image : ndarray
-        The input image.
-    factor : float
-
-    returns: string
-        Which image to return. If "intensity" (the default), the image is returned
-        in intensity units (the original scale) after contrast scaling.
-        If returns = "contrast", the array returned has mean zero in each colour channel.
-    img_dims: string
-        If "None", check image dimensions with guess_dims. Otherwise, specify either
-        "greyscale", "IA", "RGB", "RGBA". See guess_dims? for more details.
-    verbose : boolean
-        If True, print additional information.
-
-    Returns
-    -------
-    image : ndarray
-        the modified image.
+    Returns:
+        image : ndarray
+            the modified image. Either zero mean (if "returns" == "contrast")
+            or with the original mean.
 
     """
 
     image = img_as_float(np.copy(image))
 
     if img_dims is None:
-        im_type = guess_dims(image)
+        im_type = guess_type(image)
     else:
         im_type = img_dims
 
@@ -141,17 +128,16 @@ def show_im(im):
     """ A helper function to show an image (using imshow)
     and report some stats about it.
 
-    Parameters
-    ----------
-    image : ndarray
-        The input image.
+    Args:
+        image : ndarray
+            The input image.
     """
     import matplotlib.pyplot
 
-    dims = guess_dims(im)
+    dims = guess_type(im)
     if dims is "greyscale" or "IA":
         matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
-        print("note that imshow normalises greyscale image for display")
+        #print("note that imshow normalises greyscale image for display")
     elif dims is "RGB" or "RGBA":
         matplotlib.pyplot.imshow(im)
     else:
