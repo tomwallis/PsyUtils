@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # psyutils documentation build configuration file, created by
-# sphinx-quickstart on Thu Mar 27 11:00:55 2014.
+# sphinx-quickstart on Thu Mar 27 12:42:01 2014.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+sys.path.insert(0, os.path.abspath('../../psyutils/'))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -25,7 +26,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.pngmath', 'sphinx.ext.mathjax', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -283,7 +284,3 @@ epub_copyright = u'2014, Thomas S. A. Wallis'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
-
-
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
