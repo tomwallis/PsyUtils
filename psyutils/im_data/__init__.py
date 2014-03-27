@@ -44,16 +44,31 @@ def tiger():
 
 def tiger_rgba():
     """Tiger image with alpha channel.
+
+    Tiger image by Phalinn Ooi (flickr).
+    Released and used here under a CC by 2.0 license.
+    License: https://creativecommons.org/licenses/by/2.0/legalcode
+
     """
     return _load("tiger_rgba.png")
 
 
 def tiger_square():
     """Square version of tiger image (RGB).
+
+    Tiger image by Phalinn Ooi (flickr).
+    Released and used here under a CC by 2.0 license.
+    License: https://creativecommons.org/licenses/by/2.0/legalcode
+
     """
     return _load("tiger_square.png")
 
 def tiger_grey():
     """Grey, square tiger image (RGB).
+
+    Tiger image by Phalinn Ooi (flickr).
+    Released and used here under a CC by 2.0 license.
+    License: https://creativecommons.org/licenses/by/2.0/legalcode
+
     """
     return _load("tiger_grey.png")
