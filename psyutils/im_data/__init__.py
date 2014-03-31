@@ -6,7 +6,8 @@ This submodule contains some images that we will use for demo and test purposes.
 
 Much of the code in here was adapted from skimage.data.__init__.py
 
-Tiger image Copyright flickr user Phalinn Ooi, released under a CC by 2.0 license.
+Tiger image Copyright flickr user Phalinn Ooi, released under a
+CC by 2.0 license.
 This image can be freely shared and adapted.
 License: https://creativecommons.org/licenses/by/2.0/legalcode
 

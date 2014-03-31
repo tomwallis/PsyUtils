@@ -6,12 +6,16 @@ def guess_type(image):
     """Make an educated guess about an image's dimensions and what they mean.
     Modified from skimage.color.guess_spatial_dimensions.
 
-    If the image has two dimensions, it is assumed to contain intensity values (i.e. be a greyscale image).
-    If the image has three dimensions and the third is length 3, it is assumed to be an RGB or similar tri-colour image
+    If the image has two dimensions, it is assumed to contain intensity values
+    (i.e. be a greyscale image).
+    If the image has three dimensions and the third is length 3, it is assumed
+    to be an RGB or similar tri-colour image
     (third dimension indexes colour channel).
-    If the image is 3D with the third dimension	length 2, it is assumed to be an IA image
+    If the image is 3D with the third dimension	length 2, it is assumed to be
+    an IA image
     (I = intensity, A = alpha (transparency)).
-    If the image is 3D with the third dimension	length 4, it is assumed to be an RGBA image.
+    If the image is 3D with the third dimension	length 4, it is assumed to be
+    an RGBA image.
 
     Args:
         image: ndarray
@@ -21,10 +25,12 @@ def guess_type(image):
         assumption (string): how to treat the image in the future.
             Returns a string telling future scripts how to treat the image for
             filtering. Can be:
-            "I" (intensity), "IA" (intensity, alpha), "RGB", "RGBA" (rgb, alpha).
+            "I" (intensity), "IA" (intensity, alpha),
+            "RGB", "RGBA" (rgb, alpha).
 
     Raises:
-        ValueError: If the image array has less than two or more than three dimensions.
+        ValueError: If the image array has less than two or more than
+        three dimensions.
 
     """
     if image.ndim == 2:
@@ -39,13 +45,19 @@ def guess_type(image):
         raise ValueError("Expected 2D or 3D array, got %iD." % image.ndim)
 
 
-def contrast_image(image, factor=1.0, returns="intensity",
+def contrast_image(image, factor=1.0, sd=None,
+                   returns="intensity",
                    img_dims=None, verbose=False):
-    """Takes an input image, takes a guess at its spatial dimensions
-    (see guess_type), applies a multiplicative factor to each
-    colour channel, then returns either the image in intensity units or in
+    """Takes an input image, applies a transform to each colour channel,
+    then returns either the image in intensity units or in
     zero-mean (contrast) units. The latter can be useful if you intend to
     multiply the image by any filters in the non-fourier domain.
+
+    The transform can either be a multiplicative change (specified by
+    factor) or the user can specify the `sd` argument, in which case each
+    colour channel will have this standard deviation. If `sd` is specified
+    then `factor` is ignored.
+
     Note: the image will be converted to float, if it wasn't already.
 
     Args:
@@ -55,6 +67,9 @@ def contrast_image(image, factor=1.0, returns="intensity",
             A multiplicative contrast change factor. Values less
             than one will reduce global contrast, values greater
             than one will increase global contrast.
+        sd (float, optional): the desired standard deviation.
+            Each colour channel will be set to have this sd. If
+            `sd` is specified `factor` is ignored.
         returns (string, optional): which image to return.
             If "intensity" (the default), the image is returned
             in intensity units (the original scale) after contrast scaling.
@@ -82,11 +97,20 @@ def contrast_image(image, factor=1.0, returns="intensity",
 
     if verbose is True:
         print("contrast_image function assumes image to be " + im_type)
+        if sd is None:
+            print("Image will change by factor " + str(factor))
+        else:
+            print("Intensity SD will be set to " + str(sd))
 
     if im_type is "I":
         channel_means = np.array(image.mean())
         image = image - channel_means
-        image *= factor
+
+        if sd is None:
+            image *= factor
+        else:
+            image = (image / image.sd()) * sd
+
         if returns is "intensity":
             image = image + channel_means
 
@@ -131,6 +155,7 @@ def show_im(im):
     Args:
         image: ndarray
             The input image.
+
     """
     import matplotlib.pyplot
 
@@ -144,6 +169,7 @@ def show_im(im):
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
     print("image has dimensions " + str(im.shape))
-    print("image has range from " + str(round(im.min(), ndigits=2)) + " to max " + str(round(im.max(), ndigits=2)))
+    print("image has range from " + str(round(im.min(), ndigits=2))
+          + " to max " + str(round(im.max(), ndigits=2)))
     print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
