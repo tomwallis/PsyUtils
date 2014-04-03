@@ -2,7 +2,8 @@
 im_data
 -----------
 
-This submodule contains some images that we will use for demo and test purposes.
+This submodule contains some images that we will use for demo
+and test purposes.
 
 Much of the code in here was adapted from skimage.data.__init__.py
 
