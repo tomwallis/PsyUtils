@@ -97,5 +97,19 @@ def test_contrast_image_4():
         and mean == 0.0 \
         and sd == 0.02
 
+
+def test_contrast_image_5():
+    im = img_as_float(pu.im_data.tiger_grey())
+    im = pu.image.contrast_image(im, sd=0.1)
+    min_range = round(im.min(), ndigits=2)
+    max_range = round(im.max(), ndigits=2)
+    mean = round(im.mean(), ndigits=2)
+    sd = round(im.std(), ndigits=2)
+    assert min_range == 0.25 \
+        and max_range == 0.76 \
+        and mean == 0.51 \
+        and sd == 0.1
+
 # See
-# http://docs.scipy.org/doc/numpy-dev/reference/generated/numpy.testing.assert_allclose.html#numpy.testing.assert_allclose
+# http://docs.scipy.org/doc/numpy-dev/reference/generated
+# /numpy.testing.assert_allclose.html#numpy.testing.assert_allclose
