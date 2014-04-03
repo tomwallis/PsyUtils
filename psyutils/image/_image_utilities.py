@@ -35,6 +35,10 @@ def guess_type(image):
     """
     if image.ndim == 2:
         return "I"
+    if image.ndim == 3 and image.shape[-1] == 1:
+        raise ValueError("You seem to have passed an array with "
+                         "a third dimension of length 1. Please drop the 3rd "
+                         "dimension using np.squeeze and try again.")
     if image.ndim == 3 and image.shape[-1] == 2:
         return "IA"
     if image.ndim == 3 and image.shape[-1] == 3:
