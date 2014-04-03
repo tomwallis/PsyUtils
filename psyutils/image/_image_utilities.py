@@ -1,5 +1,6 @@
 # try to keep global imports within the functions...
 
+
 def guess_type(image):
     """Make an educated guess about an image's dimensions and what they mean.
     Modified from skimage.color.guess_spatial_dimensions.

@@ -45,11 +45,11 @@ def test_tiger_grey():
     mean = round(im.mean(), ndigits=2)
     sd = round(im.std(), ndigits=2)
     assert string_type == correct_type \
-        and im.shape == (256, 256, 3) \
-        and min_range == 0.0 \
+        and im.shape == (256, 256) \
+        and min_range == 0.01 \
         and max_range == 1.0 \
-        and mean == 0.51 \
-        and sd == 0.2
+        and mean == 0.52 \
+        and sd == 0.19
 
 
 def test_tiger_rgba():

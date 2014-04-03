@@ -68,7 +68,7 @@ def tiger_rgba():
 
 
 def tiger_square():
-    """Load square version of tiger image (RGB), 256 by 256.
+    """Load square version of tiger image (RGB), 256 by 256 by 3.
 
     Args:
     none
@@ -81,7 +81,7 @@ def tiger_square():
 
 
 def tiger_grey():
-    """Grey, square tiger image (RGB), 256 by 256.
+    """Grey, square tiger image (I), 256 by 256.
 
     Args:
     none
@@ -90,4 +90,5 @@ def tiger_grey():
         img : ndarray
 
     """
-    return _load("tiger_grey.png")
+    import numpy as np
+    return np.load(_os.path.join(_this_dir, "tiger_grey.npy"))

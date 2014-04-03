@@ -81,7 +81,7 @@ def test_contrast_image_3():
     sd = round(im.std(), ndigits=2)
     assert min_range == 0.46 \
         and max_range == 0.56 \
-        and mean == 0.51 \
+        and mean == 0.52 \
         and sd == 0.02
 
 
@@ -105,9 +105,9 @@ def test_contrast_image_5():
     max_range = round(im.max(), ndigits=2)
     mean = round(im.mean(), ndigits=2)
     sd = round(im.std(), ndigits=2)
-    assert min_range == 0.25 \
-        and max_range == 0.76 \
-        and mean == 0.51 \
+    assert min_range == 0.26 \
+        and max_range == 0.77 \
+        and mean == 0.52 \
         and sd == 0.1
 
 # See
