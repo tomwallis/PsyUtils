@@ -17,8 +17,6 @@ License: https://creativecommons.org/licenses/by/2.0/legalcode
 
 import os as _os
 
-from skimage.io import imread as _imread
-
 _this_dir = _os.path.abspath(_os.path.dirname(__file__))
 
 __all__ = ['tiger',
@@ -38,6 +36,8 @@ def _load(f):
         An image loaded from the psyutils.im_data directory.
 
     """
+    from skimage.io import imread as _imread
+
     return _imread(_os.path.join(_this_dir, f))
 
 

@@ -2,7 +2,8 @@
 Image submodule
 ---------------
 
-This submodule contains functions for working with images and creating stimuli for psychophysical experiments.
+This submodule contains functions for working with images and creating stimuli
+for psychophysical experiments.
 
 ----------
 """

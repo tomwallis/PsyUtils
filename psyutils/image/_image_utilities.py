@@ -1,6 +1,4 @@
-import numpy as np
-from skimage import img_as_float
-
+# try to keep global imports within the functions...
 
 def guess_type(image):
     """Make an educated guess about an image's dimensions and what they mean.
@@ -62,7 +60,9 @@ def contrast_image(image, factor=1.0, sd=None,
     colour channel will have this standard deviation. If `sd` is specified
     then `factor` is ignored.
 
-    Note: the image will be converted to float, if it wasn't already.
+    Note: the image will be converted to float, if it wasn't already,
+    and a copy will be created (i.e. this function doesn't overwrite
+    the original image you pass in).
 
     Args:
         image: ndarray
@@ -94,6 +94,8 @@ def contrast_image(image, factor=1.0, sd=None,
             or with the original mean.
 
     """
+    import numpy as np
+    from skimage import img_as_float
 
     image = img_as_float(np.copy(image))
 
