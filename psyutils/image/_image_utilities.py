@@ -72,7 +72,10 @@ def contrast_image(image, factor=1.0, sd=None,
             than one will reduce global contrast, values greater
             than one will increase global contrast.
         sd (float, optional): the desired standard deviation.
-            Each colour channel will be set to have this sd. If
+            Each colour channel will be set to have this sd. Note
+            this means that relative differences between colour
+            channels in the original image will be moved, meaning
+            that the colour gamut will not be the same. If
             `sd` is specified `factor` is ignored.
         returns (string, optional): which image to return.
             If "intensity" (the default), the image is returned
@@ -113,7 +116,7 @@ def contrast_image(image, factor=1.0, sd=None,
         if sd is None:
             image *= factor
         else:
-            image = (image / image.sd()) * sd
+            image = (image / image.std()) * sd
 
         if returns is "intensity":
             image = image + channel_means
@@ -123,23 +126,34 @@ def contrast_image(image, factor=1.0, sd=None,
         for i in range(0, 3):
             channel_means[i] = image[:, :, i].mean()
             image[:, :, i] = image[:, :, i] - channel_means[i]
-            image[:, :, i] = image[:, :, i] * factor
+            if sd is None:
+                image[:, :, i] = image[:, :, i] * factor
+            else:
+                image[:, :, i] = (image[:, :, i] / image[:, :, i] .std()) * sd
             if returns is "intensity":
                 image[:, :, i] = image[:, :, i] + channel_means[i]
 
     elif im_type is "IA":
-        channel_means = image[:, :, 0].mean()
-        image[:, :, 0] = image[:, :, 0] - channel_means
-        image[:, :, 0] = image[:, :, 0] * factor
+        i = 0
+        channel_means = image[:, :, i].mean()
+        image[:, :, i] = image[:, :, i] - channel_means
+        if sd is None:
+            image[:, :, i] = image[:, :, i] * factor
+        else:
+            image[:, :, i] = (image[:, :, i] / image[:, :, i] .std()) * sd
+
         if returns is "intensity":
-            image[:, :, 0] = image[:, :, 0] + channel_means
+            image[:, :, i] = image[:, :, i] + channel_means
 
     elif im_type is "RGBA":
         channel_means = np.zeros(3)
         for i in range(0, 3):
             channel_means[i] = image[:, :, i].mean()
             image[:, :, i] = image[:, :, i] - channel_means[i]
-            image[:, :, i] = image[:, :, i] * factor
+            if sd is None:
+                image[:, :, i] = image[:, :, i] * factor
+            else:
+                image[:, :, i] = (image[:, :, i] / image[:, :, i] .std()) * sd
             if returns is "intensity":
                 image[:, :, i] = image[:, :, i] + channel_means[i]
     else:
