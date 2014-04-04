@@ -66,3 +66,20 @@ def test_tiger_rgba():
         and max_range == 1.0 \
         and mean == 0.54 \
         and sd == 0.32
+
+
+def test_sloan_import():
+    sloans = pu.im_data.sloan_letters()
+    im = sloans["H"]
+    correct_type = "<class 'numpy.ndarray'>"
+    string_type = str(type(im))
+    min_range = round(im.min(), ndigits=2)
+    max_range = round(im.max(), ndigits=2)
+    mean = round(im.mean(), ndigits=2)
+    sd = round(im.std(), ndigits=2)
+    assert string_type == correct_type \
+        and im.shape == (256, 256) \
+        and min_range == 0.0 \
+        and max_range == 1.0 \
+        and mean == 0.48 \
+        and sd == 0.5

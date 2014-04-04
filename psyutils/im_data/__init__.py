@@ -22,7 +22,8 @@ _this_dir = _os.path.abspath(_os.path.dirname(__file__))
 __all__ = ['tiger',
            'tiger_rgba',
            'tiger_square',
-           'tiger_grey']
+           'tiger_grey',
+           'sloan_letters']
 
 
 def _load(f):
@@ -58,7 +59,7 @@ def tiger_rgba():
     """Load the tiger image with alpha channel (RGBA file).
 
     Args:
-    none
+        none
 
     Returns:
         img : ndarray
@@ -71,7 +72,7 @@ def tiger_square():
     """Load square version of tiger image (RGB), 256 by 256 by 3.
 
     Args:
-    none
+        none
 
     Returns:
         img : ndarray
@@ -84,7 +85,7 @@ def tiger_grey():
     """Grey, square tiger image (I), 256 by 256.
 
     Args:
-    none
+        none
 
     Returns:
         img : ndarray
@@ -92,3 +93,31 @@ def tiger_grey():
     """
     import numpy as np
     return np.load(_os.path.join(_this_dir, "tiger_grey.npy"))
+
+
+def sloan_letters():
+    """Returns the ten sloan letters as numpy arrays in a dictionary.
+    The sloan letters consist of 10 letter characters:
+    C, D, H, K, N, O, R, S, V, Z. Each are 256 by 256 pixels.
+    The dict can be accessed like this:
+    sloans["C"] will return the np.ndarray containing the letter C.
+
+    Args:
+        none
+
+    Returns:
+        letters (dict): a dictionary whose keys are strings corresponding
+        to the letter ID, and whose entries are numpy ndarrays corresponding
+        to the sloan letter. The ndarrays are stored as floating point values
+        saved by the skimage img_as_float function (bounded 0--1).
+    """
+    import numpy as np
+    from skimage import img_as_float
+    sloans = {}
+    letters = ("C", "D", "H", "K", "N", "O", "R", "S", "V", "Z")
+    for i in range(0, 10):
+        this_file = "sloan_" + str(i) + ".npy"
+        this_file = _os.path.join(_this_dir, this_file)
+        im = img_as_float(np.load(this_file))
+        sloans[letters[i]] = im
+    return(sloans)
