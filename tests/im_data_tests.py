@@ -2,11 +2,17 @@
 
 from skimage import img_as_float
 import psyutils as pu
+import sys
 
 
 def test_tiger_rgb():
     im = img_as_float(pu.im_data.tiger())
-    correct_type = "<class 'numpy.ndarray'>"
+    if sys.version_info >= (3, 0):
+        correct_type = "<class 'numpy.ndarray'>"
+        print("this is python 3")
+    elif sys.version_info < (3, 0):
+        correct_type = "<type 'numpy.ndarray'>"
+        print("this is python 2")
     string_type = str(type(im))
     min_range = round(im.min(), ndigits=2)
     max_range = round(im.max(), ndigits=2)
@@ -22,7 +28,10 @@ def test_tiger_rgb():
 
 def test_tiger_square():
     im = img_as_float(pu.im_data.tiger_square())
-    correct_type = "<class 'numpy.ndarray'>"
+    if sys.version_info >= (3, 0):
+        correct_type = "<class 'numpy.ndarray'>"
+    elif sys.version_info < (3, 0):
+        correct_type = "<type 'numpy.ndarray'>"
     string_type = str(type(im))
     min_range = round(im.min(), ndigits=2)
     max_range = round(im.max(), ndigits=2)
@@ -38,7 +47,10 @@ def test_tiger_square():
 
 def test_tiger_grey():
     im = img_as_float(pu.im_data.tiger_grey())
-    correct_type = "<class 'numpy.ndarray'>"
+    if sys.version_info >= (3, 0):
+        correct_type = "<class 'numpy.ndarray'>"
+    elif sys.version_info < (3, 0):
+        correct_type = "<type 'numpy.ndarray'>"
     string_type = str(type(im))
     min_range = round(im.min(), ndigits=2)
     max_range = round(im.max(), ndigits=2)
@@ -54,7 +66,10 @@ def test_tiger_grey():
 
 def test_tiger_rgba():
     im = img_as_float(pu.im_data.tiger_rgba())
-    correct_type = "<class 'numpy.ndarray'>"
+    if sys.version_info >= (3, 0):
+        correct_type = "<class 'numpy.ndarray'>"
+    elif sys.version_info < (3, 0):
+        correct_type = "<type 'numpy.ndarray'>"
     string_type = str(type(im))
     min_range = round(im.min(), ndigits=2)
     max_range = round(im.max(), ndigits=2)
@@ -71,7 +86,10 @@ def test_tiger_rgba():
 def test_sloan_import():
     sloans = pu.im_data.sloan_letters()
     im = sloans["H"]
-    correct_type = "<class 'numpy.ndarray'>"
+    if sys.version_info >= (3, 0):
+        correct_type = "<class 'numpy.ndarray'>"
+    elif sys.version_info < (3, 0):
+        correct_type = "<type 'numpy.ndarray'>"
     string_type = str(type(im))
     min_range = round(im.min(), ndigits=2)
     max_range = round(im.max(), ndigits=2)
