@@ -92,7 +92,7 @@ def contrast_image(image, factor=1.0, sd=None,
     Returns:
         image: ndarray
             the modified image. Either zero mean (if "returns" == "contrast")
-            or with the original mean.
+            or with the original mean. Returned as floating point array.
 
     """
     import numpy as np
