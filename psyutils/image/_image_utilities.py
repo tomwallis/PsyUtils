@@ -66,8 +66,7 @@ def contrast_image(image, factor=1.0, sd=None,
     the original image you pass in).
 
     Args:
-        image: ndarray
-            The input image.
+        image (ndarray): The input image.
         factor (float, optional): the contrast scale factor.
             A multiplicative contrast change factor. Values less
             than one will reduce global contrast, values greater

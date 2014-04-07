@@ -22,3 +22,6 @@ Submodules
 *   ``misc``. This is a miscellaneous subpackage for things like ramp
     functions, e.g. creating 1D Gaussian or cosine windows for
     ramping stimuli on and off.
+
+    .. automodule:: misc
+    :members:
