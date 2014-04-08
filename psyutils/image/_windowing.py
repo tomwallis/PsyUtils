@@ -21,15 +21,15 @@ def cos_win_1d(length,
         Create a vector of length 200 where the value is 1 for the central
         100 samples, on and off ramps of length 45 and 5 samples of zero
         padding at either end::
-        $ window = cos_win_1d(length = 200, ramp = 45, padding = 5)
-        $ pu.image.plot_win_1d(window)
+            window = cos_win_1d(length = 200, ramp = 45, padding = 5)
+            pu.image.plot_win_1d(window)
 
     Args:
         length (int):
             the length of the window function to return.
-        ramp (int or float):
+        ramp (int or float, optional):
             the size of each ramp. Defaults to (length-cent) / 2.
-        padding (int):
+        padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
 
     Returns:
