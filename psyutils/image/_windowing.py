@@ -17,13 +17,6 @@ def cos_win_1d(length,
     make sense but it is not thorough. If parameters are provided as integers
     they will be converted to floats.
 
-    Example:
-        Create a vector of length 200 where the value is 1 for the central
-        100 samples, on and off ramps of length 45 and 5 samples of zero
-        padding at either end::
-            window = cos_win_1d(length = 200, ramp = 45, padding = 5)
-            pu.image.plot_win_1d(window)
-
     Args:
         length (int):
             the length of the window function to return.
@@ -35,6 +28,15 @@ def cos_win_1d(length,
     Returns:
         window (float): a vector containing the windowing kernel,
         normalised 0--1.
+
+    Example:
+        Create a vector of length 200 where the value is 1 for the central
+        100 samples, on and off ramps of length 45 and 5 samples of zero
+        padding at either end::
+            import psyutils as pu
+            window = cos_win_1d(length = 200, ramp = 45, padding = 5)
+            pu.image.plot_win_1d(window)
+
 
     """
 
@@ -78,7 +80,6 @@ def cos_win_1d(length,
     return(y)
 
 
-# function to create a Gaussian blob in an image:
 def gaussian_2d(im_x, im_y=None,
                 sd_x=None, sd_y=None,
                 mid_x=None, mid_y=None, im_ori=0):
@@ -90,16 +91,6 @@ def gaussian_2d(im_x, im_y=None,
     Specifying combinations of the other parameters allows you to
     create varying locations, symmetries and orientations of Gaussian
     blobs.
-
-    Example
-        Make a symmetrical gaussian in a square image of length 64::
-            gauss_win = pu.image.gaussian_2d(im_x=64)
-            pu.image.show_im(gauss_win)
-
-        Make a rotated, asymmetrical and off-centre Gaussian::
-            gauss_win = pu.image.gaussian_2d(im_x=128, sd_x=10, sd_y=30,
-                im_ori=30, mid_x=40)
-            pu.image.show_im(gauss_win)
 
     Args:
         im_x (int):
@@ -122,6 +113,18 @@ def gaussian_2d(im_x, im_y=None,
     Returns:
         window (float): a 2d array containing the windowing kernel,
         normalised 0--1.
+
+    Example:
+        Make a symmetrical gaussian in a square image of length 64::
+            import psyutils as pu
+            gauss_win = pu.image.gaussian_2d(im_x=64)
+            pu.image.show_im(gauss_win)
+
+        Make a rotated, asymmetrical and off-centre Gaussian::
+            import psyutils as pu
+            gauss_win = pu.image.gaussian_2d(im_x=128, sd_x=10, sd_y=30,
+                im_ori=30, mid_x=40)
+            pu.image.show_im(gauss_win)
 
     """
 
