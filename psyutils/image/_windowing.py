@@ -78,6 +78,87 @@ def cos_win_1d(length,
     return(y)
 
 
+# function to create a Gaussian blob in an image:
+def gaussian_2d(im_x, im_y=None,
+                sd_x=None, sd_y=None,
+                mid_x=None, mid_y=None, im_ori=0):
+    """Create a Gaussian located in a 2d numpy array.
+    Specifying just the required parameter im_x creates a
+    symmetrical Gaussian centred in the image with the default sd
+    (im_x / 6.0).
+
+    Specifying combinations of the other parameters allows you to
+    create varying locations, symmetries and orientations of Gaussian
+    blobs.
+
+    Example
+        Make a symmetrical gaussian in a square image of length 64::
+            gauss_win = pu.image.gaussian_2d(im_x=64)
+            pu.image.show_im(gauss_win)
+
+        Make a rotated, asymmetrical and off-centre Gaussian::
+            gauss_win = pu.image.gaussian_2d(im_x=128, sd_x=10, sd_y=30,
+                im_ori=30, mid_x=40)
+            pu.image.show_im(gauss_win)
+
+    Args:
+        im_x (int):
+            The horizontal size of the image. If this is the only argument
+            supplied then the image will be square with sd = im_x/6.
+        im_y (int, optional):
+            The vertical size of the image, if different to the horizontal.
+        sd_x (float, optional):
+            The horizontal standard deviation of the Gaussian. If only sd_x
+            is supplied, the Gaussian will be symmetric (i.e. sd_y == sd_x).
+        sd_y (float, optional):
+            The vertical sd of the Gaussian.
+        mid_x (float, optional):
+            The horizontal mid-point of the Gaussian in (sub-) pixel units.
+        mid_y (float, optional):
+            The vertical mid-point of the Gaussian in (sub-) pixel units.
+        im_ori (float, optional):
+            Degrees of rotation to apply to the Gaussian (counterclockwise).
+
+    Returns:
+        window (float): a 2d array containing the windowing kernel,
+        normalised 0--1.
+
+    """
+
+    import numpy as np
+
+    # setup symmetric variables, if others not supplied:
+    if sd_x is None:
+        sd_x = im_x / 6.0
+
+    if sd_y is None:
+        sd_y = sd_x  # symmetrical
+
+    if im_y is None:
+        im_y = im_x
+
+    if mid_x is None and mid_y is None:
+        mid_x = im_x / 2.0
+        mid_y = im_y / 2.0
+    elif mid_x is not None and mid_y is None:
+        mid_y = im_y / 2.0
+    elif mid_x is None and mid_y is not None:
+        mid_x = im_x / 2.0
+
+    im_theta = im_ori * np.pi / 180.  # convert to radians.
+
+    x = np.linspace((1 - mid_x), (im_x - mid_x), num=im_x)
+    y = np.linspace((1 - mid_y), (im_y - mid_y), num=im_y)
+
+    # meshgrid by default in cartesian coords:
+    xx, yy = np.meshgrid(x, y)
+    x_rot = np.sin(im_theta) * xx + np.cos(im_theta) * yy
+    y_rot = np.sin(im_theta) * yy - np.cos(im_theta) * xx
+    gauss = np.exp(-(x_rot**2.0 / (2.0*sd_y**2.0))) * \
+        np.exp(-(y_rot**2.0 / (2.0*sd_x**2.0)))
+    return(gauss)
+
+
 def plot_win_1d(y):
     """Helper function for visualising 1d windows
 
