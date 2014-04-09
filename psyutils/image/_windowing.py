@@ -112,6 +112,8 @@ def gaussian_2d(im_x, im_y=None,
             Degrees of rotation to apply to the Gaussian (counterclockwise).
         padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
+            This assumes that the Gaussian is centred (will just make the
+            values a circle of zeros outside mid_x - padding).
 
     Returns:
         window (float): a 2d array containing the windowing kernel,
@@ -164,10 +166,9 @@ def gaussian_2d(im_x, im_y=None,
         np.exp(-(y_rot**2.0 / (2.0*sd_x**2.0)))
 
     if padding is not 0:
-        win[0:padding, :] = 0
-        win[-padding:, :] = 0
-        win[:, 0:padding] = 0
-        win[:, -padding:] = 0
+        xx, yy = np.meshgrid(x, y)
+        rad_dist = (xx**2 + yy**2) ** 0.5
+        win[rad_dist >= (mid_x-padding)] = 0
 
     return(win)
 
