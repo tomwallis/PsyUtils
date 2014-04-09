@@ -6,7 +6,7 @@ def make_filter(filt_size, filt_type,
     """Function to make a range of basic filters.
 
     Applied in the fourier domain. Currently for square images only.
-    Tom Wallis adapted it from makeFilter function by Peter Bex.
+    Tom Wallis adapted it from makeFilter Matlab function by Peter Bex.
 
     Args:
         filt_size (int): the size of the filter image.
@@ -45,7 +45,6 @@ def make_filter(filt_size, filt_type,
 
     # check filt_size:
     filt_size = float(round(filt_size))
-
     radius = round(filt_size / 2.0)
     x = np.linspace((1 - radius), (filt_size - radius), num=filt_size)
     # meshgrid by default in cartesian coords:
@@ -172,44 +171,33 @@ def make_filter(filt_size, filt_type,
     return(filt)
 
 
-def make_filtered_noise(filt_size, filt_type,
-                        f_peak=None, bw=None, alpha=None):
-    """Create a patch of filtered noise.
-    This function makes a square patch of filtered noise of
-    size filt_size. It is a wrapper for ``make_filter``; see that
-    function's documentation for all the filters you can specify.
+def make_filtered_noise(filt):
+    """Create a patch of filtered noise, the same size as filt.
+    This function makes a patch of filtered noise of
+    the same shape as filt. It is a wrapper for ``filter_image``
+    that specifically uses noise. See the doc for ``make_function``
+    for all the filters you can specify.
 
     Args:
-        filt_size (int): size of the noise image (it will be square).
-            Will be rounded to an integer if not.
+        filt (float): a filter, centred in the fourier domain.
         See documentation for make_filter for other arguments.
 
     Returns:
         image (float): a filtered noise image.
 
     Example::
-        im = pu.image.make_filtered_noise(filt_size = 256,
-            filt_type = "orientation", f_peak = 60, bw = 10)
+        filt = pu.image.make_filter(filt_size=im.shape[0],
+                                    filt_type="orientation",
+                                    f_peak=90, bw=20)
+        im = pu.image.make_filtered_noise(filt)
         pu.image.show_im(im)
 
     """
-    import numpy as np
-    import scipy.fftpack as ft
     from numpy.random import rand
+    from psyutils.image import filter_image
 
-    filt_size = round(filt_size)
-
-    filt = make_filter(filt_size=filt_size, filt_type=filt_type,
-                       f_peak=f_peak, bw=bw, alpha=alpha)
-    noise = rand(filt_size, filt_size)
-
-    shifted_fft = ft.fftshift(ft.fft2(noise))
-
-    filt_noise = np.real(ft.ifft2(ft.fftshift(shifted_fft * filt)))
-
-    # scale :
-    filt_noise = filt_noise / abs(filt_noise).max()
-
+    noise = rand(filt.shape[0], filt.shape[1])
+    filt_noise = filter_image(noise, filt)
     return(filt_noise)
 
 
@@ -244,12 +232,8 @@ def filter_image(im, filt):
     from skimage import img_as_float
 
     im = img_as_float(im)
-
     shifted_fft = ft.fftshift(ft.fft2(im))
-
     filt_im = np.real(ft.ifft2(ft.fftshift(shifted_fft * filt)))
-
     # scale with max abs value of 1:
     filt_im = filt_im / abs(filt_im).max()
-
     return(filt_im)
