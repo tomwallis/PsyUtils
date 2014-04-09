@@ -11,13 +11,15 @@ for psychophysical experiments.
 from ._image_utilities import (guess_type, contrast_image, show_im)
 from ._windowing import (cos_win_1d, gaussian_2d, plot_win_1d)
 from ._filters import (make_filter, make_filtered_noise, filter_image)
+from ._distortions import (bex_distort)
 
 __all__ = ['guess_type',
            'contrast_image',
            'show_im',
            'cos_win_1d',
            'gaussian_2d',
+           'plot_win_1d',
            'make_filter',
            'make_filtered_noise',
            'filter_image',
-           'plot_win_1d']
+           'bex_distort']
