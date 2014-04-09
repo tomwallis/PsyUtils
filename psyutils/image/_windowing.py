@@ -2,7 +2,7 @@
 
 
 def cos_win_1d(length,
-               ramp='default',
+               ramp=None,
                padding=0):
     """Create a vector of length ``length`` containing a 1D cosine window
     where the centre of the window is set to 1 and the ramps go down to
@@ -21,7 +21,7 @@ def cos_win_1d(length,
         length (int):
             the length of the window function to return.
         ramp (int or float, optional):
-            the size of each ramp. Defaults to (length-cent) / 2.
+            the size of each ramp. Defaults to length / 4.
         padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
 
@@ -46,7 +46,7 @@ def cos_win_1d(length,
     length = float(length)
     length_int = int(length)
 
-    if ramp is 'default':
+    if ramp is None:
         ramp = length / 4.0
     else:
         ramp = float(ramp)
@@ -160,16 +160,16 @@ def gaussian_2d(im_x, im_y=None,
     xx, yy = np.meshgrid(x, y)
     x_rot = np.sin(im_theta) * xx + np.cos(im_theta) * yy
     y_rot = np.sin(im_theta) * yy - np.cos(im_theta) * xx
-    gauss = np.exp(-(x_rot**2.0 / (2.0*sd_y**2.0))) * \
+    win = np.exp(-(x_rot**2.0 / (2.0*sd_y**2.0))) * \
         np.exp(-(y_rot**2.0 / (2.0*sd_x**2.0)))
 
     if padding is not 0:
-        gauss[0:padding, :] = 0
-        gauss[-padding:, :] = 0
-        gauss[:, 0:padding] = 0
-        gauss[:, -padding:] = 0
+        win[0:padding, :] = 0
+        win[-padding:, :] = 0
+        win[:, 0:padding] = 0
+        win[:, -padding:] = 0
 
-    return(gauss)
+    return(win)
 
 
 def plot_win_1d(y):
