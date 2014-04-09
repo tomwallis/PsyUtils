@@ -173,6 +173,60 @@ def gaussian_2d(im_x, im_y=None,
     return(win)
 
 
+def cos_win_2d(im_size,
+               ramp=None):
+    """Create a circular Cosine window in a 2d numpy array.
+
+    Args:
+        im_size (int):
+            The length of one side of the image.
+        ramp (float or int, optional):
+            The size of the ramp in pixels. Defaults to side length / 6.0.
+
+    Returns:
+        window (float): a 2d array containing the windowing kernel,
+        normalised 0--1.
+
+    Example:
+        Make a cosine window in a square image of length 64::
+            import psyutils as pu
+            win = pu.image.cos_win_2d(im_size=64)
+            pu.image.show_im(win)
+
+    """
+
+    import numpy as np
+
+    if ramp is None:
+        ramp = round(im_size / 6.0)
+    else:
+        ramp = float(round(ramp))
+
+    radius = im_size / 2.0
+
+    # do a check for params making sense:
+    tot = (ramp * 2.0)
+
+    if tot > im_size:
+        raise ValueError("Your ramping parameters add up to " + str(tot) +
+                         " but you " +
+                         "asked for size " + str(im_size))
+
+    x = np.arange((1 - radius), (im_size - radius + 1))
+
+    xx, yy = np.meshgrid(x, x)
+    rad_dist = (xx**2 + yy**2) ** 0.5
+
+    win = rad_dist.copy()
+    win[rad_dist <= radius-ramp/2.] = 1  # inside 1
+    win[rad_dist > radius+ramp/2.] = 0  # outside 0
+    ramp_location = [np.logical_and(rad_dist > (radius-ramp/2.),
+                                    rad_dist < (radius+ramp/2.))]
+    win[ramp_location] = 0.5 + 0.5*np.cos(np.pi / 2. + np.pi *
+                                         (win[ramp_location] - radius) /
+                                         (ramp))
+
+    return(win)
 def plot_win_1d(y):
     """Helper function for visualising 1d windows
 
