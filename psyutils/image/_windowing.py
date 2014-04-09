@@ -153,8 +153,8 @@ def gaussian_2d(im_x, im_y=None,
 
     im_theta = im_ori * np.pi / 180.  # convert to radians.
 
-    x = np.linspace((1 - mid_x), (im_x - mid_x), num=im_x)
-    y = np.linspace((1 - mid_y), (im_y - mid_y), num=im_y)
+    x = np.arange((1 - mid_x), (im_x - mid_x + 1))
+    y = np.arange((1 - mid_y), (im_y - mid_y + 1))
 
     # meshgrid by default in cartesian coords:
     xx, yy = np.meshgrid(x, y)

@@ -46,7 +46,7 @@ def make_filter(filt_size, filt_type,
     # check filt_size:
     filt_size = float(round(filt_size))
     radius = round(filt_size / 2.0)
-    x = np.linspace((1 - radius), (filt_size - radius), num=filt_size)
+    x = np.arange((1 - radius), (filt_size - radius + 1))
     # meshgrid by default in cartesian coords:
     xx, yy = np.meshgrid(x, x)
     rad_dist = (xx**2 + yy**2) ** 0.5
