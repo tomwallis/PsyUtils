@@ -41,12 +41,12 @@ Psyutils depends on numpy, scipy, and scikit-image.
 You can run unit tests by typing `nosetests -v` (or `nosetests-3.x` for
 testing under Python 3) from the command line in the project's parent directory.
 
-## TODO:
+## TODO
 
-    * unit tests for filters
-    * unit tests for windowing
-    * documentation for filters
-    * ipython notebook showing cool filtering demos
+  * unit tests for filters
+  * unit tests for windowing
+  * documentation for filters
+  * ipython notebook showing cool filtering demos
 
 ## Contributions
 
