@@ -82,7 +82,8 @@ def cos_win_1d(length,
 
 def gaussian_2d(im_x, im_y=None,
                 sd_x=None, sd_y=None,
-                mid_x=None, mid_y=None, im_ori=0):
+                mid_x=None, mid_y=None,
+                im_ori=0, padding=0):
     """Create a Gaussian located in a 2d numpy array.
     Specifying just the required parameter im_x creates a
     symmetrical Gaussian centred in the image with the default sd
@@ -109,6 +110,8 @@ def gaussian_2d(im_x, im_y=None,
             The vertical mid-point of the Gaussian in (sub-) pixel units.
         im_ori (float, optional):
             Degrees of rotation to apply to the Gaussian (counterclockwise).
+        padding (int, optional):
+            the size of zero padding at the edges. Defaults to zero.
 
     Returns:
         window (float): a 2d array containing the windowing kernel,
@@ -159,6 +162,13 @@ def gaussian_2d(im_x, im_y=None,
     y_rot = np.sin(im_theta) * yy - np.cos(im_theta) * xx
     gauss = np.exp(-(x_rot**2.0 / (2.0*sd_y**2.0))) * \
         np.exp(-(y_rot**2.0 / (2.0*sd_x**2.0)))
+
+    if padding is not 0:
+        gauss[0:padding, :] = 0
+        gauss[-padding:, :] = 0
+        gauss[:, 0:padding] = 0
+        gauss[:, -padding:] = 0
+
     return(gauss)
 
 
