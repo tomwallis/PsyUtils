@@ -21,7 +21,7 @@ def cos_win_1d(length,
         length (int):
             the length of the window function to return.
         ramp (int or float, optional):
-            the size of each ramp. Defaults to length / 4.
+            the size of each ramp. Defaults to length / 6.
         padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
 
@@ -47,7 +47,7 @@ def cos_win_1d(length,
     length_int = int(length)
 
     if ramp is None:
-        ramp = length / 4.0
+        ramp = length / 6.0
     else:
         ramp = float(ramp)
 
