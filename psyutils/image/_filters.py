@@ -213,24 +213,28 @@ def make_filtered_noise(filt_size, filt_type,
     return(filt_noise)
 
 
-def filter_image(im, filt_type,
-                 f_peak=None, bw=None, alpha=None):
-    """ Filter a given image with one of the make_filter
-    functions. Currently only works for square images.
+def filter_image(im, filt):
+    """ Filter a given image with a given filter by multiplying in the
+    frequency domain. Image and filter must be the same size.
 
     Args:
         im (float): the image to be filtered.
             Currently can only be square and 2d. I will write
             an extension to colour images sometime.
-        See documentation for make_filter for other arguments.
+        filt (float): the filter.
+            Should be centred in Fourier space (i.e. zero frequency
+            component should be in the middle of the image).
 
     Returns:
-        image (float): the filtered image.
+        image (float): the filtered image. Will be scaled between -1
+            and 1 (zero mean).
 
     Example::
         im = pu.im_data.tiger_grey()
-        filt_im = pu.image.filter_image(im,
-            filt_type = "orientation", f_peak = 90, bw = 20)
+        filt = pu.image.make_filter(filt_size=im.shape[0],
+                                    filt_type="orientation",
+                                    f_peak=90, bw=20)
+        filt_im = pu.image.filter_image(im, filt)
         show_im(filt_im)
 
 
@@ -241,14 +245,11 @@ def filter_image(im, filt_type,
 
     im = img_as_float(im)
 
-    filt = make_filter(filt_size=im.shape[0], filt_type=filt_type,
-                       f_peak=f_peak, bw=bw, alpha=alpha)
-
     shifted_fft = ft.fftshift(ft.fft2(im))
 
     filt_im = np.real(ft.ifft2(ft.fftshift(shifted_fft * filt)))
 
-    # scale :
+    # scale with max abs value of 1:
     filt_im = filt_im / abs(filt_im).max()
 
     return(filt_im)
