@@ -50,6 +50,7 @@ testing under Python 3) from the command line in the project's parent directory.
   * fix cos_win_2d to go to zero by image border (currently 0.5).
   * consider moving rad_dist and meshgrid calculations into a common function.
     Must return multiple values (xx, yy, rad_dist).
+  * CHECK BEHAVIOUR OF NUMPY RAND WHEN CALLED IN A FUNCTION: IMPORTANT FOR NOISE.
 
 ## Contributions
 

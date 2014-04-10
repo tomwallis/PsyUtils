@@ -232,6 +232,14 @@ def cos_win_2d(im_size,
 def wedge_win(im_x,
               f_peak=None, bw=None):
     """ A radial wedge window (angular Gaussian).
+
+    Args:
+        im_x (int): the size of the window in pixels (only square now).
+        f_peak (float): the peak orientation passband.
+            Zero is rightwards (horizontal), moves counterclockwise in
+            degrees.
+        bw (float): the bandwidth of the angular Gaussian in degrees.
+
     """
     import numpy as np
     # set up default parameters:

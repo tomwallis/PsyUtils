@@ -197,7 +197,7 @@ def show_im(im):
 
 def put_rect_in_rect(rect_a, rect_b,
                      mid_x=None, mid_y=None):
-    """A function to place a rect inside another rect.
+    """A function to place rect_a inside rect_b.
 
     This function will place np.ndarray `a` into np.ndarray
     `b`, centred on the point mid_x, mid_y. Currently only for 2D arrays.
