@@ -227,6 +227,45 @@ def cos_win_2d(im_size,
                                          (ramp))
 
     return(win)
+
+
+def wedge_win(im_x,
+              f_peak=None, bw=None):
+    """ A radial wedge window (angular Gaussian).
+    """
+    import numpy as np
+    # set up default parameters:
+    if f_peak is None:
+        f_peak = 0.
+    else:
+        f_peak = float(f_peak)
+
+    if bw is None:
+        bw = 15.  # bandwidth in degrees.
+    else:
+        bw = float(bw)
+
+    radius = round(im_x / 2.0)
+
+    x = np.arange((1 - radius), (im_x - radius + 1))
+    # meshgrid by default in cartesian coords:
+    xx, yy = np.meshgrid(x, x)
+
+    # convert params to radians:
+    f_peak = f_peak * np.pi / 180
+    bw = bw * np.pi / 180
+
+    ang_dist = np.arctan2(-yy, xx)
+    sin_theta = np.sin(ang_dist)
+    cos_theta = np.cos(ang_dist)
+
+    ds = sin_theta * np.cos(f_peak) - cos_theta * np.sin(f_peak)
+    dc = cos_theta * np.cos(f_peak) + sin_theta * np.sin(f_peak)
+    dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
+    win = np.exp((-dtheta**2) / (2*bw**2))  # ang filter component
+    return(win)
+
+
 def plot_win_1d(y):
     """Helper function for visualising 1d windows
 
