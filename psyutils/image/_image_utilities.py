@@ -193,3 +193,56 @@ def show_im(im):
           + " to max " + str(round(im.max(), ndigits=2)))
     print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
+
+
+def put_rect_in_rect(rect_a, rect_b,
+                     mid_x=None, mid_y=None):
+    """A function to place a rect inside another rect.
+
+    This function will place np.ndarray `a` into np.ndarray
+    `b`, centred on the point mid_x, mid_y. Currently only for 2D arrays.
+
+    Args:
+        rect_a (np.ndarray):
+            the source rectangle.
+        rect_b (np.ndarray):
+            the destination rectangle.
+        mid_x (int, optional):
+            the horizontal position to place the centre of rect_a in rect_b.
+            Defaults to the middle of rect_b.
+        mid_y (int, optional):
+            the vertical position to place the centre of rect_a in rect_b.
+            Defaults to the middle of rect_b.
+
+    Returns:
+        np.ndarray containing the new rectangle.
+
+    """
+
+    new_rect = rect_b.copy()
+
+    if mid_x is None:
+        mid_x = int(rect_b.shape[1] / 2)
+    if mid_y is None:
+        mid_y = int(rect_b.shape[0] / 2)
+
+    rect_a_rad_x = int(rect_a.shape[1]/2)
+    rect_a_rad_y = int(rect_a.shape[0]/2)
+
+    x_start = mid_x - rect_a_rad_x - 1
+    y_start = mid_y - rect_a_rad_y - 1
+    x_end = x_start + rect_a.shape[1]
+    y_end = y_start + rect_a.shape[0]
+
+    if x_start < 0 or y_start < 0:
+        raise ValueError("Rect_a falls outside rect_b! " +
+                         "x_start is " + str(x_start) +
+                         " , y_start is " + str(y_start))
+    if x_end > rect_b.shape[1] or y_end > rect_b.shape[0]:
+        raise ValueError("Rect_a falls outside rect_b!" +
+                         "x_end is " + str(x_end) +
+                         " , y_end is " + str(y_end))
+
+    new_rect[y_start:y_end, x_start:x_end] = rect_a
+
+    return(new_rect)
