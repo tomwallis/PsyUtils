@@ -174,14 +174,16 @@ def gaussian_2d(im_x, im_y=None,
 
 
 def cos_win_2d(im_size,
-               ramp=None):
+               ramp=None, padding=None):
     """Create a circular Cosine window in a 2d numpy array.
 
     Args:
         im_size (int):
             The length of one side of the image.
-        ramp (float or int, optional):
+        ramp (int, optional):
             The size of the ramp in pixels. Defaults to side length / 6.0.
+        padding (int, optional):
+            The size of added boundary zero padding. Defaults to 0.
 
     Returns:
         window (float): a 2d array containing the windowing kernel,
@@ -193,6 +195,11 @@ def cos_win_2d(im_size,
             win = pu.image.cos_win_2d(im_size=64)
             pu.image.show_im(win)
 
+        Make a cosine window with a larger ramp and some zero padding::
+            import psyutils as pu
+            win = pu.image.cos_win_2d(im_size=256, ramp=40, padding=10)
+            pu.image.show_im(win)
+
     """
 
     import numpy as np
@@ -201,6 +208,11 @@ def cos_win_2d(im_size,
         ramp = round(im_size / 6.0)
     else:
         ramp = float(round(ramp))
+
+    if padding is None:
+        padding = 0
+    else:
+        padding = int(padding)
 
     radius = im_size / 2.0
 
@@ -218,14 +230,15 @@ def cos_win_2d(im_size,
     rad_dist = (xx**2 + yy**2) ** 0.5
 
     win = rad_dist.copy()
-    win[rad_dist <= radius-ramp/2.] = 1  # inside 1
-    win[rad_dist > radius+ramp/2.] = 0  # outside 0
-    ramp_location = [np.logical_and(rad_dist > (radius-ramp/2.),
-                                    rad_dist < (radius+ramp/2.))]
-    win[ramp_location] = 0.5 + 0.5*np.cos(np.pi / 2. + np.pi *
-                                         (win[ramp_location] - radius) /
-                                         (ramp))
-
+    ramp_start = radius - ramp - padding
+    ramp_end = radius - padding
+    win[rad_dist < ramp_start] = 1  # inside 1
+    ramp_location = [np.logical_and(rad_dist >= ramp_start,
+                                    rad_dist < ramp_end)]
+    win[ramp_location] = np.cos((win[ramp_location] - ramp_start)
+                                / (ramp - padding - 1) * np.pi/2.)
+    win[rad_dist >= ramp_end] = 0.  # outside 0
+    win[win < 0] = 0.
     return(win)
 
 
