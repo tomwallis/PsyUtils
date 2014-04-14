@@ -216,7 +216,7 @@ def cos_win_2d(im_x,
     radius = im_x / 2.0
 
     # do a check for params making sense:
-    tot = (ramp * 2.0)
+    tot = ramp*2.0 + padding*2.0
 
     if tot > im_x:
         raise ValueError("Your ramping parameters add up to " + str(tot) +
@@ -234,6 +234,11 @@ def cos_win_2d(im_x,
     win[rad_dist < ramp_start] = 1  # inside 1
     ramp_location = [np.logical_and(rad_dist >= ramp_start,
                                     rad_dist < ramp_end)]
+
+    # to come up with 0--1 normalisation in radius, I normalise by
+    # ramp-padding-1. This can lead to some craziness depending on
+    # the values (e.g. try im_x=128, ramp=20, padding=15). FIX
+
     win[ramp_location] = np.cos((win[ramp_location] - ramp_start)
                                 / (ramp - padding - 1) * np.pi/2.)
     win[rad_dist >= ramp_end] = 0.  # outside 0

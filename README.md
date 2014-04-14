@@ -49,7 +49,8 @@ testing under Python 3) from the command line in the project's parent directory.
   * ipython notebook showing cool filtering demos
   * consider moving rad_dist and meshgrid calculations into a common function.
     Must return multiple values (xx, yy, rad_dist).
-  * CHECK BEHAVIOUR OF NUMPY RAND WHEN CALLED IN A FUNCTION: IMPORTANT FOR NOISE.
+  * fix cos2d window: I'm using a fairly hacky method that produces strange shapes
+    depending on settings. e.g. try pu.image.cos_win_2d(im_x=128, ramp=20, padding=15).
 
 ## Contributions
 
