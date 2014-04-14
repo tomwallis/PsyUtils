@@ -1,7 +1,7 @@
 # fourier filtering functions.
 
 
-def make_filter(filt_size, filt_type,
+def make_filter(im_x, filt_type,
                 f_peak=None, bw=None, alpha=None):
     """Function to make a range of basic filters.
 
@@ -9,9 +9,9 @@ def make_filter(filt_size, filt_type,
     Tom Wallis adapted it from makeFilter Matlab function by Peter Bex.
 
     Args:
-        filt_size (int): the size of the filter image.
+        im_x (int): the size of the filter image.
             must be an integer. This specifies the side length, so
-            filt_size=256 gives you a 256 by 256 image.
+            im_x=256 gives you a 256 by 256 image.
         filt_type (string): which filter to use.
             This specifies the behaviour of the rest of the function
             (see below).
@@ -28,12 +28,12 @@ def make_filter(filt_size, filt_type,
 
     Example:
         Create a log exponential filter with the default settings::
-            filt = pu.image.make_filter(filt_size=256, filt_type="log_exp")
+            filt = pu.image.make_filter(im_x=256, filt_type="log_exp")
             pu.image.show_im(filt)
 
         Create an orientation filter with filter peak at 45 degrees and 10
         degrees of bandwidth::
-            filt = pu.image.make_filter(filt_size=256, filt_type="orientation",
+            filt = pu.image.make_filter(im_x=256, filt_type="orientation",
                                         f_peak = 45, bw = 10)
             pu.image.show_im(filt)
 
@@ -43,10 +43,10 @@ def make_filter(filt_size, filt_type,
     """
     import numpy as np
 
-    # check filt_size:
-    filt_size = float(round(filt_size))
-    radius = round(filt_size / 2.0)
-    x = np.arange((1 - radius), (filt_size - radius + 1))
+    # check im_x:
+    im_x = float(round(im_x))
+    radius = round(im_x / 2.0)
+    x = np.arange((1 - radius), (im_x - radius + 1))
     # meshgrid by default in cartesian coords:
     xx, yy = np.meshgrid(x, x)
     rad_dist = (xx**2 + yy**2) ** 0.5
@@ -55,7 +55,7 @@ def make_filter(filt_size, filt_type,
     if filt_type is "log_exp":
         # set up default parameters:
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -78,7 +78,7 @@ def make_filter(filt_size, filt_type,
     elif filt_type is "log_cosine":
         # set up default parameters:
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -90,7 +90,7 @@ def make_filter(filt_size, filt_type,
     elif filt_type is "log_gauss":
         # set up default parameters:
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -104,7 +104,7 @@ def make_filter(filt_size, filt_type,
     elif filt_type is "gauss":
         # set up default parameters:
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -117,7 +117,7 @@ def make_filter(filt_size, filt_type,
 
     elif filt_type is "high_pass":
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -126,7 +126,7 @@ def make_filter(filt_size, filt_type,
 
     elif filt_type is "low_pass":
         if f_peak is None:
-            f_peak = filt_size / 4.0
+            f_peak = im_x / 4.0
         else:
             f_peak = float(f_peak)
 
@@ -186,7 +186,7 @@ def make_filtered_noise(filt):
         image (float): a filtered noise image.
 
     Example::
-        filt = pu.image.make_filter(filt_size=im.shape[0],
+        filt = pu.image.make_filter(im_x=im.shape[0],
                                     filt_type="orientation",
                                     f_peak=90, bw=20)
         im = pu.image.make_filtered_noise(filt)
@@ -219,7 +219,7 @@ def filter_image(im, filt):
 
     Example::
         im = pu.im_data.tiger_grey()
-        filt = pu.image.make_filter(filt_size=im.shape[0],
+        filt = pu.image.make_filter(im_x=im.shape[0],
                                     filt_type="orientation",
                                     f_peak=90, bw=20)
         filt_im = pu.image.filter_image(im, filt)

@@ -1,16 +1,16 @@
 # Functions for windowing, including images.
 
 
-def cos_win_1d(length,
+def cos_win_1d(im_x,
                ramp=None,
                padding=0):
-    """Create a vector of length ``length`` containing a 1D cosine window
+    """Create a vector of im_x ``im_x`` containing a 1D cosine window
     where the centre of the window is set to 1 and the ramps go down to
     zero symmetrically on either side (with optional zero padding).
 
     This can be useful for e.g. adjusting the alpha channel of a stimulus
     over frames so that the stimulus is smoothly ramped on and off.
-    Since what's returned is a vector, ``length`` must be an integer
+    Since what's returned is a vector, ``im_x`` must be an integer
     or convertible to integer.
 
     This function will do some basic checking to see that your parameters
@@ -18,10 +18,10 @@ def cos_win_1d(length,
     they will be converted to floats.
 
     Args:
-        length (int):
-            the length of the window function to return.
+        im_x (int):
+            the im_x of the window function to return.
         ramp (int or float, optional):
-            the size of each ramp. Defaults to length / 6.
+            the size of each ramp. Defaults to im_x / 6.
         padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
 
@@ -30,11 +30,11 @@ def cos_win_1d(length,
         normalised 0--1.
 
     Example:
-        Create a vector of length 200 where the value is 1 for the central
-        100 samples, on and off ramps of length 45 and 5 samples of zero
+        Create a vector of im_x 200 where the value is 1 for the central
+        100 samples, on and off ramps of im_x 45 and 5 samples of zero
         padding at either end::
             import psyutils as pu
-            window = cos_win_1d(length = 200, ramp = 45, padding = 5)
+            window = cos_win_1d(im_x = 200, ramp = 45, padding = 5)
             pu.image.plot_win_1d(window)
 
 
@@ -43,11 +43,10 @@ def cos_win_1d(length,
     import numpy as np
 
     # check parameters, set.
-    length = float(length)
-    length_int = int(length)
+    im_x = float(round(im_x))
 
     if ramp is None:
-        ramp = length / 6.0
+        ramp = im_x / 6.0
     else:
         ramp = float(ramp)
 
@@ -56,12 +55,12 @@ def cos_win_1d(length,
     # do a check for params making sense:
     tot = (ramp * 2.0) + (padding * 2.0)
 
-    if tot > length:
+    if tot > im_x:
         raise ValueError("Your ramping parameters add up to " + str(tot) +
                          " but you " +
-                         "asked for length " + str(length))
+                         "asked for im_x " + str(im_x))
 
-    y = np.ones((length_int))
+    y = np.ones((im_x))
 
     # create the ramps:
     up_ramp = np.sin(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
@@ -83,7 +82,7 @@ def cos_win_1d(length,
 def gaussian_2d(im_x, im_y=None,
                 sd_x=None, sd_y=None,
                 mid_x=None, mid_y=None,
-                im_ori=0, padding=0):
+                ori=0, padding=0):
     """Create a Gaussian located in a 2d numpy array.
     Specifying just the required parameter im_x creates a
     symmetrical Gaussian centred in the image with the default sd
@@ -108,7 +107,7 @@ def gaussian_2d(im_x, im_y=None,
             The horizontal mid-point of the Gaussian in (sub-) pixel units.
         mid_y (float, optional):
             The vertical mid-point of the Gaussian in (sub-) pixel units.
-        im_ori (float, optional):
+        ori (float, optional):
             Degrees of rotation to apply to the Gaussian (counterclockwise).
         padding (int, optional):
             the size of zero padding at the edges. Defaults to zero.
@@ -128,7 +127,7 @@ def gaussian_2d(im_x, im_y=None,
         Make a rotated, asymmetrical and off-centre Gaussian::
             import psyutils as pu
             gauss_win = pu.image.gaussian_2d(im_x=128, sd_x=10, sd_y=30,
-                im_ori=30, mid_x=40)
+                ori=30, mid_x=40)
             pu.image.show_im(gauss_win)
 
     """
@@ -153,7 +152,7 @@ def gaussian_2d(im_x, im_y=None,
     elif mid_x is None and mid_y is not None:
         mid_x = im_x / 2.0
 
-    im_theta = im_ori * np.pi / 180.  # convert to radians.
+    im_theta = ori * np.pi / 180.  # convert to radians.
 
     x = np.arange((1 - mid_x), (im_x - mid_x + 1))
     y = np.arange((1 - mid_y), (im_y - mid_y + 1))
@@ -173,12 +172,12 @@ def gaussian_2d(im_x, im_y=None,
     return(win)
 
 
-def cos_win_2d(im_size,
+def cos_win_2d(im_x,
                ramp=None, padding=None):
     """Create a circular Cosine window in a 2d numpy array.
 
     Args:
-        im_size (int):
+        im_x (int):
             The length of one side of the image.
         ramp (int, optional):
             The size of the ramp in pixels. Defaults to side length / 6.0.
@@ -192,12 +191,12 @@ def cos_win_2d(im_size,
     Example:
         Make a cosine window in a square image of length 64::
             import psyutils as pu
-            win = pu.image.cos_win_2d(im_size=64)
+            win = pu.image.cos_win_2d(im_x=64)
             pu.image.show_im(win)
 
         Make a cosine window with a larger ramp and some zero padding::
             import psyutils as pu
-            win = pu.image.cos_win_2d(im_size=256, ramp=40, padding=10)
+            win = pu.image.cos_win_2d(im_x=256, ramp=40, padding=10)
             pu.image.show_im(win)
 
     """
@@ -205,7 +204,7 @@ def cos_win_2d(im_size,
     import numpy as np
 
     if ramp is None:
-        ramp = round(im_size / 6.0)
+        ramp = round(im_x / 6.0)
     else:
         ramp = float(round(ramp))
 
@@ -214,17 +213,17 @@ def cos_win_2d(im_size,
     else:
         padding = int(padding)
 
-    radius = im_size / 2.0
+    radius = im_x / 2.0
 
     # do a check for params making sense:
     tot = (ramp * 2.0)
 
-    if tot > im_size:
+    if tot > im_x:
         raise ValueError("Your ramping parameters add up to " + str(tot) +
                          " but you " +
-                         "asked for size " + str(im_size))
+                         "asked for size " + str(im_x))
 
-    x = np.arange((1 - radius), (im_size - radius + 1))
+    x = np.arange((1 - radius), (im_x - radius + 1))
 
     xx, yy = np.meshgrid(x, x)
     rad_dist = (xx**2 + yy**2) ** 0.5
