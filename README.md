@@ -8,7 +8,7 @@ in the fourier domain, for example for creating
 filtered noise) and other stimulus-related functions.
 
 It is **NOT** an experimental display software package. It is intended
-to compliment something like `PsychoPy <http://www.psychopy.org>`.
+to compliment something like [PsychoPy](http://www.psychopy.org).
 
 ## Subpackages
 
@@ -49,13 +49,12 @@ testing under Python 3) from the command line in the project's parent directory.
   * ipython notebook showing cool filtering demos
   * consider moving rad_dist and meshgrid calculations into a common function.
     Must return multiple values (xx, yy, rad_dist).
-  * fix cos2d window: I'm using a fairly hacky method that produces strange shapes
-    depending on settings. e.g. try pu.image.cos_win_2d(im_x=128, ramp=20, padding=15).
+  * fix cos2d window: I'm using a fairly hacky method that produces strange shapes depending on settings. e.g. try pu.image.cos_win_2d(im_x=128, ramp=20, padding=15).
+  * include a fixation cross image (see Gegenfurtner paper).
 
 ## Contributions
 
-Thomas Wallis wrote these functions based on shared code used in Matlab
-by Peter Bex's lab at the Schepens Eye Research Institute. I also
+Thomas Wallis wrote these functions based somewhat on shared code used in Matlab by Peter Bex's lab at the Schepens Eye Research Institute. I also
 borrowed some stuff from the scikit-image package.
 
 ## Thanks To
