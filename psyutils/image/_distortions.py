@@ -1,16 +1,16 @@
 # functions to do spatial distortions.
 
 
-def bex_distort(im, x_offset, y_offset,
-                method="linear",
-                fill_method="mean"):
+def grid_distort(im, x_offset, y_offset,
+                 method="linear",
+                 fill_method="mean"):
     """Apply x and y offsets to distort an image using 2d interpolation.
 
     Based on a method by Peter Bex (see ref, below).
 
     The x_offset and y_offset variables should be images (ndarrays) of the same
     size as im. These will be used as the x- and y- offsets for the pixels in
-    scipy's RectBivariateSpline algorithm.
+    scipy's griddata algorithm.
 
     Args:
         im (float): the image to distort.
@@ -37,8 +37,9 @@ def bex_distort(im, x_offset, y_offset,
             scale = 20
             filt_x = pu.image.make_filtered_noise(filt) * gauss * scale
             filt_y = pu.image.make_filtered_noise(filt) * gauss * scale
-            dist_im = pu.image.distort_im(im, x_offset=filt_x, y_offset=filt_y,
-                                          method="linear")
+            dist_im = pu.image.grid_distort(im, x_offset=filt_x,
+                                            y_offset=filt_y,
+                                            method="linear")
             pu.image.show_im(dist_im)
 
     Reference:
