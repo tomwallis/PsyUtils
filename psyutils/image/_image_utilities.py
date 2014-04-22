@@ -184,7 +184,7 @@ def show_im(im):
         matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
         #print("note that imshow normalises I image for display")
     elif dims is "RGB" or "RGBA":
-        matplotlib.pyplot.imshow(im)
+        matplotlib.pyplot.imshow(im, interpolation='none')
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
