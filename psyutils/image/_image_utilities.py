@@ -1,4 +1,6 @@
-# try to keep global imports within the functions...
+import numpy as np
+from skimage import img_as_float
+import matplotlib.pyplot as plt
 
 
 def guess_type(image):
@@ -94,8 +96,6 @@ def contrast_image(image, factor=1.0, sd=None,
             or with the original mean. Returned as floating point array.
 
     """
-    import numpy as np
-    from skimage import img_as_float
 
     image = img_as_float(np.copy(image))
 
@@ -177,14 +177,13 @@ def show_im(im):
             The input image.
 
     """
-    import matplotlib.pyplot
 
     dims = guess_type(im)
     if dims is "I" or "IA":
-        matplotlib.pyplot.imshow(im, cmap=matplotlib.pyplot.cm.gray)
+        plt.imshow(im, cmap=plt.cm.gray)
         #print("note that imshow normalises I image for display")
     elif dims is "RGB" or "RGBA":
-        matplotlib.pyplot.imshow(im, interpolation='none')
+        plt.imshow(im, interpolation='none')
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))

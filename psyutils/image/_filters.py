@@ -1,4 +1,5 @@
 # fourier filtering functions.
+import numpy as np
 
 
 def make_filter(im_x, filt_type,
@@ -41,7 +42,6 @@ def make_filter(im_x, filt_type,
         image.make_filtered_noise()
         image.filter_image()
     """
-    import numpy as np
 
     # check im_x:
     im_x = float(round(im_x))
@@ -227,7 +227,6 @@ def filter_image(im, filt):
 
 
     """
-    import numpy as np
     import scipy.fftpack as ft
     from skimage import img_as_float
 
