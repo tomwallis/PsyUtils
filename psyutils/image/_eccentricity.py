@@ -1,13 +1,13 @@
 # functions to do eccentricity scaling of images.
 import numpy as np
 
+
 def ecc_linear(im_x, im_y=None,
                mid_x=None, mid_y=None,
                scale=None):
     """Function to produce an image with values linearly increasing as a
     function of radial distance from the mid_x, mid_y point.
     """
-
 
     if im_y is None:
         im_y = im_x
