@@ -1,4 +1,5 @@
 # miscellaneous functions
+# -*- coding: utf-8 -*-
 
 
 def fixation_cross():
