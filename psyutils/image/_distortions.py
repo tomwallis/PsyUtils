@@ -1,4 +1,6 @@
 # functions to do spatial distortions.
+import numpy as np
+from scipy.interpolate import griddata
 
 
 def grid_distort(im, x_offset, y_offset,
@@ -44,11 +46,9 @@ def grid_distort(im, x_offset, y_offset,
 
     Reference:
         Bex, P. J. (2010). (In) sensitivity to spatial distortion in natural
-        scenes. Journal of Vision, 10(2), 23.1–15.
+        scenes. Journal of Vision, 10(2), 23:1-15.
 
     """
-    import numpy as np
-    from scipy.interpolate import griddata
     # could also try RectBivariateSpline, but I couldn't get this to like
     # my dimensions, even with .ravel()...
 

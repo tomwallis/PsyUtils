@@ -20,9 +20,7 @@ to compliment something like [PsychoPy](http://www.psychopy.org).
  * ``image``. The ``image`` subpackage includes functions for filtering
   images and creating filtered noise stimuli, and otherwise interacting
   with images.
- * ``misc``. This is a miscellaneous subpackage for things like ramp
-  functions, e.g. creating 1D Gaussian or cosine windows for
-  ramping stimuli on and off.
+ * ``misc``. This is a miscellaneous subpackage.
 
 ## Example Use
 
@@ -55,7 +53,7 @@ testing under Python 3) from the command line in the project's parent directory.
 ## Contributions
 
 Thomas Wallis wrote these functions based somewhat on shared code used in Matlab by Peter Bex's lab at the Schepens Eye Research Institute. I also
-borrowed some stuff from the scikit-image package.
+borrowed some stuff from the scikit-image package. Function abstraction, pythonic niceness and other sweet programming improvements are provided by David Janssen.
 
 ## Thanks To
 

@@ -16,6 +16,8 @@ License: https://creativecommons.org/licenses/by/2.0/legalcode
 """
 
 import os as _os
+import numpy as np
+from skimage import img_as_float
 
 _this_dir = _os.path.abspath(_os.path.dirname(__file__))
 
@@ -91,7 +93,6 @@ def tiger_grey():
         img : ndarray
 
     """
-    import numpy as np
     return np.load(_os.path.join(_this_dir, "tiger_grey.npy"))
 
 
@@ -111,8 +112,6 @@ def sloan_letters():
         to the sloan letter. The ndarrays are stored as floating point values
         saved by the skimage img_as_float function (bounded 0--1).
     """
-    import numpy as np
-    from skimage import img_as_float
     sloans = {}
     letters = ("C", "D", "H", "K", "N", "O", "R", "S", "V", "Z")
     for i in range(0, 10):

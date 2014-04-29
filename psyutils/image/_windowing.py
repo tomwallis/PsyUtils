@@ -1,4 +1,6 @@
 # Functions for windowing, including images.
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def cos_win_1d(im_x,
@@ -39,9 +41,6 @@ def cos_win_1d(im_x,
 
 
     """
-
-    import numpy as np
-
     # check parameters, set.
     im_x = float(round(im_x))
 
@@ -131,9 +130,6 @@ def gaussian_2d(im_x, im_y=None,
             pu.image.show_im(gauss_win)
 
     """
-
-    import numpy as np
-
     # setup symmetric variables, if others not supplied:
     if sd_x is None:
         sd_x = im_x / 6.0
@@ -200,9 +196,6 @@ def cos_win_2d(im_x,
             pu.image.show_im(win)
 
     """
-
-    import numpy as np
-
     if ramp is None:
         ramp = round(im_x / 6.0)
     else:
@@ -258,7 +251,6 @@ def wedge_win(im_x,
         bw (float): the bandwidth of the angular Gaussian in degrees.
 
     """
-    import numpy as np
     # set up default parameters:
     if f_peak is None:
         f_peak = 0.
@@ -295,10 +287,6 @@ def plot_win_1d(y):
     """Helper function for visualising 1d windows
 
     """
-
-    import matplotlib.pyplot as plt
-    import numpy as np
-
     x = np.linspace(0, y.size, num=y.size)
     line, = plt.plot(x, y, linewidth=2)
 
