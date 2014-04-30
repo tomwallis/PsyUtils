@@ -5,7 +5,7 @@ from scipy.interpolate import griddata
 
 def grid_distort(im, x_offset, y_offset,
                  method="linear",
-                 fill_method="mean"):
+                 fill_method=None):
     """Apply x and y offsets to distort an image using 2d interpolation.
 
     Based on a method by Peter Bex (see ref, below).
@@ -21,10 +21,11 @@ def grid_distort(im, x_offset, y_offset,
         method (string): the interpolation method.
             This is passed to scipy.interpolate.griddata's method argument,
             and can be either "nearest", "linear", or "cubic".
-        fill_method (string): how to deal with NaNs in interp.
-            If "mean" (the default), any `nan` values from interpolation
+        fill_method (float, optional): how to deal with NaNs in interp.
+            If left as None (the default), any `nan` values from interpolation
             (caused by input points outside the convex hull) will be replaced
-            by the mean of the image.
+            by the mean of the image. If instead you specify a float, then this
+            value will be inserted into the image by griddata.
 
     Returns:
         image (float): the distorted image.
@@ -66,8 +67,10 @@ def grid_distort(im, x_offset, y_offset,
     # to do the interp itself:
 
     # what value to use for nans in interp:
-    if fill_method is "mean":
+    if fill_method is None:
         fill_value = im.mean()
+    else:
+        fill_value = float(fill_method)
 
     z_new = griddata(points=(xx.ravel(), yy.ravel()),
                      values=im.ravel(),
