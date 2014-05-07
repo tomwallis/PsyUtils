@@ -46,7 +46,7 @@ def make_filter(im_x, filt_type,
     # check im_x:
     im_x = float(round(im_x))
     radius = round(im_x / 2.0)
-    x = np.arange((1 - radius), (im_x - radius + 1))
+    x = np.linspace(- radius, radius, num=im_x)
     # meshgrid by default in cartesian coords:
     xx, yy = np.meshgrid(x, x)
     rad_dist = (xx**2 + yy**2) ** 0.5
