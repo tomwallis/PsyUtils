@@ -1,6 +1,8 @@
 # miscellaneous functions
 # -*- coding: utf-8 -*-
 
+import numpy as _np
+
 
 def fixation_cross():
     """Return a 256 square numpy array containing a rendering of the
@@ -14,15 +16,13 @@ def fixation_cross():
         stability of fixational eye movements. Vision Research, 76(C), 31–42.
     """
 
-    import numpy as np
-
     outer_rad = 128
     inner_rad = int((0.2 / 0.6)*outer_rad)  # inner is 0.2
 
     def _draw_oval(radius):
-        im = np.ones((radius*2, radius*2))
-        x = np.linspace(-radius, radius, num=radius*2)
-        xx, yy = np.meshgrid(x, x)
+        im = _np.ones((radius*2, radius*2))
+        x = _np.linspace(-radius, radius, num=radius*2)
+        xx, yy = _np.meshgrid(x, x)
         rad_dist = (xx**2 + yy**2)**0.5
         im[rad_dist <= radius] = 0
         return(im)
