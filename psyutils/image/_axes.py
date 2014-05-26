@@ -257,7 +257,8 @@ def axes_loglog_cart(size, axes_limits=1, angle=0, zero_case=None):
 
     Returns:
         x, y (matrices):
-            Matrices containing the x and y coordinates of the axes.
+            Matrices containing the x and y coordinates of the axes, in log
+            spacing.
 
     Example:
         # return axes 12 elements square:
@@ -377,6 +378,25 @@ def axes_logradial_polar(size, axes_limits=1, angle=0, zero_case=None):
 
 
 def axes_angular_distance(size, axes_limits=1, angle=0):
-    """Return an angular distance axis"""
+    """Return an angular distance axis.
+
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. Defaults to -1, 1.
+        angle (optional):
+            angle to rotate the axes (in radians).
+
+    Returns:
+        a (matrix):
+            The anglular distance (from 0 to pi).
+
+    Example:
+        # return axes 100 elements square, with a rotation of 0.5*pi:
+        a = pu.image.axes_angular_distance(size=12, angle=0.5*pi)
+
+    """
     r, a = axes_polar(size, axes_limits, angle)
     return convert_to_angular_distance(a)
