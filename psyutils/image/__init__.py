@@ -8,15 +8,39 @@ for psychophysical experiments.
 ----------
 """
 
+from ._axes import(unpack_container, parse_axes_limits, parse_size,
+                   convert_to_polar, convert_to_log, convert_to_exp,
+                   convert_to_angular_distance,
+                   rotate_cartesian, rotate_angular,
+                   axes_cart, axes_polar, axes_loglog_cart,
+                   axes_semilogx_cart, axes_semilogy_cart,
+                   axes_logradial_polar, axes_angular_distance)
+
 from ._image_utilities import (guess_type, contrast_image, show_im,
                                put_rect_in_rect)
+
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win,
                          plot_win_1d)
-from ._filters import (make_filter, make_filtered_noise, filter_image)
-from ._distortions import (grid_distort)
-from ._eccentricity import (ecc_linear)
 
-__all__ = ['guess_type',
+from ._misc import (grid_distort, make_filtered_noise, filter_image)
+
+__all__ = ['unpack_container',
+           'parse_axes_limits',
+           'parse_size',
+           'convert_to_polar',
+           'convert_to_log',
+           'convert_to_exp',
+           'convert_to_angular_distance',
+           'rotate_cartesian',
+           'rotate_angular',
+           'axes_cart',
+           'axes_polar',
+           'axes_loglog_cart',
+           'axes_semilogx_cart',
+           'axes_semilogy_cart',
+           'axes_logradial_polar',
+           'axes_angular_distance',
+           'guess_type',
            'contrast_image',
            'show_im',
            'put_rect_in_rect',
@@ -29,5 +53,4 @@ __all__ = ['guess_type',
            'make_filtered_noise',
            'filter_image',
            'grid_distort',
-           'ecc_linear',
            ]

@@ -3,7 +3,7 @@
 """axes.py
 
 A module containing functions that generate and operate on different axes
-types. David Janssen wrote it.
+types. David Janssen wrote them, Tom Wallis tweaked and documented.
 
 """
 
@@ -172,15 +172,30 @@ def rotate_angular(a, angle=0):
 #-----------------------------------------------------------------------------#
 
 
-def cart_axes(size, axes_limits=1, angle=0):
-    """Return two numpy arrays of x and y coordinates
-
-    parameters:
-      size - size of the resulting matrix in w, h
-      axes_limits - (min_x, max_x, min_y, max_y) of the grid
-
+def axes_cart(size, axes_limits=1, angle=0):
+    """Return two numpy arrays of x and y coordinates.
     Check the documentation on parse_size and parse_axes_limits to see how size
     and lims can be specified.
+
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. Defaults to -1, 1.
+        angle (optional):
+            angle to rotate the axes (in radians).
+
+    Returns:
+        x, y (matrices):
+            Matrices containing the x and y coordinates of the axes.
+
+    Example:
+        # return axes 12 elements square, with a rotation of 0.5*pi:
+        x, y = pu.image.axes_cart(size=12, angle=0.5*pi)
+
+        # return axes 12 by 16 elements, scaled from -10 to 10:
+        x, y = pu.image.axes_cart(size=(12, 16), axes_limits=10)
 
     """
     w, h = parse_size(size)
@@ -190,75 +205,178 @@ def cart_axes(size, axes_limits=1, angle=0):
     return rotate_cartesian(x, y, angle)
 
 
-def polar_axes(size, axes_limits=1, angle=0):
+def axes_polar(size, axes_limits=1, angle=0):
     """Return two numpy arrays of radial and angular coordinates
-
-    parameters:
-      size - size of the resulting matrix in w, h
-      axes_limits - (min_x, max_x, min_y, max_y) of the grid
-
-
-
     Check the documentation on parse_size and parse_axes_limits to see how size
     and lims can be specified.
 
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. Defaults to -1, 1.
+        angle (optional):
+            angle to rotate the axes (in radians).
+
+    Returns:
+        r, a (matrices):
+            The r matrix is the radial distance from the centre,
+            the a matrix is the angle (from -pi to pi, counterclockwise
+            from left (west)).
+
+    Example:
+        # return axes 12 elements square, with a rotation of 0.5*pi:
+        r, a = pu.image.axes_polar(size=12, angle=0.5*pi)
+
+        # return axes 12 by 16 elements, scaled from -10 to 10:
+        r, a = pu.image.axes_polar(size=(12, 16), axes_limits=10)
     """
-    x, y = cart_axes(size, axes_limits, angle)
+    x, y = axes_cart(size, axes_limits, angle)
     return convert_to_polar(x, y)
 
 
-def loglog_cart_axes(size, axes_limits=(0, 1), angle=0, zero_case=None):
+def axes_loglog_cart(size, axes_limits=1, angle=0, zero_case=None):
     """Return a loglog cartesian x and y axis
+    Check the documentation on parse_size and parse_axes_limits to see how size
+    and lims can be specified.
 
-    All the logs of 0 are replaced by zero_case if its specified, (otherwise
-    they default to -inf)
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. These are given in log
+            coordinates. So, if you want your axes to run from 1 to 100, you
+            should specify limits as (log(1), log(100)). Defaults to -1, 1.
+        angle (optional):
+            angle to rotate the axes (in radians).
+        zero_case (optional):
+            All the logs of 0 are replaced by zero_case if its specified,
+            (otherwise they default to -inf)
+
+    Returns:
+        x, y (matrices):
+            Matrices containing the x and y coordinates of the axes.
+
+    Example:
+        # return axes 12 elements square:
+        x, y = pu.image.axes_loglog_cart(size=12)
+
+        # return axes 12 by 16 elements, scaled from exp(-2) to exp(2):
+        x, y = pu.image.axes_loglog_cart(size=(12, 16), axes_limits=2)
 
     """
     axes_limits = np.exp(parse_axes_limits(axes_limits))
-    x, y = cart_axes(size, axes_limits)
+    x, y = axes_cart(size, axes_limits)
     return convert_to_log(x, zero_case), convert_to_log(y, zero_case)
 
 
-def semilogx_cart_axes(size, axes_limits=(0, 1, -1, 1),
+def axes_semilogx_cart(size, axes_limits=1,
                        angle=0, zero_case=None):
     """Return a cartesian log x and linear y axis
+    Check the documentation on parse_size and parse_axes_limits to see how size
+    and lims can be specified.
 
-    All the logs of 0 are replaced by zero_case if its specified, (otherwise
-    they default to -inf)
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. These are given in log
+            coordinates for the x. So, if you want your x axis to run from
+            1 to 100, you should specify limits as (log(1), log(100)).
+        angle (optional):
+            angle to rotate the axes (in radians).
+        zero_case (optional):
+            All the logs of 0 are replaced by zero_case if its specified,
+            (otherwise they default to -inf)
+
+    Returns:
+        x, y (matrices):
+            Matrices containing the x and y coordinates of the axes,
+            with x log-scaled.
 
     """
     axes_limits = parse_axes_limits(axes_limits)
     axes_limits = tuple(np.exp(axes_limits[0:2])) + axes_limits[2:4]
-    x, y = cart_axes(size, axes_limits, angle)
+    x, y = axes_cart(size, axes_limits, angle)
     return convert_to_log(x, zero_case), y
 
 
-def semilogy_cart_axes(size, axes_limits=(-1, 1, 0, 1),
+def axes_semilogy_cart(size, axes_limits=1,
                        angle=0, zero_case=None):
     """Return a cartesian linear x and log y axis
+    Check the documentation on parse_size and parse_axes_limits to see how size
+    and lims can be specified.
 
-    All the logs of 0 are replaced by zero_case if its specified, (otherwise
-    they default to -inf)
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. These are given in log
+            coordinates for the y. So, if you want your y axis to run from
+            1 to 100, you should specify limits as (log(1), log(100)).
+        angle (optional):
+            angle to rotate the axes (in radians).
+        zero_case (optional):
+            All the logs of 0 are replaced by zero_case if its specified,
+            (otherwise they default to -inf)
+
+    Returns:
+        x, y (matrices):
+            Matrices containing the x and y coordinates of the axes,
+            with y log-scaled.
 
     """
     axes_limits = parse_axes_limits(axes_limits)
     axes_limits = axes_limits[0:2] + tuple(np.exp(axes_limits[2:4]))
-    x, y = cart_axes(size, axes_limits, angle)
+    x, y = axes_cart(size, axes_limits, angle)
     return x, convert_to_log(y, zero_case)
 
 
-def logradial_polar_axes(size, axes_limits=1, angle=0, zero_case=None):
+def axes_logradial_polar(size, axes_limits=1, angle=0, zero_case=None):
     """Return a polar axes where the radial component has been logged
+    Check the documentation on parse_size and parse_axes_limits to see how size
+    and lims can be specified.
 
-    All the logs of 0 are replaced by zero_case if its specified, (otherwise
-    they default to -inf).
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively).
+        axes_limits (optional):
+            (min_x, max_x, min_y, max_y) of the grid. These are given in log
+            coordinates. So, if you want your axes to run from 1 to 100, you
+            should specify limits as (log(1), log(100)). Defaults to -1, 1.
+        angle (optional):
+            angle to rotate the axes (in radians).
+        zero_case (optional):
+            All the logs of 0 are replaced by zero_case if its specified,
+            (otherwise they default to -inf)
+
+    Returns:
+        r, a (matrices):
+            The r matrix is the log radial distance from the centre,
+            the a matrix is the angle (from -pi to pi, counterclockwise
+            from left (west)).
+
+    Example:
+        # return axes 12 elements square, with a rotation of 0.5*pi:
+        r, a = pu.image.axes_logradial_polar(size=12, angle=0.5*pi)
+
+        # return axes 12 by 16 elements, scaled from -10 to 10:
+        r, a = pu.image.axes_logradial_polar(size=(12, 16), axes_limits=10)
 
     """
-    r, a = polar_axes(size, axes_limits, angle)
+    # not sure what's going on here...
+    # axes_limits = parse_axes_limits(axes_limits)
+    # axes_limits = tuple(np.exp(axes_limits[0:2])) + axes_limits[2:4]
+    r, a = axes_polar(size, axes_limits, angle)
     return convert_to_log(r, zero_case), a
 
 
-def angular_distance_axes(size, axes_limits=1, angle=0):
+def axes_angular_distance(size, axes_limits=1, angle=0):
     """Return an angular distance axis"""
-    r, a = polar_axes(size, axes_limits, angle)
+    r, a = axes_polar(size, axes_limits, angle)
     return convert_to_angular_distance(a)
