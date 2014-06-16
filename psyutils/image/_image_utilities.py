@@ -180,10 +180,10 @@ def show_im(im):
 
     dims = guess_type(im)
     if dims is "I" or "IA":
-        plt.imshow(im, cmap=plt.cm.gray)
+        plt.imshow(im, cmap=plt.cm.gray, interpolation='nearest')
         #print("note that imshow normalises I image for display")
     elif dims is "RGB" or "RGBA":
-        plt.imshow(im, interpolation='none')
+        plt.imshow(im, interpolation='nearest')
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
