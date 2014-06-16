@@ -1,5 +1,5 @@
 import numpy as np
-from skimage import img_as_float
+from skimage import img_as_float, io, exposure, img_as_uint
 import matplotlib.pyplot as plt
 
 
@@ -192,6 +192,36 @@ def show_im(im):
           + " to max " + str(round(im.max(), ndigits=2)))
     print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
+
+
+def save_im(fname, im):
+    """ Takes a numpy array containing floating point numbers and
+    saves it to a high-precision .png file by converting it to
+    an unsigned integer in 16 bits.
+
+    This operation uses the freeimage library and is a wrapper
+    for skimage.io.imsave. Both of these things must be installed
+    correctly for save_im to work.
+
+    Args:
+        fname (string):
+            the filename to save the image to.
+        im (ndarray, float):
+            a numpy array (either 2D or 3D) to save.
+    """
+
+    im = img_as_float(im)
+    # check scale:
+    im = exposure.rescale_intensity(im, out_range='float')
+    # convert to 16 bit
+    im = img_as_uint(im)
+
+    # the freeimage plugin flips images l-r and u-d. Flip to
+    # save in same orientation as im:
+    im = np.fliplr(np.flipud(im))
+
+    io.use_plugin('freeimage')
+    io.imsave(fname, im)
 
 
 def put_rect_in_rect(rect_a, rect_b,
