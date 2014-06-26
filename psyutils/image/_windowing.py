@@ -3,16 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def cos_win_1d(im_x,
-               ramp=None,
-               padding=0):
-    """Create a vector of im_x ``im_x`` containing a 1D cosine window
+def cos_win_1d(size,
+               ramp=None):
+    """Create a vector of length ``size'' containing a 1D cosine window
     where the centre of the window is set to 1 and the ramps go down to
-    zero symmetrically on either side (with optional zero padding).
+    zero symmetrically on either side.
 
     This can be useful for e.g. adjusting the alpha channel of a stimulus
     over frames so that the stimulus is smoothly ramped on and off.
-    Since what's returned is a vector, ``im_x`` must be an integer
+    Since what's returned is a vector, ``size`` must be an integer
     or convertible to integer.
 
     This function will do some basic checking to see that your parameters
@@ -20,61 +19,50 @@ def cos_win_1d(im_x,
     they will be converted to floats.
 
     Args:
-        im_x (int):
-            the im_x of the window function to return.
+        size (int):
+            the size of the window function to return.
         ramp (int or float, optional):
-            the size of each ramp. Defaults to im_x / 6.
-        padding (int, optional):
-            the size of zero padding at the edges. Defaults to zero.
+            the length of each ramp, in pixels. Defaults to ceil(size / 6).
 
     Returns:
         window (float): a vector containing the windowing kernel,
         normalised 0--1.
 
     Example:
-        Create a vector of im_x 200 where the value is 1 for the central
-        100 samples, on and off ramps of im_x 45 and 5 samples of zero
-        padding at either end::
+        Create a vector of size 200 where the value is 1 for the central
+        110 samples with on and off ramps of size 45 at either end::
             import psyutils as pu
-            window = cos_win_1d(im_x = 200, ramp = 45, padding = 5)
+            window = cos_win_1d(size = 200, ramp = 45)
             pu.image.plot_win_1d(window)
 
 
     """
     # check parameters, set.
-    im_x = float(round(im_x))
+    size = float(round(size))
 
     if ramp is None:
-        ramp = im_x / 6.0
+        ramp = size / 6.0
     else:
         ramp = float(ramp)
 
-    padding = int(padding)
-
+    ramp = np.ceil(ramp)
     # do a check for params making sense:
-    tot = (ramp * 2.0) + (padding * 2.0)
+    tot = (ramp * 2.0)
 
-    if tot > im_x:
+    if tot > size:
         raise ValueError("Your ramping parameters add up to " + str(tot) +
                          " but you " +
-                         "asked for im_x " + str(im_x))
+                         "asked for size " + str(size))
 
-    y = np.ones((im_x))
+    y = np.ones((size))
 
     # create the ramps:
     up_ramp = np.sin(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
     down_ramp = np.cos(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
 
     # place into y:
-    if padding is not 0:
-        y[padding:(padding+ramp)] = up_ramp
-        y[-(ramp + padding):-padding] = down_ramp
-        y[0:padding] = 0
-        y[-padding:] = 0
-    else:
-        y[0:ramp] = up_ramp
-        y[-ramp:] = down_ramp
-
+    y[0:ramp] = up_ramp
+    y[-ramp:] = down_ramp
     return(y)
 
 
