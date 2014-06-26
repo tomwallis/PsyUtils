@@ -19,8 +19,7 @@ from ._axes import(unpack_container, parse_axes_limits, parse_size,
 from ._image_utilities import (guess_type, contrast_image, show_im, save_im,
                                put_rect_in_rect)
 
-from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win,
-                         plot_win_1d)
+from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
 
 from ._misc import (grid_distort, make_filtered_noise, filter_image)
 
@@ -49,7 +48,6 @@ __all__ = ['unpack_container',
            'gaussian_2d',
            'cos_win_2d',
            'wedge_win',
-           'plot_win_1d',
            'make_filter',
            'make_filtered_noise',
            'filter_image',

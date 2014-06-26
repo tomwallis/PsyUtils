@@ -270,12 +270,3 @@ def wedge_win(im_x,
     win = np.exp((-dtheta**2) / (2*bw**2))  # ang filter component
     return(win)
 
-
-def plot_win_1d(y):
-    """Helper function for visualising 1d windows
-
-    """
-    x = np.linspace(0, y.size, num=y.size)
-    line, = plt.plot(x, y, linewidth=2)
-
-    plt.show()
