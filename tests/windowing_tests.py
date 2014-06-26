@@ -15,7 +15,7 @@ test_data_dir = os.path.join(wd, 'tests', 'test_data')
 
 def test_cos_1d_1():
     true = np.load(file=os.path.join(test_data_dir, 'cos_1d_test.npy'))
-    test = pu.image.cos_win_1d(im_x=20, padding=2, ramp=5)
+    test = pu.image.cos_win_1d(size=20, ramp=5)
     assert np.allclose(test, true)
 
 
@@ -25,7 +25,13 @@ def test_gauss_2d():
     assert np.allclose(test, true)
 
 
-def test_cos_2d():
-    true = np.load(file=os.path.join(test_data_dir, 'cos_2d_test.npy'))
-    test = pu.image.cos_win_2d(im_x=64, ramp=12, padding=2)
+def test_cos_2d_1():
+    true = np.load(file=os.path.join(test_data_dir, 'cos_2d_test_1.npy'))
+    test = pu.image.cos_win_2d(size=64, ramp=0.2)
+    assert np.allclose(test, true)
+
+
+def test_cos_2d_2():
+    true = np.load(file=os.path.join(test_data_dir, 'cos_2d_test_2.npy'))
+    test = pu.image.cos_win_2d(size=16, ramp=4, ramp_type='pixels')
     assert np.allclose(test, true)
