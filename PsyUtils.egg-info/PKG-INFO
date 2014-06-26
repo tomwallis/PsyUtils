@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: PsyUtils
-Version: 0.1.0
+Version: 1.0.0
 Summary: Utility functions for psychophysical experiments and                 stimuli.
 Home-page: UNKNOWN
 Author: Thomas S. A. Wallis
@@ -16,7 +16,7 @@ Description: #Psy Utils
         filtered noise) and other stimulus-related functions.
         
         It is **NOT** an experimental display software package. It is intended
-        to compliment something like `PsychoPy <http://www.psychopy.org>`.
+        to compliment something like [PsychoPy](http://www.psychopy.org).
         
         ## Subpackages
         
@@ -28,9 +28,7 @@ Description: #Psy Utils
          * ``image``. The ``image`` subpackage includes functions for filtering
           images and creating filtered noise stimuli, and otherwise interacting
           with images.
-         * ``misc``. This is a miscellaneous subpackage for things like ramp
-          functions, e.g. creating 1D Gaussian or cosine windows for
-          ramping stimuli on and off.
+         * ``misc``. This is a miscellaneous subpackage.
         
         ## Example Use
         
@@ -55,15 +53,14 @@ Description: #Psy Utils
           * unit tests for windowing
           * documentation for filters
           * ipython notebook showing cool filtering demos
-          * fix cos_win_2d to go to zero by image border (currently 0.5).
           * consider moving rad_dist and meshgrid calculations into a common function.
             Must return multiple values (xx, yy, rad_dist).
+          * fix cos2d window: I'm using a fairly hacky method that produces strange shapes depending on settings. e.g. try pu.image.cos_win_2d(im_x=128, ramp=20, padding=15).
         
         ## Contributions
         
-        Thomas Wallis wrote these functions based on shared code used in Matlab
-        by Peter Bex's lab at the Schepens Eye Research Institute. I also
-        borrowed some stuff from the scikit-image package.
+        Thomas Wallis wrote these functions based somewhat on shared code used in Matlab by Peter Bex's lab at the Schepens Eye Research Institute. I also
+        borrowed some stuff from the scikit-image package. Function abstraction, pythonic niceness and other sweet programming improvements were implemented by David Janssen.
         
         ## Thanks To
         
