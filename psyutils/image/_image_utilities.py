@@ -198,7 +198,13 @@ def show_im(im):
 
 
 def save_im(fname, im):
-    """ Takes a numpy array containing floating point numbers and
+    """
+    UPDATE: DON'T USE THIS FUNCTION. Just here as a reference for
+    how to load freeimage plugin... Creates some weirdness depending
+    whether the input is a np.array or an 8-bit image... tom to
+    fix.
+
+    Takes a numpy array containing floating point numbers and
     saves it to a high-precision .png file by converting it to
     an unsigned integer in 16 bits.
 
@@ -221,7 +227,7 @@ def save_im(fname, im):
 
     # the freeimage plugin flips images l-r and u-d. Flip to
     # save in same orientation as im:
-    im = np.fliplr(np.flipud(im))
+    # im = np.fliplr(np.flipud(im))
 
     io.use_plugin('freeimage')
     io.imsave(fname, im)
