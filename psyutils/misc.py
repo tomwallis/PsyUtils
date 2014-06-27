@@ -10,6 +10,12 @@ def fixation_cross():
     microsaccade rate. You could rescale this to the appropriate size (outer
     ring should be 0.6 dva in diameter and inner ring 0.2 dva).
 
+    Example:
+        Our stimulus display has 40 pixels per degree of visual angle::
+        from skimage import transform
+        sz = round(40 * 0.6)
+        fixation_cross = transform.resize(pu.misc.fixation_cross(), (sz,sz))
+
     Reference:
         Thaler, L., Schütz, A. C., Goodale, M. A., & Gegenfurtner, K. R. (2013)
         What is the best fixation target? The effect of target shape on
