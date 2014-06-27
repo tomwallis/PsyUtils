@@ -187,11 +187,14 @@ def show_im(im):
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
+    print("image has data type " + str(im.dtype))
     print("image has dimensions " + str(im.shape))
     print("image has range from " + str(round(im.min(), ndigits=2))
           + " to max " + str(round(im.max(), ndigits=2)))
     print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
+    print("the rms contrast (SD / mean) is " +
+          str(round(im.std()/im.mean(), ndigits=2)))
 
 
 def save_im(fname, im):
