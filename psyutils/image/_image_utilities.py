@@ -284,3 +284,14 @@ def put_rect_in_rect(rect_a, rect_b,
     new_rect[y_start:y_end, x_start:x_end] = rect_a
 
     return(new_rect)
+
+
+def linear_rescale(im, new_max=1, new_min=-1):
+    """ Linearly rescale an image between the values
+    new_min and new_max
+
+    """
+
+    im_std = (im - im.min()) / (im.max() - im.min())
+    im_scaled = im_std * (new_max - new_min) + new_min
+    return(im_scaled)
