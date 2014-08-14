@@ -17,6 +17,7 @@ from ._axes import(unpack_container, parse_axes_limits, parse_size,
                    axes_logradial_polar, axes_angular_distance)
 
 from ._image_utilities import (guess_type, contrast_image, show_im, save_im,
+                               ia_2_rgba,
                                put_rect_in_rect, linear_rescale)
 
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
@@ -43,6 +44,7 @@ __all__ = ['unpack_container',
            'contrast_image',
            'show_im',
            'save_im',
+           'ia_2_rgba',
            'put_rect_in_rect',
            'linear_rescale',
            'cos_win_1d',

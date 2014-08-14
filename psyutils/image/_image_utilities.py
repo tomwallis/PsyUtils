@@ -1,5 +1,5 @@
 import numpy as np
-from skimage import img_as_float, io, exposure, img_as_uint
+from skimage import img_as_float, io, exposure, img_as_uint, color
 import matplotlib.pyplot as plt
 
 
@@ -179,9 +179,12 @@ def show_im(im):
     """
 
     dims = guess_type(im)
-    if dims is "I" or "IA":
+    if dims is "I":
         plt.imshow(im, cmap=plt.cm.gray, interpolation='nearest')
-        #print("note that imshow normalises I image for display")
+    elif dims is "IA":
+        # convert to rgba for display:
+        rgba = ia_2_rgba(im)
+        plt.imshow(rgba, interpolation='nearest')
     elif dims is "RGB" or "RGBA":
         plt.imshow(im, interpolation='nearest')
     else:
@@ -195,6 +198,26 @@ def show_im(im):
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
     print("the rms contrast (SD / mean) is " +
           str(round(im.std()/im.mean(), ndigits=2)))
+
+
+def ia_2_rgba(im):
+    """ Convert an MxNx2 image (interpreted as an intensity map plus alpha
+    level) to an RGBA image (MxNx4). The channels will be rescaled to the
+    range 0--1 and converted to float.
+
+    THIS FUNCTION IS QUICK AND DIRTY AND SHOULD ONLY BE USED TO DISPLAY
+    IMAGES, NOT SAVE THEM AT THIS STAGE.
+    """
+
+    rgba = np.ndarray((im.shape[0], im.shape[1], 4), dtype=np.float)
+    im = img_as_float(im.copy())
+    rgb = color.gray2rgb(im[..., 0])
+    rgba[..., :3] = rgb
+    rgba[..., 3] = im[..., 1]
+
+    rgba = exposure.rescale_intensity(rgba, out_range=(0, 1))
+
+    return(rgba)
 
 
 def save_im(fname, im):
