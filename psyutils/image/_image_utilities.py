@@ -1,5 +1,6 @@
 import numpy as np
 from skimage import img_as_float, io, exposure, img_as_uint, color
+from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt
 
 
@@ -161,7 +162,7 @@ def contrast_image(image, factor=1.0, sd=None,
     else:
         raise ValueError("Not sure what to do with image type " + im_type)
 
-    if returns is "intensity" or "contrast":
+    if returns is "intensity" or returns is "contrast":
         return image
     else:
         raise ValueError("Not sure what to return from " + returns)
@@ -185,7 +186,7 @@ def show_im(im):
         # convert to rgba for display:
         rgba = ia_2_rgba(im)
         plt.imshow(rgba, interpolation='nearest')
-    elif dims is "RGB" or "RGBA":
+    elif dims is "RGB" or dims is "RGBA":
         plt.imshow(im, interpolation='nearest')
     else:
         raise ValueError("Not sure what to do with image type " + dims)
