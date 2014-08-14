@@ -221,37 +221,49 @@ def ia_2_rgba(im):
     return(rgba)
 
 
-def save_im(fname, im):
+def save_im(fname, im, bitdepth=8):
     """
-    UPDATE: DON'T USE THIS FUNCTION. Just here as a reference for
-    how to load freeimage plugin... Creates some weirdness depending
-    whether the input is a np.array or an 8-bit image... tom to
-    fix.
+    Takes a numpy array, converts it to floating point, and
+    saves it to a .png file by converting it to
+    an unsigned integer. This is a wrapper for skimage.io.imsave,
+    and calls the freeimage library to allow saving with high
+    bit depth (8 or 16). Both scikit-image and Freeimage must be
+    installed for this to work. On OSX Freeimage can be installed
+    using homebrew.
 
-    Takes a numpy array containing floating point numbers and
-    saves it to a high-precision .png file by converting it to
-    an unsigned integer in 16 bits.
+    If the array passed is MxN, the resulting file (.png) will be
+    greyscale. If the file is MxNx3 it will be RGB, if MxNx4 it's
+    RGBA.
 
-    This operation uses the freeimage library and is a wrapper
-    for skimage.io.imsave. Both of these things must be installed
-    correctly for save_im to work.
 
     Args:
         fname (string):
             the filename to save the image to.
         im (ndarray, float):
             a numpy array (either 2D or 3D) to save.
+        bitdepth (int):
+            either 8 or 16.
     """
 
+    dims = guess_type(im)
+    print(dims)
     im = img_as_float(im)
     # check scale:
     im = exposure.rescale_intensity(im, out_range='float')
-    # convert to 16 bit
-    im = img_as_uint(im)
 
-    # the freeimage plugin flips images l-r and u-d. Flip to
-    # save in same orientation as im:
-    # im = np.fliplr(np.flipud(im))
+    if bitdepth is 8:
+        # convert to uint8:
+        im = img_as_ubyte(im)
+
+    elif bitdepth is 16:
+        # convert to 16 bit
+        im = img_as_uint(im)
+
+        # weirdly, freeimage flips images l-r and u-d
+        # but only if 16-bit and RGB or RGBA.
+        if dims == "RGB" or dims == "RGBA":
+            print(dims)
+            im = np.fliplr(np.flipud(im))
 
     io.use_plugin('freeimage')
     io.imsave(fname, im)
