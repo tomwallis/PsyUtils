@@ -286,12 +286,16 @@ def put_rect_in_rect(rect_a, rect_b,
     return(new_rect)
 
 
-def linear_rescale(im, new_max=1, new_min=-1):
+def linear_rescale(im, maxmin=(-1, 1)):
     """ Linearly rescale an image between the values
-    new_min and new_max
+    given by the tuple `maxmin`.
+
+    Note this is different to skimage's rescale intensity function,
+    which respects the contrast of the values. In contrast, this function
+    will stretch the range to maxmin[0], maxmin[1].
 
     """
 
     im_std = (im - im.min()) / (im.max() - im.min())
-    im_scaled = im_std * (new_max - new_min) + new_min
+    im_scaled = im_std * (maxmin[1] - maxmin[0]) + maxmin[0]
     return(im_scaled)
