@@ -1,6 +1,5 @@
 # Functions for windowing, including images.
 import numpy as np
-import matplotlib.pyplot as plt
 import psyutils as pu
 
 
@@ -285,4 +284,3 @@ def wedge_win(im_x,
     dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
     win = np.exp((-dtheta**2) / (2*bw**2))  # ang filter component
     return(win)
-
