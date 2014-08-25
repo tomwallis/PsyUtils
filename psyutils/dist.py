@@ -55,13 +55,13 @@ def highpass(peak, include_border=True):
 
     """
     if include_border:
-        return lambda x: _np.where(x <= peak, 1, 0)
+        return lambda x: _np.where(x <= peak, 0, 1)
     else:
-        return lambda x: _np.where(x < peak, 1, 0)
+        return lambda x: _np.where(x < peak, 0, 1)
 
 
 def lowpass(peak, include_border=True):
     if include_border:
-        return lambda x: _np.where(x <= peak, 0, 1)
+        return lambda x: _np.where(x <= peak, 1, 0)
     else:
-        return lambda x: _np.where(x < peak, 0, 1)
+        return lambda x: _np.where(x < peak, 1, 0)
