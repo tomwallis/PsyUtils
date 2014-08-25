@@ -6,6 +6,8 @@ import psyutils as pu
 from nose.tools import *
 import os
 
+test_data_dir = os.path.join('tests', 'test_data')
+
 ############# Testing guess_type ##############
 
 
@@ -148,6 +150,20 @@ def test_save_im_colour_16bit():
     pu.image.save_im(fname, im, bitdepth=16)
     im2 = io.imread(fname)
     assert im.all() == im2.all()
+
+
+######### Rect_in_Rect ########
+
+def test_rect_in_rect():
+    # load test case:
+    test = np.load(file=os.path.join(test_data_dir, 'rect_in_rect_test.npy'))
+
+    sloans = pu.im_data.sloan_letters()
+    rect_a = sloans["H"]
+    rect_b = np.ones((512, 512))
+    new_rect = pu.image.put_rect_in_rect(rect_a, rect_b, mid_x=129)
+
+    assert test.all() == new_rect.all()
 
 
 # See
