@@ -1,5 +1,4 @@
 import numpy as np
-from skimage import img_as_float, io, exposure, img_as_uint, color
 from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt
 
@@ -235,6 +234,8 @@ def save_im(fname, im, bitdepth=8):
     greyscale. If the file is MxNx3 it will be RGB, if MxNx4 it's
     RGBA.
 
+    Warning: old versions of scikit-image (pre 0.11.0) will mess up the
+    order of the colour planes and mirror flip images if bitdepth is 16.
 
     Args:
         fname (string):
@@ -245,8 +246,7 @@ def save_im(fname, im, bitdepth=8):
             either 8 or 16.
     """
 
-    dims = guess_type(im)
-    print(dims)
+    # dims = guess_type(im)
     im = img_as_float(im)
     # check scale:
     im = exposure.rescale_intensity(im, out_range='float')
@@ -259,11 +259,9 @@ def save_im(fname, im, bitdepth=8):
         # convert to 16 bit
         im = img_as_uint(im)
 
-        # weirdly, freeimage flips images l-r and u-d
-        # but only if 16-bit and RGB or RGBA.
-        if dims == "RGB" or dims == "RGBA":
-            print(dims)
-            im = np.fliplr(np.flipud(im))
+        # # to fix bug in current release of scikit-image (issue 1101; closed)
+        # if dims == "RGB" or dims == "RGBA":
+        #     im = np.fliplr(np.flipud(im))
 
     io.use_plugin('freeimage')
     io.imsave(fname, im)

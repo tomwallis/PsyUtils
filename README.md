@@ -46,11 +46,12 @@ testing under Python 3) from the command line in the project's parent directory.
   * unit tests for windowing
   * documentation for filters
   * ipython notebook showing cool filtering demos
+  * fix save_im function for both arrays and uint8.
 
 ## Contributions
 
 Thomas Wallis wrote these functions based somewhat on shared code used in Matlab by Peter Bex's lab at the Schepens Eye Research Institute. I also
-borrowed some stuff from the scikit-image package. Function abstraction, pythonic niceness and other sweet programming improvements were implemented by David Janssen.
+borrowed some stuff from the scikit-image package. Function abstraction, pythonic niceness and other sweet programming improvements were suggested by David Janssen.
 
 ## Thanks To
 
