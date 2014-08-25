@@ -10,3 +10,5 @@ psyutils.sublime-workspace
 .idea*
 
 tests/test_data/tmp.png
+
+tmp.png
