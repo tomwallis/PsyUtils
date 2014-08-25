@@ -8,3 +8,5 @@ psyutils.sublime-project
 psyutils.sublime-workspace
 
 .idea*
+
+tests/test_data/tmp.png

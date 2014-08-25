@@ -1,9 +1,10 @@
 # run unit tests on image utilities.
 
 import numpy as np
-from skimage import img_as_float
+from skimage import img_as_float, img_as_ubyte, img_as_uint, io
 import psyutils as pu
 from nose.tools import *
+import os
 
 ############# Testing guess_type ##############
 
@@ -109,6 +110,45 @@ def test_contrast_image_5():
         and max_range == 0.77 \
         and mean == 0.52 \
         and sd == 0.1
+
+
+############# Testing save_im ##############
+
+def test_save_im_greyscale_8bit():
+    im = np.random.uniform(size=(256, 256))
+    im = img_as_ubyte(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=8)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_greyscale_16bit():
+    im = np.random.uniform(size=(256, 256))
+    im = img_as_uint(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=16)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_colour_8bit():
+    im = np.random.uniform(size=(256, 256, 3))
+    im = img_as_ubyte(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=8)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_colour_16bit():
+    im = np.random.uniform(size=(256, 256, 3))
+    im = img_as_uint(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=16)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
 
 # See
 # http://docs.scipy.org/doc/numpy-dev/reference/generated

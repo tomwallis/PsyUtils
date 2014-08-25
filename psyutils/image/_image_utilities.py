@@ -222,7 +222,7 @@ def ia_2_rgba(im):
 
 def save_im(fname, im, bitdepth=8):
     """
-    Takes a numpy array, converts it to floating point, and
+    Takes a numpy array, converts it to either uint8 or uint16, and
     saves it to a .png file by converting it to
     an unsigned integer. This is a wrapper for skimage.io.imsave,
     and calls the freeimage library to allow saving with high
@@ -247,9 +247,9 @@ def save_im(fname, im, bitdepth=8):
     """
 
     # dims = guess_type(im)
-    im = img_as_float(im)
+    # im = img_as_float(im)
     # check scale:
-    im = exposure.rescale_intensity(im, out_range='float')
+    # im = exposure.rescale_intensity(im, out_range='float')
 
     if bitdepth is 8:
         # convert to uint8:
