@@ -12,3 +12,5 @@ psyutils.sublime-workspace
 tests/test_data/tmp.png
 
 tmp.png
+
+psyutils/example_calling_axes.py

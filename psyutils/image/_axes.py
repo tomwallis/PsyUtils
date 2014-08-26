@@ -400,3 +400,27 @@ def axes_angular_distance(size, axes_limits=1, angle=0):
     """
     r, a = axes_polar(size, axes_limits, angle)
     return convert_to_angular_distance(a)
+
+
+def axes_limits_in_pixels(size):
+    """A function to define axis limits as pixels, so that the
+    returned axis values will correspond to the size of the axes.
+    Useful for when you want to have functions with values defined in pixels
+    (e.g. filters with peaks defined in cycles per image).
+
+    Args:
+        size:
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively), or a scalar (in which case the result is square)
+    Returns:
+        (min_x, max_x, min_y, max_y) of the grid.
+
+    Example:
+
+    """
+    w, h = parse_size(size)
+    l = -w / 2.
+    r = w / 2.
+    t = -h / 2.
+    b = h / 2.
+    return(l, r, t, b)
