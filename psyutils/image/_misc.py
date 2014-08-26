@@ -145,5 +145,5 @@ def filter_image(im, filt):
     shifted_fft = ft.fftshift(ft.fft2(im))
     filt_im = np.real(ft.ifft2(ft.fftshift(shifted_fft * filt)))
     # scale with max abs value of 1:
-    filt_im = filt_im / abs(filt_im).max()
+    # filt_im = filt_im / abs(filt_im).max()
     return(filt_im)
