@@ -337,33 +337,38 @@ def linear_rescale(im, maxmin=(-1, 1)):
 
 def alpha_blend(fg, bg):
     """ Do alpha blending putting foreground `fg` in front of background
-    `bg`. Will be converted to floats.
+    `bg`. Will be converted to floats and rescaled to the range 0, 1 using
+    skimage's rescale intensity function, so should respect contrast.
 
     Input images are assumed to be images whose third dimension is
     4 (i.e. RGBA).
 
     """
 
-    # fg = img_as_float(fg)
-    # bg = img_as_float(bg)
+    fg = img_as_float(fg)
+    bg = img_as_float(bg)
 
-    # fg = exposure.rescale_intensity(fg, out_range=(0, 1))
-    # bg = exposure.rescale_intensity(bg, out_range=(0, 1))
+    fg = exposure.rescale_intensity(fg, out_range=(0, 1))
+    bg = exposure.rescale_intensity(bg, out_range=(0, 1))
 
-    fg = img_as_ubyte(fg)
-    bg = img_as_ubyte(bg)
+    # fg = img_as_ubyte(fg)
+    # bg = img_as_ubyte(bg)
 
-    fg_rgb = fg[..., :3].astype(np.float32) / 255.
-    fg_alpha = fg[..., 3].astype(np.float32) / 255.
-    bg_rgb = bg[..., :3].astype(np.float32) / 255.
-    bg_alpha = bg[..., 3].astype(np.float32) / 255.
+    fg_rgb = fg[..., :3]
+    fg_alpha = fg[..., 3]
+    bg_rgb = bg[..., :3]
+    bg_alpha = bg[..., 3]
 
     out_alpha = fg_alpha + bg_alpha * (1. - fg_alpha)
+
+    # # check for any zeros:
+    # out_alpha[out_alpha == 0] = 1e-12
+
     out_rgb = (fg_rgb * fg_alpha[..., None] +
                bg_rgb * (1. - fg_alpha[..., None])) / out_alpha[..., None]
 
     out = np.zeros_like(bg)
-    out[..., :3] = out_rgb * 255.
-    out[..., 3] = out_alpha * 255.
-    out.astype(np.uint8)
+    out[..., :3] = out_rgb
+    out[..., 3] = out_alpha
+    out = exposure.rescale_intensity(out, out_range=(0, 1))
     return(out)
