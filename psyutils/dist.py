@@ -12,7 +12,13 @@ from psyutils.image import convert_to_log as _convert_to_log
 
 
 def log_exponential(peak, width):
-    """Return a log-exponential function with a certain peak and width"""
+    """Return a log-exponential function with a certain peak and width.
+    Modified version of equation 1 in Bex (2010), (In) sensitivity to
+    spatial distortion in natural scenes. Journal of Vision.
+
+    width is defined as half-bandwith, in octaves.
+
+    """
     A = -1 / (_np.log(2)**2 * width**3)
     log_p = _np.log(peak)
     return lambda x: _np.exp(A * _np.abs(_convert_to_log(x) - log_p)**3)
