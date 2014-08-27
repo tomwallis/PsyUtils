@@ -41,12 +41,8 @@ testing under Python 3) from the command line in the project's parent directory.
 
 ## TODO
 
-  * integrate David's axis abstractions where it makes sense to do so.
-  * unit tests for filters
-  * unit tests for windowing
-  * documentation for filters
-  * ipython notebook showing cool filtering demos
-  * fix save_im function for both arrays and uint8.
+  * unit tests for filters, axes, windowing
+  * check documentation for filters
 
 ## Contributions
 
