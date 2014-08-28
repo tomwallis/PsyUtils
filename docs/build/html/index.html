@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to psyutils’ documentation! &mdash; psyutils 0.1.0 documentation</title>
+    <title>Welcome to Psyutils’s documentation! &mdash; Psyutils 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.1.0',
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="psyutils 0.1.0 documentation" href="#" /> 
+    <link rel="top" title="Psyutils 1.0.0 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -35,10 +33,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="#">psyutils 0.1.0 documentation</a> &raquo;</li> 
+        <li><a href="#">Psyutils 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,229 +42,47 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-psyutils-documentation">
-<h1>Welcome to psyutils&#8217; documentation!<a class="headerlink" href="#welcome-to-psyutils-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-psyutils-s-documentation">
+<h1>Welcome to Psyutils&#8217;s documentation!<a class="headerlink" href="#welcome-to-psyutils-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>The <tt class="docutils literal"><span class="pre">psyutils</span></tt> package is a collection of utility functions useful
-for generating visual stimuli and analysing the results of
-psychophysical experiments. It will eventually include modules
-for data munging, image processing (such as filtering images
-in the fourier domain, for example for creating
-filtered noise) and other stimulus-related functions.</p>
+for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.</p>
 <p>It is <strong>NOT</strong> an experimental display software package. It is intended
-to compliment something like <a class="reference external" href="http://www.psychopy.org">PsychoPy</a>.</p>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">data</span></tt>. The <tt class="docutils literal"><span class="pre">data</span></tt> subpackage includes functions for data munging,
-for example for formatting data usefully for import in <tt class="docutils literal"><span class="pre">pandas</span></tt>
-or to R.</li>
-<li><tt class="docutils literal"><span class="pre">im_data</span></tt>. The <tt class="docutils literal"><span class="pre">im_data</span></tt> subpackage includes images and data for
-testing purposes.</li>
-<li><tt class="docutils literal"><span class="pre">image</span></tt>. The <tt class="docutils literal"><span class="pre">image</span></tt> subpackage includes functions for filtering
-images and creating filtered noise stimuli, and otherwise interacting
-with images.</li>
-<li><tt class="docutils literal"><span class="pre">misc</span></tt>. This is a miscellaneous subpackage for things like ramp
-functions, e.g. creating 1D Gaussian or cosine windows for
-ramping stimuli on and off.</li>
+to compliment something like [PsychoPy](<a class="reference external" href="http://www.psychopy.org">http://www.psychopy.org</a>).</p>
+<p>It is intended only for internal use in Tom&#8217;s science at this stage. It is provided publicly to facilitate reproducibility of research. <em>Use these functions at your own risk.</em> The unit-testing is incomplete.</p>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">image</span></tt>. The <tt class="docutils literal"><span class="pre">image</span></tt> subpackage includes functions for filtering</li>
 </ul>
+<blockquote>
+<div>images and creating filtered noise stimuli, and otherwise interacting
+with images.</div></blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">dist</span></tt>: functions for creating probability distributions over axes. Currently just used to create filters.</li>
+<li><tt class="docutils literal"><span class="pre">im_data</span></tt>. The <tt class="docutils literal"><span class="pre">im_data</span></tt> subpackage includes images and data for</li>
+</ul>
+<blockquote>
+<div>testing purposes.</div></blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">misc</span></tt>. This is a miscellaneous subpackage.</li>
+</ul>
+</div></blockquote>
 <div class="toctree-wrapper compound">
 <ul class="simple">
 </ul>
-</div>
-<span class="target" id="module-im_data"></span><div class="section" id="im-data">
-<h3>im_data<a class="headerlink" href="#im-data" title="Permalink to this headline">¶</a></h3>
-<p>This submodule contains some images that we will use for demo
-and test purposes.</p>
-<p>Much of the code in here was adapted from skimage.data.__init__.py</p>
-<p>Tiger image Copyright flickr user Phalinn Ooi, released under a
-CC by 2.0 license.
-This image can be freely shared and adapted.
-License: <a class="reference external" href="https://creativecommons.org/licenses/by/2.0/legalcode">https://creativecommons.org/licenses/by/2.0/legalcode</a></p>
-<hr class="docutils" />
-<dl class="function">
-<dt id="im_data.tiger">
-<tt class="descclassname">im_data.</tt><tt class="descname">tiger</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/im_data.html#tiger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#im_data.tiger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the Tiger image (RGB file).</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>none</dd>
-<dt>Returns:</dt>
-<dd>img : ndarray</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="im_data.tiger_rgba">
-<tt class="descclassname">im_data.</tt><tt class="descname">tiger_rgba</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/im_data.html#tiger_rgba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#im_data.tiger_rgba" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the tiger image with alpha channel (RGBA file).</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>none</dd>
-<dt>Returns:</dt>
-<dd>img : ndarray</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="im_data.tiger_square">
-<tt class="descclassname">im_data.</tt><tt class="descname">tiger_square</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/im_data.html#tiger_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#im_data.tiger_square" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load square version of tiger image (RGB), 256 by 256 by 3.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>none</dd>
-<dt>Returns:</dt>
-<dd>img : ndarray</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="im_data.tiger_grey">
-<tt class="descclassname">im_data.</tt><tt class="descname">tiger_grey</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/im_data.html#tiger_grey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#im_data.tiger_grey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Grey, square tiger image (I), 256 by 256.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>none</dd>
-<dt>Returns:</dt>
-<dd>img : ndarray</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="im_data.sloan_letters">
-<tt class="descclassname">im_data.</tt><tt class="descname">sloan_letters</tt><big>(</big><big>)</big><a class="headerlink" href="#im_data.sloan_letters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the ten sloan letters as numpy arrays in a dictionary.
-The sloan letters consist of 10 letter characters:
-C, D, H, K, N, O, R, S, V, Z. Each are 256 by 256 pixels.
-The dict can be accessed like this:
-sloans[&#8220;C&#8221;] will return the np.ndarray containing the letter C.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>none</dd>
-<dt>Returns:</dt>
-<dd>letters (dict): a dictionary whose keys are strings corresponding
-to the letter ID, and whose entries are numpy ndarrays corresponding
-to the sloan letter. The ndarrays are stored as floating point values
-saved by the skimage img_as_float function (bounded 0&#8211;1).</dd>
-</dl>
-</dd></dl>
-
-</div>
-<span class="target" id="module-image"></span><div class="section" id="image-submodule">
-<h3>Image submodule<a class="headerlink" href="#image-submodule" title="Permalink to this headline">¶</a></h3>
-<p>This submodule contains functions for working with images and creating stimuli
-for psychophysical experiments.</p>
-<hr class="docutils" />
-<dl class="function">
-<dt id="image.guess_type">
-<tt class="descclassname">image.</tt><tt class="descname">guess_type</tt><big>(</big><em>image</em><big>)</big><a class="headerlink" href="#image.guess_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make an educated guess about an image&#8217;s dimensions and what they mean.
-Modified from skimage.color.guess_spatial_dimensions.</p>
-<p>If the image has two dimensions, it is assumed to contain intensity values
-(i.e. be a greyscale image).
-If the image has three dimensions and the third is length 3, it is assumed
-to be an RGB or similar tri-colour image
-(third dimension indexes colour channel).
-If the image is 3D with the third dimension length 2, it is assumed to be
-an IA image
-(I = intensity, A = alpha (transparency)).
-If the image is 3D with the third dimension length 4, it is assumed to be
-an RGBA image.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>image: ndarray</dt>
-<dd>The input image.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>assumption (string): how to treat the image in the future.</dt>
-<dd>Returns a string telling future scripts how to treat the image for
-filtering. Can be:
-&#8220;I&#8221; (intensity), &#8220;IA&#8221; (intensity, alpha),
-&#8220;RGB&#8221;, &#8220;RGBA&#8221; (rgb, alpha).</dd>
-</dl>
-</dd>
-<dt>Raises:</dt>
-<dd>ValueError: If the image array has less than two or more than
-three dimensions.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="image.contrast_image">
-<tt class="descclassname">image.</tt><tt class="descname">contrast_image</tt><big>(</big><em>image</em>, <em>factor=1.0</em>, <em>sd=None</em>, <em>returns='intensity'</em>, <em>img_dims=None</em>, <em>verbose=False</em><big>)</big><a class="headerlink" href="#image.contrast_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes an input image, applies a transform to each colour channel,
-then returns either the image in intensity units or in
-zero-mean (contrast) units. The latter can be useful if you intend to
-multiply the image by any filters in the non-fourier domain.</p>
-<p>The transform can either be a multiplicative change (specified by
-factor) or the user can specify the <cite>sd</cite> argument, in which case each
-colour channel will have this standard deviation. If <cite>sd</cite> is specified
-then <cite>factor</cite> is ignored.</p>
-<p>Note: the image will be converted to float, if it wasn&#8217;t already,
-and a copy will be created (i.e. this function doesn&#8217;t overwrite
-the original image you pass in).</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first docutils">
-<dt>image: ndarray</dt>
-<dd>The input image.</dd>
-<dt>factor (float, optional): the contrast scale factor.</dt>
-<dd>A multiplicative contrast change factor. Values less
-than one will reduce global contrast, values greater
-than one will increase global contrast.</dd>
-<dt>sd (float, optional): the desired standard deviation.</dt>
-<dd>Each colour channel will be set to have this sd. Note
-this means that relative differences between colour
-channels in the original image will be moved, meaning
-that the colour gamut will not be the same. If
-<cite>sd</cite> is specified <cite>factor</cite> is ignored.</dd>
-<dt>returns (string, optional): which image to return.</dt>
-<dd>If &#8220;intensity&#8221; (the default), the image is returned
-in intensity units (the original scale) after contrast scaling.
-If returns = &#8220;contrast&#8221;, the array returned has mean zero
-in each colour channel.</dd>
-<dt>img_dims (string, optional): specify image type.</dt>
-<dd>If &#8220;None&#8221;, check image dimensions with guess_type. Otherwise,
-specify either &#8220;I&#8221;, &#8220;IA&#8221;, &#8220;RGB&#8221;, &#8220;RGBA&#8221;.
-See guess_type? for more details.</dd>
-</dl>
-<p class="last">verbose (bool, optional): If True, print additional information.</p>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>image: ndarray</dt>
-<dd>the modified image. Either zero mean (if &#8220;returns&#8221; == &#8220;contrast&#8221;)
-or with the original mean. Returned as floating point array.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="image.show_im">
-<tt class="descclassname">image.</tt><tt class="descname">show_im</tt><big>(</big><em>im</em><big>)</big><a class="headerlink" href="#image.show_im" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function to show an image (using imshow)
-and report some stats about it.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>image: ndarray</dt>
-<dd>The input image.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 </div>
 <div class="section" id="example-use">
 <h2>Example Use<a class="headerlink" href="#example-use" title="Permalink to this headline">¶</a></h2>
 <p>You could do things like this:</p>
-<div class="highlight-python"><pre>from psyutils import image
-
-blah blah</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">psyutils</span> <span class="kn">as</span> <span class="nn">pu</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+<span class="n">filt</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">make_filter_lowpass</span><span class="p">(</span><span class="n">im_size</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">im2</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">filter_image</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">filt</span><span class="p">)</span>
+<span class="n">pu</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">show_im</span><span class="p">(</span><span class="n">im2</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="dependencies">
@@ -278,14 +91,16 @@ blah blah</pre>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>You can run unit tests by typing <cite>nosetests -v</cite> from the command line
-in the project&#8217;s parent directory.</p>
+<p>You can run unit tests by typing <cite>nosetests -v</cite> (or <cite>nosetests-3.x</cite> for
+testing under Python 3) from the command line in the project&#8217;s parent directory.</p>
 </div>
 <div class="section" id="contributions">
 <h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h2>
-<p>Thomas Wallis wrote these functions based on shared code used in Matlab
-by Peter Bex&#8217;s lab at the Schepens Eye Research Institute. I also
-borrowed some stuff from the scikit-image package.</p>
+<p>Thomas Wallis wrote these functions based somewhat on shared code used in
+Matlab by Peter Bex&#8217;s lab at the Schepens Eye Research Institute. I also
+borrowed some stuff from the scikit-image package. Function abstraction,
+pythonic niceness and other sweet programming improvements were suggested
+by David Janssen.</p>
 </div>
 <div class="section" id="thanks-to">
 <h2>Thanks To<a class="headerlink" href="#thanks-to" title="Permalink to this headline">¶</a></h2>
@@ -311,12 +126,8 @@ and suggestions.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to psyutils&#8217; documentation!</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a><ul>
-<li><a class="reference internal" href="#im-data">im_data</a></li>
-<li><a class="reference internal" href="#image-submodule">Image submodule</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Welcome to Psyutils&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#example-use">Example Use</a></li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
@@ -355,15 +166,12 @@ and suggestions.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="#">psyutils 0.1.0 documentation</a> &raquo;</li> 
+        <li><a href="#">Psyutils 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2014, Thomas S. A. Wallis.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
