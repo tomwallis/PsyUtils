@@ -147,3 +147,44 @@ def filter_image(im, filt):
     # scale with max abs value of 1:
     # filt_im = filt_im / abs(filt_im).max()
     return(filt_im)
+
+
+def diff_ims_error(im1, im2, p=2, per_pixel=True):
+    """Compute the difference between two images (2D), according
+    to the following general equation:
+
+    $\left( \sum_{x,y} \lvert X_{x,y} - Y_{x,y} \rvert ^p \right)^\frac{1}{p}$
+
+    where X and Y are the matrices of each image. That is, take the absolute
+    value of the difference between two images, raise to p, sum, raise to 1/p.
+
+    If per_pixel=True, the resulting value is then divided by the number of
+    elements in the images, giving a measure per pixel (i.e. so images of
+    different size could be compared).
+
+    Args:
+        im1 and im2:
+            2D numpy arrays corresponding to the images.
+
+        p:
+            the exponent.
+            If p=1, the returned value is the mean absolute difference (MAD).
+            p=2 gives the root-mean-squared-error (RMSE).
+            p=3 gives cube root error... and so on.
+
+        per_pixel (boolean):
+            if True, divide the resulting value by the number of pixels to give
+            the normalised difference.
+
+    Returns:
+        difference between images, a scalar.
+    """
+
+    r = np.abs(im1 - im2)**p
+    res = r.sum()
+    res = res**(1/p)
+
+    if per_pixel is True:
+        res = res / r.size
+
+    return(res)
