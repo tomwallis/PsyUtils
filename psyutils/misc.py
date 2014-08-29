@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as _np
+import os as _os
 
 
 def fixation_cross():
@@ -39,3 +40,51 @@ def fixation_cross():
     im[outer_rad-inner_rad:outer_rad+inner_rad,
        outer_rad-inner_rad:outer_rad+inner_rad] = _draw_oval(inner_rad)
     return(im)
+
+
+def create_project_folder(project_name, path=None):
+    """ Create a new project folder in the current working directory containing
+    all subfolders.
+
+    Args:
+        project_name (string):
+            the name for the project.
+        path (string, optional):
+            an optional path name for the directory containing the project.
+            If not provided, project folder will be created in the current
+            working directory.
+
+    Example:
+        Make a directory for the project "awesome-science" in /home/usr/::
+        create_project_folder('awesome-science', path='/home/usr/')
+
+    """
+
+    if path is None:
+        root_dir = _os.getcwd()
+    else:
+        root_dir = path
+
+    # check if project directory exists, create it (taken from
+    # https://stackoverflow.com/questions/273192/
+    # check-if-a-directory-exists-and-create-it-if-necessary)
+    def ensure_dir(d):
+        if not _os.path.exists(d):
+            _os.makedirs(d)
+
+    top_dir = _os.path.join(root_dir, project_name)
+    ensure_dir(top_dir)
+
+    # code subdirectories:
+    ensure_dir(_os.path.join(top_dir, 'code', 'analysis'))
+    ensure_dir(_os.path.join(top_dir, 'code', 'experiment'))
+    ensure_dir(_os.path.join(top_dir, 'code', 'stimuli'))
+    ensure_dir(_os.path.join(top_dir, 'code', 'unit-tests'))
+
+    # other subdirectories:
+    ensure_dir(_os.path.join(top_dir, 'documentation'))
+    ensure_dir(_os.path.join(top_dir, 'figures'))
+    ensure_dir(_os.path.join(top_dir, 'notebooks'))
+    ensure_dir(_os.path.join(top_dir, 'publications'))
+    ensure_dir(_os.path.join(top_dir, 'raw-data'))
+    ensure_dir(_os.path.join(top_dir, 'results'))
