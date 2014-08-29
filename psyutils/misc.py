@@ -3,6 +3,7 @@
 
 import numpy as _np
 import os as _os
+import psyutils as _pu
 
 
 def fixation_cross():
@@ -40,6 +41,48 @@ def fixation_cross():
     im[outer_rad-inner_rad:outer_rad+inner_rad,
        outer_rad-inner_rad:outer_rad+inner_rad] = _draw_oval(inner_rad)
     return(im)
+
+
+def draw_box(size, channel='r', width=4):
+    """Make a box of a given size that can be placed into images to highlight
+    a  region of interest. The middle of the box is transparent (i.e. alpha 0)
+    to show what's in the region of interest.
+
+    Args:
+        size (tuple or scalar):
+            the size of the box in pixels; either square if a scalar is passed
+            or (w, h) from tuple.
+        channel (string):
+            specify box colour according to colour channel ('r', 'g', 'b')
+        width (int):
+            width of box lines in pixels.
+
+    Returns:
+        a numpy array with shape [size, size, 4].
+    """
+
+    if channel == 'r':
+        chan = 0
+    elif channel == 'g':
+        chan = 1
+    elif channel == 'b':
+        chan = 2
+    else:
+        raise ValueError("don't know what colour channel to use")
+
+    w, h = _pu.image.parse_size(size)
+    box = _np.zeros((h, w, 4))
+    box[0:h, 0:width, chan] = 1.
+    box[0:h, -width:, chan] = 1.
+    box[0:width, 0:w, chan] = 1.
+    box[-width:, 0:w, chan] = 1.
+
+    box[0:h, 0:width, 3] = 1.
+    box[0:h, -width:, 3] = 1.
+    box[0:width, 0:w, 3] = 1.
+    box[-width:, 0:w, 3] = 1.
+
+    return(box)
 
 
 def create_project_folder(project_name, path=None):
