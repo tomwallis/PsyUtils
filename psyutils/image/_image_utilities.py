@@ -356,8 +356,8 @@ def cutout_patch(im, size,
 
     w, h = pu.image.parse_size(size)
 
-    x_start = mid_x - (w / 2) - 1
-    y_start = mid_y - (h / 2) - 1
+    x_start = mid_x - (w / 2)
+    y_start = mid_y - (h / 2)
     x_end = x_start + w
     y_end = y_start + h
 
@@ -372,7 +372,6 @@ def cutout_patch(im, size,
 
     res = im[y_start:y_end, x_start:x_end]
     return(res)
-
 
 
 def linear_rescale(im, maxmin=(-1, 1)):
