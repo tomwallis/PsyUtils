@@ -1,6 +1,7 @@
 import numpy as np
 from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt
+import psyutils as pu
 
 
 def guess_type(image):
@@ -318,6 +319,60 @@ def put_rect_in_rect(rect_a, rect_b,
     new_rect[y_start:y_end, x_start:x_end] = rect_a
 
     return(new_rect)
+
+
+def cutout_patch(im, size,
+                 mid_x=None, mid_y=None):
+    """A function to cut a patch out of the np.ndarray `im`. Currently
+    only for 2D arrays.
+
+    Returns a rectangle specified by `size`, centred on the points
+    `mid_x` and `mid_y` in the image `im`.
+
+    Args:
+        im (np.ndarray):
+            the larger rectangle from which to remove a patch.
+        size (int or tuple of ints):
+            the size of the rectangle in w, h. If a scalar is provided cutout
+            is square.
+        mid_x (int, optional):
+            the horizontal position to place the centre of rect_a in rect_b.
+            Defaults to the middle of rect_b.
+        mid_y (int, optional):
+            the vertical position to place the centre of rect_a in rect_b.
+            Defaults to the middle of rect_b.
+
+    Returns:
+        np.ndarray containing the cutout.
+
+    """
+
+    im = im.copy()
+
+    if mid_x is None:
+        mid_x = int(im.shape[1] / 2)
+    if mid_y is None:
+        mid_y = int(im.shape[0] / 2)
+
+    w, h = pu.image.parse_size(size)
+
+    x_start = mid_x - (w / 2) - 1
+    y_start = mid_y - (h / 2) - 1
+    x_end = x_start + w
+    y_end = y_start + h
+
+    if x_start < 0 or y_start < 0:
+        raise ValueError("Rect_a falls outside rect_b! " +
+                         "x_start is " + str(x_start) +
+                         " , y_start is " + str(y_start))
+    if x_end > im.shape[1] or y_end > im.shape[0]:
+        raise ValueError("Rect_a falls outside rect_b!" +
+                         "x_end is " + str(x_end) +
+                         " , y_end is " + str(y_end))
+
+    res = im[y_start:y_end, x_start:x_end]
+    return(res)
+
 
 
 def linear_rescale(im, maxmin=(-1, 1)):

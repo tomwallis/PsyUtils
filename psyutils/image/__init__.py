@@ -18,7 +18,8 @@ from ._axes import(unpack_container, parse_axes_limits, parse_size,
                    axes_limits_in_pixels)
 
 from ._image_utilities import (guess_type, contrast_image, show_im, save_im,
-                               ia_2_rgba, put_rect_in_rect, linear_rescale,
+                               ia_2_rgba, put_rect_in_rect, cutout_patch,
+                               linear_rescale,
                                alpha_blend)
 
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
@@ -59,6 +60,7 @@ __all__ = ['unpack_container',
            'save_im',
            'ia_2_rgba',
            'put_rect_in_rect',
+           'cutout_patch',
            'linear_rescale',
            'alpha_blend',
            'make_filter_generic',
