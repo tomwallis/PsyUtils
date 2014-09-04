@@ -268,8 +268,7 @@ def save_im(fname, im, bitdepth=8):
     io.imsave(fname, im)
 
 
-def put_rect_in_rect(rect_a, rect_b,
-                     mid_x=None, mid_y=None):
+def put_rect_in_rect(rect_a, rect_b, midpoints=None):
     """A function to place rect_a inside rect_b.
 
     This function will place np.ndarray `a` into np.ndarray
@@ -280,13 +279,12 @@ def put_rect_in_rect(rect_a, rect_b,
             the source rectangle.
         rect_b (np.ndarray):
             the destination rectangle.
-        mid_x (int, optional):
-            the horizontal position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
-        mid_y (int, optional):
-            the vertical position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
-
+        midpoints (tuple or int, optional):
+            where to place the centre of rect_a in rect_b. Defaults to the
+            middle of rect_b. If a scalar is given, the mid_x and mid_y points
+            will be the same. If a tuple is given, the first element is the
+            horizontal middle, the second element is the vertical middle (i.e.
+            mid_x and mid_y).
     Returns:
         np.ndarray containing the new rectangle.
 
@@ -294,16 +292,17 @@ def put_rect_in_rect(rect_a, rect_b,
 
     new_rect = rect_b.copy()
 
-    if mid_x is None:
-        mid_x = int(rect_b.shape[1] / 2)
-    if mid_y is None:
-        mid_y = int(rect_b.shape[0] / 2)
+    if midpoints is None:
+        mid_x = rect_b.shape[1] / 2
+        mid_y = rect_b.shape[0] / 2
+    else:
+        mid_x, mid_y = pu.image.parse_size(midpoints)
 
-    rect_a_rad_x = int(rect_a.shape[1]/2)
-    rect_a_rad_y = int(rect_a.shape[0]/2)
+    rect_a_rad_x = rect_a.shape[1] / 2
+    rect_a_rad_y = rect_a.shape[0] / 2
 
-    x_start = mid_x - rect_a_rad_x - 1
-    y_start = mid_y - rect_a_rad_y - 1
+    x_start = mid_x - rect_a_rad_x
+    y_start = mid_y - rect_a_rad_y
     x_end = x_start + rect_a.shape[1]
     y_end = y_start + rect_a.shape[0]
 
@@ -316,7 +315,7 @@ def put_rect_in_rect(rect_a, rect_b,
                          "x_end is " + str(x_end) +
                          " , y_end is " + str(y_end))
 
-    new_rect[y_start:y_end, x_start:x_end] = rect_a
+    new_rect[int(y_start):int(y_end), int(x_start):int(x_end)] = rect_a
 
     return(new_rect)
 

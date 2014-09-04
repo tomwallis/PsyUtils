@@ -154,16 +154,65 @@ def test_save_im_colour_16bit():
 
 ######### Rect_in_Rect ########
 
-def test_rect_in_rect():
-    # load test case:
-    test = np.load(file=os.path.join(test_data_dir, 'rect_in_rect_test.npy'))
+def test_rect_in_rect_1():
+    rect_a = np.array([[0.]])
+    rect_b = np.array([[1., 1.],
+                       [1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 1.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
 
-    sloans = pu.im_data.sloan_letters()
-    rect_a = sloans["H"]
-    rect_b = np.ones((512, 512))
-    new_rect = pu.image.put_rect_in_rect(rect_a, rect_b, mid_x=129)
 
-    assert test.all() == new_rect.all()
+def test_rect_in_rect_2():
+    rect_a = np.array([[0.]])
+    rect_b = np.array([[1., 1., 1.],
+                       [1., 1., 1.],
+                       [1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1.],
+                        [1., 0., 1.],
+                        [1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_3():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1.],
+                       [1., 1., 1.],
+                       [1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 0., 1.],
+                        [0., 0., 1.],
+                        [1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_4():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 0., 0., 1.],
+                        [1., 0., 0., 1.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_5():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1.],
+                       [1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 0.],
+                        [0., 0.]])
+    np.testing.assert_allclose(res, desired)
 
 
 # See
