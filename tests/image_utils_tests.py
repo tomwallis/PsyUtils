@@ -218,3 +218,46 @@ def test_rect_in_rect_5():
 # See
 # http://docs.scipy.org/doc/numpy-dev/reference/generated
 # /numpy.testing.assert_allclose.html#numpy.testing.assert_allclose
+def test_rect_in_rect_6():
+    rect_a = np.array([[0., 0., 0.],
+                       [0., 0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1., 1.],
+                        [0., 0., 0., 1.],
+                        [0., 0., 0., 1.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_7():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b, midpoints=3)
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 1., 1., 1.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 0., 0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_8():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b, midpoints=(3, 2))
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
