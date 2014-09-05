@@ -215,9 +215,6 @@ def test_rect_in_rect_5():
     np.testing.assert_allclose(res, desired)
 
 
-# See
-# http://docs.scipy.org/doc/numpy-dev/reference/generated
-# /numpy.testing.assert_allclose.html#numpy.testing.assert_allclose
 def test_rect_in_rect_6():
     rect_a = np.array([[0., 0., 0.],
                        [0., 0., 0.]])
@@ -260,4 +257,85 @@ def test_rect_in_rect_8():
                         [1., 1., 0., 0.],
                         [1., 1., 0., 0.],
                         [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+######### cutout_patch ########
+
+
+def test_cutout_patch_1():
+    im = np.array([[0., 1.],
+                   [1., 1.]])
+    res = pu.image.cutout_patch(im, 1)
+    desired = np.array([[0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_2():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, 2)
+    desired = np.array([[1., 0.],
+                        [1., 0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_3():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 4))
+    desired = np.array([[1., 1.],
+                        [1., 0.],
+                        [1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_4():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 4), midpoints=2)
+    desired = np.array([[1., 1.],
+                        [1., 0.],
+                        [1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_5():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=3)
+    desired = np.array([[0., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_6():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=(2, 3))
+    desired = np.array([[1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_7():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=(3, 2))
+    desired = np.array([[0., 0.],
+                        [0., 0.]])
     np.testing.assert_allclose(res, desired)

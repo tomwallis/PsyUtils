@@ -320,8 +320,7 @@ def put_rect_in_rect(rect_a, rect_b, midpoints=None):
     return(new_rect)
 
 
-def cutout_patch(im, size,
-                 mid_x=None, mid_y=None):
+def cutout_patch(im, size, midpoints=None):
     """A function to cut a patch out of the np.ndarray `im`. Currently
     only for 2D arrays.
 
@@ -334,12 +333,12 @@ def cutout_patch(im, size,
         size (int or tuple of ints):
             the size of the rectangle in w, h. If a scalar is provided cutout
             is square.
-        mid_x (int, optional):
-            the horizontal position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
-        mid_y (int, optional):
-            the vertical position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
+        midpoints (tuple or int, optional):
+            where to place the centre of rect_a in rect_b. Defaults to the
+            middle of rect_b. If a scalar is given, the mid_x and mid_y points
+            will be the same. If a tuple is given, the first element is the
+            horizontal middle, the second element is the vertical middle (i.e.
+            mid_x and mid_y).
 
     Returns:
         np.ndarray containing the cutout.
@@ -348,10 +347,11 @@ def cutout_patch(im, size,
 
     im = im.copy()
 
-    if mid_x is None:
-        mid_x = int(im.shape[1] / 2)
-    if mid_y is None:
-        mid_y = int(im.shape[0] / 2)
+    if midpoints is None:
+        mid_x = im.shape[1] / 2
+        mid_y = im.shape[0] / 2
+    else:
+        mid_x, mid_y = pu.image.parse_size(midpoints)
 
     w, h = pu.image.parse_size(size)
 
@@ -369,7 +369,7 @@ def cutout_patch(im, size,
                          "x_end is " + str(x_end) +
                          " , y_end is " + str(y_end))
 
-    res = im[y_start:y_end, x_start:x_end]
+    res = im[int(y_start):int(y_end), int(x_start):int(x_end)]
     return(res)
 
 
