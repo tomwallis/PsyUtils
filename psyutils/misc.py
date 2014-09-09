@@ -85,6 +85,57 @@ def draw_box(size, channel='r', width=4):
     return(box)
 
 
+def pix_per_deg(viewing_distance, screen_wh_px, screen_wh_cm,
+                average_wh=True):
+    """Return the number of pixels per degree of visual angle for a given
+    viewing distance of a screen of some resolution and size.
+
+    Note: this assumes a constant viewing distance, so there will be an error
+    that increases with eccentricity. For example, at a viewing distance of
+    60 cm, something 30 degrees eccentric will be at a distance of 69 cm
+    (60 / np.cos(30 * np.pi / 180)), if presented on a flat screen. At that
+    viewing distance, the number of pixels per degree will be higher (46
+    compared to 40 for the example monitor below) --- i.e. about a 13
+    percent size error at 30 degrees.
+
+    Args:
+        viewing_distance (float):
+            the viewing distance of the screen (screen to subject's eye) in cm.
+        screen_wh_px (tuple):
+            the width and height of the screen in pixels.
+        screen_wh_cm (tuple):
+            the width and height of the screen in cm.
+        average_wh (boolean, default True):
+            if true, computes pix per deg based on the average of the
+            width and height.
+            If false, returns a tuple (width, height).
+
+    Returns:
+        float: the number of pixels per degree of visual angle, assuming a
+        constant distance.
+        or if average_wh=False, a 2 element numpy array.
+
+    Example::
+        dist = 60
+        px = (1920, 1080)
+        cm = (52, 29)
+        pu.misc.pix_per_deg(60, (1920, 1080), (52, 29))
+        # gives 40.36 pixels per degree.
+    """
+
+    wh_px = _np.array(screen_wh_px)
+    wh_cm = _np.array(screen_wh_cm)
+
+    ppd = _np.pi * (wh_px) / _np.arctan(wh_cm / viewing_distance / 2.) / 360.
+
+    if average_wh is True:
+        res = ppd.mean()
+    elif average_wh is False:
+        res = ppd
+
+    return(res)
+
+
 def create_project_folder(project_name, path=None):
     """ Create a new project folder in the current working directory containing
     all subfolders.
