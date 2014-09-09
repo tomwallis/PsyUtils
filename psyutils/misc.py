@@ -185,6 +185,7 @@ def create_project_folder(project_name, path=None, gitignore=True):
     ensure_dir(_os.path.join(top_dir, 'publications'))
     ensure_dir(_os.path.join(top_dir, 'raw-data'))
     ensure_dir(_os.path.join(top_dir, 'results'))
+    ensure_dir(_os.path.join(top_dir, 'stimuli'))
 
     if gitignore is True:
         create_gitignore(top_dir)
