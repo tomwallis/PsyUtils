@@ -136,7 +136,7 @@ def pix_per_deg(viewing_distance, screen_wh_px, screen_wh_cm,
     return(res)
 
 
-def create_project_folder(project_name, path=None):
+def create_project_folder(project_name, path=None, gitignore=True):
     """ Create a new project folder in the current working directory containing
     all subfolders.
 
@@ -147,6 +147,9 @@ def create_project_folder(project_name, path=None):
             an optional path name for the directory containing the project.
             If not provided, project folder will be created in the current
             working directory.
+        gitignore (boolean, defaults True):
+            if True, create a .gitignore file with common options of files to
+            ignore for the git version control system.
 
     Example:
         Make a directory for the project "awesome-science" in /home/usr/::
@@ -182,3 +185,55 @@ def create_project_folder(project_name, path=None):
     ensure_dir(_os.path.join(top_dir, 'publications'))
     ensure_dir(_os.path.join(top_dir, 'raw-data'))
     ensure_dir(_os.path.join(top_dir, 'results'))
+
+    if gitignore is True:
+        create_gitignore(top_dir)
+
+
+def create_gitignore(path=None):
+    """Creates a `.gitignore` file with common options in the current working
+    directory, or in `path`.
+
+    Args:
+    path (string, optional):
+        an optional path name for the directory to place the file.
+        If not provided, .gitignore will be created in the current
+        working directory.
+
+    Example:
+        Make a .gitignore in /home/usr/::
+        create_gitignore(path='/home/usr/')
+
+    """
+
+    if path is None:
+        root_dir = _os.getcwd()
+    else:
+        root_dir = path
+
+    fname = _os.path.join(root_dir, '.gitignore')
+
+    f = open(fname, mode='x')
+
+    f.write('.gitignore \n' +
+            '.Rhistory \n'
+            '.Rproj* \n'
+            '*.Rproj \n'
+            '.DS_Store* \n'
+            '*.odt \n'
+            '*.aux \n'
+            '*.log \n'
+            '*.out \n'
+            '*.gz \n'
+            '*.sublime-project \n'
+            '*.sublime-workspace \n'
+            '*.ipynb \n'
+            '*.pdf \n'
+            '*.png \n'
+            '*.svg \n'
+            '*.jpg \n'
+            '*.jpeg \n'
+            '*.doc \n'
+            '*.docx')
+    f.close()
+    # close(f)
