@@ -215,7 +215,7 @@ def create_gitignore(path=None):
 
     f = open(fname, mode='x')
 
-    f.write('.gitignore \n' +
+    f.write('.gitignore \n'
             '.Rhistory \n'
             '.Rproj* \n'
             '*.Rproj \n'
@@ -228,6 +228,7 @@ def create_gitignore(path=None):
             '*.sublime-project \n'
             '*.sublime-workspace \n'
             '*.ipynb \n'
+            '*.pyc \n'
             '*.pdf \n'
             '*.png \n'
             '*.svg \n'
