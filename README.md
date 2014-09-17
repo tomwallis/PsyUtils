@@ -41,7 +41,7 @@ testing under Python 3) from the command line in the project's parent directory.
 
 ## TODO
 
-  * unit tests for filters, axes, windowing
+  * unit tests for filters, axes, windowing, misc
   * check documentation for filters
   * improve sphinx docs and linking.
 

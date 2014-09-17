@@ -274,3 +274,50 @@ def expand_grid(data_dict):
 
     rows = _it.product(*data_dict.values())
     return _pd.DataFrame.from_records(rows, columns=data_dict.keys())
+
+
+def rad_ang(xy):
+    """Return radius and polar angle relative to (0, 0)
+    of given x and y coordinates.
+
+    Args:
+        xy: a tuple of x and y positions.
+
+    Returns:
+        rad, ang: a tuple of radius from centre
+            and polar angle (radians):
+                right = 0
+                top = pi/2
+                left = pi (or -pi)
+                bottom = -pi/2
+
+    """
+
+    x, y = (xy[0], xy[1])
+    # compute radius and angle of patch centre:
+    radius = _np.sqrt(x**2 + y**2)
+    angle = _np.arctan2(y, x)
+
+    return(radius, angle)
+
+
+def xy(radius, angle):
+    """ returns the x, y coords of a point given a radius
+    and angle (in radians).
+
+    Args:
+        radius: a float or int specifying the radius
+        angle: the polar angle in radians.
+                right = 0
+                top = pi/2
+                left = pi (or -pi)
+                bottom = -pi/2
+
+    Returns:
+        x, y: a tuple of x and y coordinates.
+
+    """
+    x = radius * _np.cos(angle)
+    y = radius * _np.sin(angle)
+
+    return(x, y)
