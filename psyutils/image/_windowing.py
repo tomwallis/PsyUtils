@@ -191,7 +191,13 @@ def cos_win_2d(size,
 
         Make a cosine window with a larger ramp::
             import psyutils as pu
-            win = pu.image.cos_win_2d(size=256, ramp=40)
+            win = pu.image.cos_win_2d(size=256, ramp=40, ramp_type="pixels")
+            pu.image.show_im(win)
+
+        Make a cosine window wider than it is tall::
+            import psyutils as pu
+            win = pu.image.cos_win_2d(size=256, ramp=40, ramp_type="pixels",
+                                      axes_limits=(-1, 1, -2, 2))
             pu.image.show_im(win)
 
     """
