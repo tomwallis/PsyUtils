@@ -230,7 +230,6 @@ def create_gitignore(path=None):
             '*.gz \n'
             '*.sublime-project \n'
             '*.sublime-workspace \n'
-            '*.ipynb \n'
             '*.pyc \n'
             '*.pdf \n'
             '*.png \n'
@@ -240,6 +239,93 @@ def create_gitignore(path=None):
             '*.doc \n'
             '*.docx')
     f.close()
+
+
+def nb_stripout_filter(path_to_nbstripout, path=None):
+    """Call this function on a directory containing a .git repository in order
+    to add a git filter that strips the output of an ipython notebook before
+    committing.
+
+    Adapted from https://gist.github.com/minrk/6176788
+
+    Args:
+        path_to_nbstripout (string):
+            the absolute path to the nbstripout.py file on your system.
+            See below for file contents.
+        path (string, optional):
+            an optional path name for the directory containing the hidden .git
+            directory. If not provided, the current working directory is used.
+
+    Example:
+        Add filter to '/home/usr/my_repo/' from a file nbstripout.py
+        stored in /usr/local/bin/::
+        nb_stripout_filter('~/local/bin',
+                           '/home/usr/my_repo/')
+
+
+    Copy the following into a file nbstripout.py and put it somewhere on your
+    system, outside the repository.  Adapted from
+    https://gist.github.com/minrk/6176788 to work with git filter driver.
+
+    Original function is from
+    https://github.com/cfriedline/ipynb_template/blob/master/nbstripout
+
+
+    nbstripout.py
+    --------------
+
+    #!/usr/bin/env python
+    import sys
+
+    from IPython.nbformat import current
+
+
+    def strip_output(nb):
+        for cell in nb.worksheets[0].cells:
+            if 'outputs' in cell:
+                cell['outputs'] = []
+            if 'prompt_number' in cell:
+                cell['prompt_number'] = ""
+        return nb
+
+    if __name__ == '__main__':
+        nb = current.read(sys.stdin, 'json')
+        nb = strip_output(nb)
+        current.write(nb, sys.stdout, 'json')
+
+    --------------
+    end copy file.
+
+    """
+
+    if path is None:
+        root_dir = _os.getcwd()
+    else:
+        root_dir = path
+
+    git_dir = _os.path.join(root_dir, '.git')
+    conf = _os.path.join(git_dir, 'config')
+    attributes = _os.path.join(root_dir, '.gitattributes')
+
+    nb_stripout_path = _os.path.join(path_to_nbstripout,
+                                     'nbstripout.py')
+
+    # open .git config in append mode:
+    f = open(conf, mode='a')
+    f.write('[filter "stripoutput"] \n'
+            '    clean = "' + nb_stripout_path +
+            '" ')
+    f.close
+
+    # create .gitattributes file:
+    f = open(attributes, mode='a')
+    f.write('*.ipynb filter=stripoutput')
+    f.close
+
+    # ignore the .gitattributes file:
+    f = open(_os.path.join(root_dir, '.gitignore'), mode='a')
+    f.write('.gitattributes \n')
+    f.close
 
 
 def expand_grid(data_dict):
