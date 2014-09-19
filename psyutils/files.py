@@ -192,3 +192,62 @@ def nb_stripout_filter(path_to_nbstripout, path=None):
     f = open(_os.path.join(root_dir, '.gitignore'), mode='a')
     f.write('.gitattributes \n')
     f.close
+
+
+def session_info():
+    """ Print an output file containing python versions, system
+    information and installed packages. This function is to facilitate
+    reproducible research using python.
+
+    Example:
+        You're running a script called `generate_my_awesome_stimuli.py`.
+        Somewhere in the script, write::
+
+            import psyutils as pu
+            pu.files.session_info()
+
+
+        When the script is called from the command line, like this::
+
+            python generate_my_awesome_stimuli.py
+
+
+        A text file called `generate_my_awesome_stimuli.py_log.txt`
+        will be created (or appended, if it exists) in the current working
+        directory.
+    """
+
+    import sys
+    import subprocess
+    from datetime import datetime
+
+    root_dir = _os.getcwd()
+    calling_script = sys.argv[0]
+    fname = _os.path.join(root_dir, (calling_script + '_log.txt'))
+
+    def horz_line(info):
+        """Include a horizontal line with spaces"""
+        info += ('\n------------------------------------------------------\n' +
+                 '------------------------------------------------------\n')
+        return(info)
+
+    info = ''
+
+    info += '\n\nScript: ' + calling_script + '\n\n'
+    info += 'Called on: ' + str(datetime.now()) + '\n\n'
+
+    info += 'OS: ' + sys.platform + '\n'
+    info += 'Python version: ' + sys.version + '\n'
+
+    info += '\n\nAvailable packages via pip:\n'
+
+    # all packages and their versions from the current python env:
+    info += subprocess.check_output('pip freeze', shell=True,
+                                    universal_newlines=True)
+
+    info += '\n\n (note, not all these packages are loaded by script).'
+    info = horz_line(info)
+
+    f = open(fname, mode='a')
+    f.write(info)
+    f.close
