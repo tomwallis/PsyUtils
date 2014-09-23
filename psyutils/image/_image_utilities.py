@@ -390,22 +390,14 @@ def linear_rescale(im, maxmin=(-1, 1)):
 
 def alpha_blend(fg, bg):
     """ Do alpha blending putting foreground `fg` in front of background
-    `bg`. Will be converted to floats and rescaled to the range 0, 1 using
-    skimage's rescale intensity function, so should respect contrast.
+    `bg`.
+
+    Input images should be floats scaled in the 0--1 range.
 
     Input images are assumed to be images whose third dimension is
     4 (i.e. RGBA).
 
     """
-
-    fg = img_as_float(fg)
-    bg = img_as_float(bg)
-
-    fg = exposure.rescale_intensity(fg, out_range=(0, 1))
-    bg = exposure.rescale_intensity(bg, out_range=(0, 1))
-
-    # fg = img_as_ubyte(fg)
-    # bg = img_as_ubyte(bg)
 
     fg_rgb = fg[..., :3]
     fg_alpha = fg[..., 3]
@@ -423,5 +415,5 @@ def alpha_blend(fg, bg):
     out = np.zeros_like(bg)
     out[..., :3] = out_rgb
     out[..., 3] = out_alpha
-    out = exposure.rescale_intensity(out, out_range=(0, 1))
+    # out = exposure.rescale_intensity(out, out_range=(0, 1))
     return(out)
