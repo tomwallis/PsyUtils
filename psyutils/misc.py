@@ -141,7 +141,7 @@ def pix_per_deg(viewing_distance, screen_wh_px, screen_wh_cm,
 def expand_grid(data_dict):
     """ A port of R's expand.grid function for use with Pandas dataframes.
     Taken from:
-    `https://github.com/pydata/pandas/pull/7556`
+    `http://pandas.pydata.org/pandas-docs/stable/cookbook.html?highlight=expand%20grid`
 
     Args:
         data_dict:
@@ -153,12 +153,14 @@ def expand_grid(data_dict):
 
     Examples::
         import psyutils as pu
-        from collections import OrderedDict
 
         print(pu.misc.expand_grid(
             {'height': [60, 70],
              'weight': [100, 140, 180],
              'sex': ['Male', 'Female']})
+
+
+        from collections import OrderedDict
 
         entries = OrderedDict([('height', [60, 70]),
                                ('weight', [100, 140, 180]),
