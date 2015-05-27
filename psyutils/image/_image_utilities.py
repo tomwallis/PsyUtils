@@ -1,6 +1,7 @@
 import numpy as np
-from skimage import img_as_float
+from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt
+import psyutils as pu
 
 
 def guess_type(image):
@@ -161,7 +162,7 @@ def contrast_image(image, factor=1.0, sd=None,
     else:
         raise ValueError("Not sure what to do with image type " + im_type)
 
-    if returns is "intensity" or "contrast":
+    if returns is "intensity" or returns is "contrast":
         return image
     else:
         raise ValueError("Not sure what to return from " + returns)
@@ -179,23 +180,95 @@ def show_im(im):
     """
 
     dims = guess_type(im)
-    if dims is "I" or "IA":
-        plt.imshow(im, cmap=plt.cm.gray)
-        #print("note that imshow normalises I image for display")
-    elif dims is "RGB" or "RGBA":
-        plt.imshow(im, interpolation='none')
+    if dims is "I":
+        plt.imshow(im, cmap=plt.cm.gray, interpolation='nearest')
+    elif dims is "IA":
+        # convert to rgba for display:
+        rgba = ia_2_rgba(im)
+        plt.imshow(rgba, interpolation='nearest')
+    elif dims is "RGB" or dims is "RGBA":
+        plt.imshow(im, interpolation='nearest')
     else:
         raise ValueError("Not sure what to do with image type " + dims)
     print("image is of type " + str(type(im)))
+    print("image has data type " + str(im.dtype))
     print("image has dimensions " + str(im.shape))
     print("image has range from " + str(round(im.min(), ndigits=2))
           + " to max " + str(round(im.max(), ndigits=2)))
     print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
     print("the SD of the image is " + str(round(im.std(), ndigits=2)))
+    print("the rms contrast (SD / mean) is " +
+          str(round(im.std()/im.mean(), ndigits=2)))
 
 
-def put_rect_in_rect(rect_a, rect_b,
-                     mid_x=None, mid_y=None):
+def ia_2_rgba(im):
+    """ Convert an MxNx2 image (interpreted as an intensity map plus alpha
+    level) to an RGBA image (MxNx4). The channels will be rescaled to the
+    range 0--1 and converted to float.
+
+    THIS FUNCTION IS QUICK AND DIRTY AND SHOULD ONLY BE USED TO DISPLAY
+    IMAGES, NOT SAVE THEM AT THIS STAGE.
+    """
+
+    rgba = np.ndarray((im.shape[0], im.shape[1], 4), dtype=np.float)
+    im = img_as_float(im.copy())
+    rgb = color.gray2rgb(im[..., 0])
+    rgba[..., :3] = rgb
+    rgba[..., 3] = im[..., 1]
+
+    rgba = exposure.rescale_intensity(rgba, out_range=(0, 1))
+
+    return(rgba)
+
+
+def save_im(fname, im, bitdepth=8):
+    """
+    Takes a numpy array, converts it to either uint8 or uint16, and
+    saves it to a .png file by converting it to
+    an unsigned integer. This is a wrapper for skimage.io.imsave,
+    and calls the freeimage library to allow saving with high
+    bit depth (8 or 16). Both scikit-image and Freeimage must be
+    installed for this to work. On OSX Freeimage can be installed
+    using homebrew.
+
+    If the array passed is MxN, the resulting file (.png) will be
+    greyscale. If the file is MxNx3 it will be RGB, if MxNx4 it's
+    RGBA.
+
+    Warning: old versions of scikit-image (pre 0.11.0) will mess up the
+    order of the colour planes and mirror flip images if bitdepth is 16.
+
+    Args:
+        fname (string):
+            the filename to save the image to.
+        im (ndarray, float):
+            a numpy array (either 2D or 3D) to save.
+        bitdepth (int):
+            either 8 or 16.
+    """
+
+    # dims = guess_type(im)
+    # im = img_as_float(im)
+    # check scale:
+    # im = exposure.rescale_intensity(im, out_range='float')
+
+    if bitdepth is 8:
+        # convert to uint8:
+        im = img_as_ubyte(im)
+
+    elif bitdepth is 16:
+        # convert to 16 bit
+        im = img_as_uint(im)
+
+        # # to fix bug in current release of scikit-image (issue 1101; closed)
+        # if dims == "RGB" or dims == "RGBA":
+        #     im = np.fliplr(np.flipud(im))
+
+    io.use_plugin('freeimage')
+    io.imsave(fname, im)
+
+
+def put_rect_in_rect(rect_a, rect_b, midpoints=None):
     """A function to place rect_a inside rect_b.
 
     This function will place np.ndarray `a` into np.ndarray
@@ -206,13 +279,12 @@ def put_rect_in_rect(rect_a, rect_b,
             the source rectangle.
         rect_b (np.ndarray):
             the destination rectangle.
-        mid_x (int, optional):
-            the horizontal position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
-        mid_y (int, optional):
-            the vertical position to place the centre of rect_a in rect_b.
-            Defaults to the middle of rect_b.
-
+        midpoints (tuple or int, optional):
+            where to place the centre of rect_a in rect_b. Defaults to the
+            middle of rect_b. If a scalar is given, the mid_x and mid_y points
+            will be the same. If a tuple is given, the first element is the
+            horizontal middle, the second element is the vertical middle (i.e.
+            mid_x and mid_y).
     Returns:
         np.ndarray containing the new rectangle.
 
@@ -220,16 +292,17 @@ def put_rect_in_rect(rect_a, rect_b,
 
     new_rect = rect_b.copy()
 
-    if mid_x is None:
-        mid_x = int(rect_b.shape[1] / 2)
-    if mid_y is None:
-        mid_y = int(rect_b.shape[0] / 2)
+    if midpoints is None:
+        mid_x = rect_b.shape[1] / 2
+        mid_y = rect_b.shape[0] / 2
+    else:
+        mid_x, mid_y = pu.image.parse_size(midpoints)
 
-    rect_a_rad_x = int(rect_a.shape[1]/2)
-    rect_a_rad_y = int(rect_a.shape[0]/2)
+    rect_a_rad_x = rect_a.shape[1] / 2
+    rect_a_rad_y = rect_a.shape[0] / 2
 
-    x_start = mid_x - rect_a_rad_x - 1
-    y_start = mid_y - rect_a_rad_y - 1
+    x_start = mid_x - rect_a_rad_x
+    y_start = mid_y - rect_a_rad_y
     x_end = x_start + rect_a.shape[1]
     y_end = y_start + rect_a.shape[0]
 
@@ -242,6 +315,105 @@ def put_rect_in_rect(rect_a, rect_b,
                          "x_end is " + str(x_end) +
                          " , y_end is " + str(y_end))
 
-    new_rect[y_start:y_end, x_start:x_end] = rect_a
+    new_rect[int(y_start):int(y_end), int(x_start):int(x_end)] = rect_a
 
     return(new_rect)
+
+
+def cutout_patch(im, size, midpoints=None):
+    """A function to cut a patch out of the np.ndarray `im`. Currently
+    only for 2D arrays.
+
+    Returns a rectangle specified by `size`, centred on the points
+    `mid_x` and `mid_y` in the image `im`.
+
+    Args:
+        im (np.ndarray):
+            the larger rectangle from which to remove a patch.
+        size (int or tuple of ints):
+            the size of the rectangle in w, h. If a scalar is provided cutout
+            is square.
+        midpoints (tuple or int, optional):
+            where to place the centre of rect_a in rect_b. Defaults to the
+            middle of rect_b. If a scalar is given, the mid_x and mid_y points
+            will be the same. If a tuple is given, the first element is the
+            horizontal middle, the second element is the vertical middle (i.e.
+            mid_x and mid_y).
+
+    Returns:
+        np.ndarray containing the cutout.
+
+    """
+
+    im = im.copy()
+
+    if midpoints is None:
+        mid_x = im.shape[1] / 2
+        mid_y = im.shape[0] / 2
+    else:
+        mid_x, mid_y = pu.image.parse_size(midpoints)
+
+    w, h = pu.image.parse_size(size)
+
+    x_start = mid_x - (w / 2)
+    y_start = mid_y - (h / 2)
+    x_end = x_start + w
+    y_end = y_start + h
+
+    if x_start < 0 or y_start < 0:
+        raise ValueError("Rect_a falls outside rect_b! " +
+                         "x_start is " + str(x_start) +
+                         " , y_start is " + str(y_start))
+    if x_end > im.shape[1] or y_end > im.shape[0]:
+        raise ValueError("Rect_a falls outside rect_b!" +
+                         "x_end is " + str(x_end) +
+                         " , y_end is " + str(y_end))
+
+    res = im[int(y_start):int(y_end), int(x_start):int(x_end)]
+    return(res)
+
+
+def linear_rescale(im, maxmin=(-1, 1)):
+    """ Linearly rescale an image between the values
+    given by the tuple `maxmin`.
+
+    Note this is different to skimage's rescale intensity function,
+    which respects the contrast of the values. In contrast, this function
+    will stretch the range to maxmin[0], maxmin[1].
+
+    """
+
+    im_std = (im - im.min()) / (im.max() - im.min())
+    im_scaled = im_std * (maxmin[1] - maxmin[0]) + maxmin[0]
+    return(im_scaled)
+
+
+def alpha_blend(fg, bg):
+    """ Do alpha blending putting foreground `fg` in front of background
+    `bg`.
+
+    Input images should be floats scaled in the 0--1 range.
+
+    Input images are assumed to be images whose third dimension is
+    4 (i.e. RGBA).
+
+    """
+
+    fg_rgb = fg[..., :3]
+    fg_alpha = fg[..., 3]
+    bg_rgb = bg[..., :3]
+    bg_alpha = bg[..., 3]
+
+    out_alpha = fg_alpha + bg_alpha * (1. - fg_alpha)
+
+    # # check for any zeros:
+    # out_alpha[out_alpha == 0] = 1e-12
+
+    out_rgb = (fg_rgb * fg_alpha[..., None] +
+               bg_rgb * (1. - fg_alpha[..., None])) / out_alpha[..., None]
+
+    out = np.zeros_like(bg)
+    out[..., :3] = out_rgb
+    out[..., 3] = out_alpha
+    # out = exposure.rescale_intensity(out, out_range=(0, 1))
+    return(out)

@@ -1,18 +1,17 @@
 # Functions for windowing, including images.
 import numpy as np
-import matplotlib.pyplot as plt
+import psyutils as pu
 
 
-def cos_win_1d(im_x,
-               ramp=None,
-               padding=0):
-    """Create a vector of im_x ``im_x`` containing a 1D cosine window
+def cos_win_1d(size,
+               ramp=None):
+    """Create a vector of length ``size'' containing a 1D cosine window
     where the centre of the window is set to 1 and the ramps go down to
-    zero symmetrically on either side (with optional zero padding).
+    zero symmetrically on either side.
 
     This can be useful for e.g. adjusting the alpha channel of a stimulus
     over frames so that the stimulus is smoothly ramped on and off.
-    Since what's returned is a vector, ``im_x`` must be an integer
+    Since what's returned is a vector, ``size`` must be an integer
     or convertible to integer.
 
     This function will do some basic checking to see that your parameters
@@ -20,61 +19,50 @@ def cos_win_1d(im_x,
     they will be converted to floats.
 
     Args:
-        im_x (int):
-            the im_x of the window function to return.
+        size (int):
+            the size of the returned array.
         ramp (int or float, optional):
-            the size of each ramp. Defaults to im_x / 6.
-        padding (int, optional):
-            the size of zero padding at the edges. Defaults to zero.
+            the length of each ramp, in pixels. Defaults to ceil(size / 6).
 
     Returns:
-        window (float): a vector containing the windowing kernel,
+        window (float): an np.array vector containing the windowing kernel,
         normalised 0--1.
 
     Example:
-        Create a vector of im_x 200 where the value is 1 for the central
-        100 samples, on and off ramps of im_x 45 and 5 samples of zero
-        padding at either end::
+        Create a vector of size 200 where the value is 1 for the central
+        110 samples with on and off ramps of size 45 at either end::
             import psyutils as pu
-            window = cos_win_1d(im_x = 200, ramp = 45, padding = 5)
+            window = cos_win_1d(size = 200, ramp = 45)
             pu.image.plot_win_1d(window)
 
 
     """
     # check parameters, set.
-    im_x = float(round(im_x))
+    size = float(round(size))
 
     if ramp is None:
-        ramp = im_x / 6.0
+        ramp = size / 6.0
     else:
         ramp = float(ramp)
 
-    padding = int(padding)
-
+    ramp = np.ceil(ramp)
     # do a check for params making sense:
-    tot = (ramp * 2.0) + (padding * 2.0)
+    tot = (ramp * 2.0)
 
-    if tot > im_x:
+    if tot > size:
         raise ValueError("Your ramping parameters add up to " + str(tot) +
                          " but you " +
-                         "asked for im_x " + str(im_x))
+                         "asked for size " + str(size))
 
-    y = np.ones((im_x))
+    y = np.ones((size))
 
     # create the ramps:
     up_ramp = np.sin(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
     down_ramp = np.cos(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
 
     # place into y:
-    if padding is not 0:
-        y[padding:(padding+ramp)] = up_ramp
-        y[-(ramp + padding):-padding] = down_ramp
-        y[0:padding] = 0
-        y[-padding:] = 0
-    else:
-        y[0:ramp] = up_ramp
-        y[-ramp:] = down_ramp
-
+    y[0:ramp] = up_ramp
+    y[-ramp:] = down_ramp
     return(y)
 
 
@@ -168,17 +156,28 @@ def gaussian_2d(im_x, im_y=None,
     return(win)
 
 
-def cos_win_2d(im_x,
-               ramp=None, padding=None):
+def cos_win_2d(size,
+               ramp=None,
+               ramp_type='norm',
+               **kwargs):
     """Create a circular Cosine window in a 2d numpy array.
 
     Args:
-        im_x (int):
-            The length of one side of the image.
-        ramp (int, optional):
-            The size of the ramp in pixels. Defaults to side length / 6.0.
-        padding (int, optional):
-            The size of added boundary zero padding. Defaults to 0.
+        size (int):
+            size of the resulting matrix in w, h (i.e., number of columns and
+            rows respectively). If a single value is passed, the matrix will
+            be square with this length.
+        ramp (float or int, optional):
+            The size of the ramp. Defaults to 0.1 (normalised).
+        ramp_type (string, optional):
+            Determines how `ramp` is interpreted. If 'norm' (default),
+            `ramp` is the normalised size of *each* ramp, where the radius
+            runs 0--1. So if `ramp`=0.1, it runs from 0.9 to 1 on each radius.
+            If `ramp_type` is 'pixels', then each ramp is made to be
+            ceil(ramp) pixels long.
+        **kwargs (optional):
+            keyword arguments passed to axes_polar. Passing this will change
+            the intended behaviour of cos_win_2d.
 
     Returns:
         window (float): a 2d array containing the windowing kernel,
@@ -187,55 +186,65 @@ def cos_win_2d(im_x,
     Example:
         Make a cosine window in a square image of length 64::
             import psyutils as pu
-            win = pu.image.cos_win_2d(im_x=64)
+            win = pu.image.cos_win_2d(size=64)
             pu.image.show_im(win)
 
-        Make a cosine window with a larger ramp and some zero padding::
+        Make a cosine window with a larger ramp::
             import psyutils as pu
-            win = pu.image.cos_win_2d(im_x=256, ramp=40, padding=10)
+            win = pu.image.cos_win_2d(size=256, ramp=40, ramp_type="pixels")
+            pu.image.show_im(win)
+
+        Make a cosine window wider than it is tall::
+            import psyutils as pu
+            win = pu.image.cos_win_2d(size=256, ramp=40, ramp_type="pixels",
+                                      axes_limits=(-1, 1, -2, 2))
             pu.image.show_im(win)
 
     """
-    if ramp is None:
-        ramp = round(im_x / 6.0)
-    else:
-        ramp = float(round(ramp))
 
-    if padding is None:
-        padding = 0
-    else:
-        padding = int(padding)
+    # Input checking on params:
+    if ramp is None and ramp_type is 'norm':
+        ramp = 0.1
+    elif ramp is None and ramp_type is 'pixels':
+        raise Warning("You asked for pixels but did not specify a ramp " +
+                      "value. I'm defaulting to norm and ramp 0.1")
+        ramp_type = 'norm'
+        ramp = 0.1
+    elif ramp_type is 'norm':
+        ramp = float(ramp)
+        if ramp > 1. or ramp < 0.:
+            raise ValueError("Ramp as norm must be between 0 and 1.")
+    elif ramp_type is 'pixels':
+        ramp = float(np.ceil(ramp))
 
-    radius = im_x / 2.0
+        if size < ramp*2.0:
+            raise ValueError("Your ramping parameters add up to " +
+                             str(ramp*2.0) +
+                             " but you " +
+                             "asked for size " + str(size))
 
-    # do a check for params making sense:
-    tot = ramp*2.0 + padding*2.0
+    # convert a pixel-specified ramp into a normalised one:
+    if ramp_type is 'pixels':
+        # raise Warning("currently specifying in pixels assumes you're " +
+        #               "getting a square image (i.e. size = a number)")
+        ramp = ramp / size
+        # since radial axis runs from 0--1 on all edges, to have this
+        # number of pixels in the ramp need to multiply by 2:
+        ramp = ramp * 2.0
 
-    if tot > im_x:
-        raise ValueError("Your ramping parameters add up to " + str(tot) +
-                         " but you " +
-                         "asked for size " + str(im_x))
-
-    x = np.arange((1 - radius), (im_x - radius + 1))
-
-    xx, yy = np.meshgrid(x, x)
-    rad_dist = (xx**2 + yy**2) ** 0.5
-
-    win = rad_dist.copy()
-    ramp_start = radius - ramp - padding
-    ramp_end = radius - padding
-    win[rad_dist < ramp_start] = 1  # inside 1
-    ramp_location = [np.logical_and(rad_dist >= ramp_start,
-                                    rad_dist < ramp_end)]
-
-    # to come up with 0--1 normalisation in radius, I normalise by
-    # ramp-padding-1. This can lead to some craziness depending on
-    # the values (e.g. try im_x=128, ramp=20, padding=15). FIX
-
+    # call a radial axis:
+    r, a = pu.image.axes_polar(size=size, **kwargs)
+    # radial axis defaults to run from 0 -- 1.
+    win = r.copy()
+    ramp_start = (1. - ramp)
+    ramp_end = 1.
+    win[r < ramp_start] = 1.  # inside = 1.
+    ramp_location = np.logical_and(r >= ramp_start,
+                                   r <= ramp_end)
     win[ramp_location] = np.cos((win[ramp_location] - ramp_start)
-                                / (ramp - padding - 1) * np.pi/2.)
-    win[rad_dist >= ramp_end] = 0.  # outside 0
-    win[win < 0] = 0.
+                                / (ramp_end - ramp_start) * np.pi/2.)
+    win[r > ramp_end] = 0.
+
     return(win)
 
 
@@ -281,13 +290,3 @@ def wedge_win(im_x,
     dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
     win = np.exp((-dtheta**2) / (2*bw**2))  # ang filter component
     return(win)
-
-
-def plot_win_1d(y):
-    """Helper function for visualising 1d windows
-
-    """
-    x = np.linspace(0, y.size, num=y.size)
-    line, = plt.plot(x, y, linewidth=2)
-
-    plt.show()

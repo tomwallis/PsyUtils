@@ -1,9 +1,12 @@
 # run unit tests on image utilities.
 
 import numpy as np
-from skimage import img_as_float
+from skimage import img_as_float, img_as_ubyte, img_as_uint, io
 import psyutils as pu
 from nose.tools import *
+import os
+
+test_data_dir = os.path.join('tests', 'test_data')
 
 ############# Testing guess_type ##############
 
@@ -110,6 +113,229 @@ def test_contrast_image_5():
         and mean == 0.52 \
         and sd == 0.1
 
-# See
-# http://docs.scipy.org/doc/numpy-dev/reference/generated
-# /numpy.testing.assert_allclose.html#numpy.testing.assert_allclose
+
+############# Testing save_im ##############
+
+def test_save_im_greyscale_8bit():
+    im = np.random.uniform(size=(256, 256))
+    im = img_as_ubyte(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=8)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_greyscale_16bit():
+    im = np.random.uniform(size=(256, 256))
+    im = img_as_uint(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=16)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_colour_8bit():
+    im = np.random.uniform(size=(256, 256, 3))
+    im = img_as_ubyte(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=8)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+def test_save_im_colour_16bit():
+    im = np.random.uniform(size=(256, 256, 3))
+    im = img_as_uint(im)
+    fname = os.path.join('tests', 'test_data', 'tmp.png')
+    pu.image.save_im(fname, im, bitdepth=16)
+    im2 = io.imread(fname)
+    assert im.all() == im2.all()
+
+
+######### Rect_in_Rect ########
+
+def test_rect_in_rect_1():
+    rect_a = np.array([[0.]])
+    rect_b = np.array([[1., 1.],
+                       [1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 1.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_2():
+    rect_a = np.array([[0.]])
+    rect_b = np.array([[1., 1., 1.],
+                       [1., 1., 1.],
+                       [1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1.],
+                        [1., 0., 1.],
+                        [1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_3():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1.],
+                       [1., 1., 1.],
+                       [1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 0., 1.],
+                        [0., 0., 1.],
+                        [1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_4():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 0., 0., 1.],
+                        [1., 0., 0., 1.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_5():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1.],
+                       [1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[0., 0.],
+                        [0., 0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_6():
+    rect_a = np.array([[0., 0., 0.],
+                       [0., 0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b)
+    desired = np.array([[1., 1., 1., 1.],
+                        [0., 0., 0., 1.],
+                        [0., 0., 0., 1.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_7():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b, midpoints=3)
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 1., 1., 1.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 0., 0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_rect_in_rect_8():
+    rect_a = np.array([[0., 0.],
+                       [0., 0.]])
+    rect_b = np.array([[1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.],
+                       [1., 1., 1., 1.]])
+    res = pu.image.put_rect_in_rect(rect_a, rect_b, midpoints=(3, 2))
+    desired = np.array([[1., 1., 1., 1.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 0., 0.],
+                        [1., 1., 1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+######### cutout_patch ########
+
+
+def test_cutout_patch_1():
+    im = np.array([[0., 1.],
+                   [1., 1.]])
+    res = pu.image.cutout_patch(im, 1)
+    desired = np.array([[0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_2():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, 2)
+    desired = np.array([[1., 0.],
+                        [1., 0.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_3():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 4))
+    desired = np.array([[1., 1.],
+                        [1., 0.],
+                        [1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_4():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 4), midpoints=2)
+    desired = np.array([[1., 1.],
+                        [1., 0.],
+                        [1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_5():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=3)
+    desired = np.array([[0., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_6():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=(2, 3))
+    desired = np.array([[1., 0.],
+                        [1., 1.]])
+    np.testing.assert_allclose(res, desired)
+
+
+def test_cutout_patch_7():
+    im = np.array([[1., 1., 1., 1.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 0., 0.],
+                   [1., 1., 1., 1.]])
+    res = pu.image.cutout_patch(im, size=(2, 2), midpoints=(3, 2))
+    desired = np.array([[0., 0.],
+                        [0., 0.]])
+    np.testing.assert_allclose(res, desired)

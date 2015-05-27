@@ -16,10 +16,11 @@ License: https://creativecommons.org/licenses/by/2.0/legalcode
 """
 
 import os as _os
-import numpy as np
+import numpy as _np
 from skimage import img_as_float
 
 _this_dir = _os.path.abspath(_os.path.dirname(__file__))
+_im_dir = 'data'  # where are the images stored?
 
 __all__ = ['tiger',
            'tiger_rgba',
@@ -41,7 +42,7 @@ def _load(f):
     """
     from skimage.io import imread as _imread
 
-    return _imread(_os.path.join(_this_dir, f))
+    return _imread(_os.path.join(_this_dir, _im_dir, f))
 
 
 def tiger():
@@ -93,7 +94,7 @@ def tiger_grey():
         img : ndarray
 
     """
-    return np.load(_os.path.join(_this_dir, "tiger_grey.npy"))
+    return _np.load(_os.path.join(_this_dir, _im_dir, "tiger_grey.npy"))
 
 
 def sloan_letters():
@@ -116,7 +117,7 @@ def sloan_letters():
     letters = ("C", "D", "H", "K", "N", "O", "R", "S", "V", "Z")
     for i in range(0, 10):
         this_file = "sloan_" + str(i) + ".npy"
-        this_file = _os.path.join(_this_dir, this_file)
-        im = img_as_float(np.load(this_file))
+        this_file = _os.path.join(_this_dir, _im_dir, this_file)
+        im = img_as_float(_np.load(this_file))
         sloans[letters[i]] = im
     return(sloans)
