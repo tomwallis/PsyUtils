@@ -6,7 +6,7 @@ for generating visual stimuli and analysing the results of psychophysical experi
 It is **NOT** an experimental display software package. It is intended
 to compliment something like [PsychoPy](http://www.psychopy.org).
 
-It is intended only for internal use in [my](www.tomwallis.info) science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* Everything, including testing, is incomplete.
+It is intended only for internal use in [my](http://www.tomwallis.info) science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* Everything, including testing, is incomplete.
 
 ## Subpackages
 
