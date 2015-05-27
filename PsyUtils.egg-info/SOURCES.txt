@@ -5,11 +5,11 @@ PsyUtils.egg-info/SOURCES.txt
 PsyUtils.egg-info/dependency_links.txt
 PsyUtils.egg-info/requires.txt
 PsyUtils.egg-info/top_level.txt
-docs/build/html/_sources/Submodules.txt
 docs/build/html/_sources/index.txt
 psyutils/__init__.py
 psyutils/dist.py
 psyutils/example_calling_axes.py
+psyutils/files.py
 psyutils/im_data.py
 psyutils/misc.py
 psyutils/image/__init__.py

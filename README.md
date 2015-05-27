@@ -6,7 +6,7 @@ for generating visual stimuli and analysing the results of psychophysical experi
 It is **NOT** an experimental display software package. It is intended
 to compliment something like [PsychoPy](http://www.psychopy.org).
 
-It is intended only for internal use in Tom's science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* The unit-testing is incomplete.
+It is intended only for internal use in [my](www.tomwallis.info) science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* Everything, including testing, is incomplete.
 
 ## Subpackages
 
@@ -47,11 +47,8 @@ testing under Python 3) from the command line in the project's parent directory.
 
 ## Contributions
 
-Thomas Wallis wrote these functions based somewhat on shared code used in Matlab by Peter Bex's lab at the Schepens Eye Research Institute. I also
-borrowed some stuff from the scikit-image package. Function abstraction, pythonic niceness and other sweet programming improvements were suggested by David Janssen.
+Thomas Wallis wrote the package. Many image processing functions are based on Matlab code from Peter Bex's lab. I also adapted some stuff from the scikit-image package. 
 
 ## Thanks To
 
-Many of these functions are based on Matlab functions originally written
-by Peter Bex. Tom Wallis also thanks Matthias Kümmerer for Python help
-and suggestions.
+Many of the image processing functions are based on Matlab functions originally written by Peter Bex. Tom Wallis also thanks Matthias Kümmerer and David Janssen for Python help and suggestions.
