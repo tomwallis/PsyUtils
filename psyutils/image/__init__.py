@@ -17,10 +17,14 @@ from ._axes import(unpack_container, parse_axes_limits, parse_size,
                    axes_logradial_polar, axes_angular_distance,
                    axes_limits_in_pixels)
 
-from ._image_utilities import (guess_type, contrast_image, show_im, save_im,
+from ._image_utilities import (guess_type, contrast_image, save_im,
                                ia_2_rgba, put_rect_in_rect, cutout_patch,
                                linear_rescale,
                                alpha_blend)
+
+from ._plot import (show_im, plot_orientations)
+
+# from ._gabor_filtering import
 
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
 
@@ -56,13 +60,14 @@ __all__ = ['unpack_container',
            'axes_limits_in_pixels',
            'guess_type',
            'contrast_image',
-           'show_im',
            'save_im',
            'ia_2_rgba',
            'put_rect_in_rect',
            'cutout_patch',
            'linear_rescale',
            'alpha_blend',
+           'show_im',
+           'plot_orientations',
            'make_filter_generic',
            'make_filter_lowpass',
            'make_filter_highpass',

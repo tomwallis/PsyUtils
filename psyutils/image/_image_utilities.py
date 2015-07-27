@@ -168,39 +168,6 @@ def contrast_image(image, factor=1.0, sd=None,
         raise ValueError("Not sure what to return from " + returns)
 
 
-# helper function to show an image and report some stats about it:
-def show_im(im):
-    """ A helper function to show an image (using imshow)
-    and report some stats about it.
-
-    Args:
-        image: ndarray
-            The input image.
-
-    """
-
-    dims = guess_type(im)
-    if dims is "I":
-        plt.imshow(im, cmap=plt.cm.gray, interpolation='nearest')
-    elif dims is "IA":
-        # convert to rgba for display:
-        rgba = ia_2_rgba(im)
-        plt.imshow(rgba, interpolation='nearest')
-    elif dims is "RGB" or dims is "RGBA":
-        plt.imshow(im, interpolation='nearest')
-    else:
-        raise ValueError("Not sure what to do with image type " + dims)
-    print("image is of type " + str(type(im)))
-    print("image has data type " + str(im.dtype))
-    print("image has dimensions " + str(im.shape))
-    print("image has range from " + str(round(im.min(), ndigits=2))
-          + " to max " + str(round(im.max(), ndigits=2)))
-    print("the mean of the image is " + str(round(im.mean(), ndigits=2)))
-    print("the SD of the image is " + str(round(im.std(), ndigits=2)))
-    print("the rms contrast (SD / mean) is " +
-          str(round(im.std()/im.mean(), ndigits=2)))
-
-
 def ia_2_rgba(im):
     """ Convert an MxNx2 image (interpreted as an intensity map plus alpha
     level) to an RGBA image (MxNx4). The channels will be rescaled to the
@@ -263,8 +230,8 @@ def save_im(fname, im, bitdepth=8):
         # # to fix bug in current release of scikit-image (issue 1101; closed)
         # if dims == "RGB" or dims == "RGBA":
         #     im = np.fliplr(np.flipud(im))
+        io.use_plugin('freeimage')
 
-    io.use_plugin('freeimage')
     io.imsave(fname, im)
 
 
