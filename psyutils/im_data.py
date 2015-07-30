@@ -26,10 +26,11 @@ __all__ = ['tiger',
            'tiger_rgba',
            'tiger_square',
            'tiger_grey',
-           'sloan_letters']
+           'sloan_letters',
+           'orientation_test']
 
 
-def _load(f):
+def _load(f, **kwargs):
     """Load an image file located in the data directory.
 
     Args:
@@ -42,7 +43,7 @@ def _load(f):
     """
     from skimage.io import imread as _imread
 
-    return _imread(_os.path.join(_this_dir, _im_dir, f))
+    return _imread(_os.path.join(_this_dir, _im_dir, f), **kwargs)
 
 
 def tiger():
@@ -95,6 +96,19 @@ def tiger_grey():
 
     """
     return _np.load(_os.path.join(_this_dir, _im_dir, "tiger_grey.npy"))
+
+
+def orientation_test():
+    """Grey image containing orientation test patterns.
+
+    Args:
+        none
+
+    Returns:
+        img : ndarray
+
+    """
+    return _load("orientations_test.png", as_grey=True)
 
 
 def sloan_letters():
