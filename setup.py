@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='PsyUtils',
-    version='1.0.1',
+    version='1.1.1',
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
     packages=['psyutils', 'psyutils.image'],
@@ -17,6 +17,6 @@ setup(
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
         'matplotlib',
-        'scikit-image >= 0.9.0'
+        'scikit-image >= 0.11.0'
     ],
 )
