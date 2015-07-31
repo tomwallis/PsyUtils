@@ -24,7 +24,11 @@ from ._image_utilities import (guess_type, contrast_image, save_im,
 
 from ._plot import (show_im, plot_orientations)
 
-# from ._gabor_filtering import
+from ._gabor_filterbank import(gabor_create, gaborbank_vis,
+                               gaborbank_convolve,
+                               gaborbank_mean_orientation,
+                               gaborbank_max_orientation,
+                               gaborbank_orientation_vis)
 
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
 
@@ -68,6 +72,12 @@ __all__ = ['unpack_container',
            'alpha_blend',
            'show_im',
            'plot_orientations',
+           'gabor_create',
+           'gaborbank_vis',
+           'gaborbank_convolve',
+           'gaborbank_mean_orientation',
+           'gaborbank_max_orientation',
+           'gaborbank_orientation_vis',
            'make_filter_generic',
            'make_filter_lowpass',
            'make_filter_highpass',
