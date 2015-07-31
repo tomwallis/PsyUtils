@@ -111,6 +111,19 @@ def orientation_test():
     return _load("orientations_test.png", as_grey=True)
 
 
+def orientation_test_2():
+    """Grey image containing orientation test patterns.
+
+    Args:
+        none
+
+    Returns:
+        img : ndarray
+
+    """
+    return _load("orientations_test_2.png", as_grey=True)
+
+
 def sloan_letters():
     """Returns the ten sloan letters as numpy arrays in a dictionary.
     The sloan letters consist of 10 letter characters:
