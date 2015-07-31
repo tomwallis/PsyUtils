@@ -22,7 +22,7 @@ from ._image_utilities import (guess_type, contrast_image, save_im,
                                linear_rescale,
                                alpha_blend)
 
-from ._plot import (show_im, plot_orientations)
+from ._plot import (show_im)
 
 from ._gabor_filterbank import(gabor_create, gaborbank_vis,
                                gaborbank_convolve,
@@ -71,7 +71,6 @@ __all__ = ['unpack_container',
            'linear_rescale',
            'alpha_blend',
            'show_im',
-           'plot_orientations',
            'gabor_create',
            'gaborbank_vis',
            'gaborbank_convolve',
