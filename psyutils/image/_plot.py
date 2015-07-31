@@ -6,7 +6,7 @@ from skimage.color import hsv2rgb
 
 
 # helper function to show an image and report some stats about it:
-def show_im(im, n_digits=3):
+def show_im(im, n_digits=3, colorbar=False):
     """ A helper function to show an image (using imshow)
     and report some stats about it.
 
@@ -39,6 +39,10 @@ def show_im(im, n_digits=3):
     print("the SD of the image is " + str(round(im.std(), ndigits=n_digits)))
     print("the rms contrast (SD / mean) is " +
           str(round(im.std()/im.mean(), ndigits=n_digits)))
+
+    if colorbar == True:
+        plt.colorbar();
+
 
 
 def plot_orientations(res, theta, include_legend=True):
