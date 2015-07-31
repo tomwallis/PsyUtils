@@ -1,6 +1,4 @@
 
-*.ipynb
-
 *.pyc
 
 psyutils.sublime-project
@@ -14,3 +12,23 @@ tests/test_data/tmp.png
 tmp.png
 
 psyutils/example_calling_axes.py
+
+*-checkpoint.ipynb
+
+distortions.ipynb
+
+filter_tests.ipynb
+
+Misc functions testing.ipynb
+
+psyutils_v1.0_demo.ipynb
+
+Rect_in_rect.ipynb
+
+Sloan letters.ipynb
+
+testing_image_utilities.ipynb
+
+window tests.ipynb
+
+write_tests.ipynb
