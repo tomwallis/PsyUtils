@@ -15,6 +15,7 @@ License: https://creativecommons.org/licenses/by/2.0/legalcode
 ----------
 """
 
+from __future__ import print_function, division
 import os as _os
 import numpy as _np
 from skimage import img_as_float

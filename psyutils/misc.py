@@ -1,6 +1,7 @@
 # miscellaneous functions
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function, division
 import numpy as _np
 import os as _os
 import psyutils as _pu

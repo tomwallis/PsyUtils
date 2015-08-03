@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 import numpy as np
 from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt

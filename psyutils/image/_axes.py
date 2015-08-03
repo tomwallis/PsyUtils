@@ -7,6 +7,7 @@ types. David Janssen wrote them, Tom Wallis tweaked and documented.
 
 """
 
+from __future__ import print_function, division
 import numpy as np
 
 #-----------------------------------------------------------------------------#

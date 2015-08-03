@@ -1,4 +1,5 @@
 # functions to do eccentricity scaling of images.
+from __future__ import print_function, division
 import numpy as np
 
 
