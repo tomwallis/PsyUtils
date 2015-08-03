@@ -6,7 +6,7 @@ on whatever inputs you like (e.g., axes).
 
 """
 
-
+from __future__ import print_function, division
 import numpy as _np
 from psyutils.image import convert_to_log as _convert_to_log
 
