@@ -1,5 +1,7 @@
 # functions to do a linear Gabor filterbank and plot results.
 # at base, a wrapper on skimage's gabor_kernel.
+
+from __future__ import print_function, division
 import numpy as np
 import psyutils as pu
 from skimage.filters import gabor_kernel

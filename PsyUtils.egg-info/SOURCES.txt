@@ -8,7 +8,6 @@ PsyUtils.egg-info/top_level.txt
 docs/build/html/_sources/index.txt
 psyutils/__init__.py
 psyutils/dist.py
-psyutils/example_calling_axes.py
 psyutils/files.py
 psyutils/im_data.py
 psyutils/misc.py
@@ -16,6 +15,8 @@ psyutils/image/__init__.py
 psyutils/image/_axes.py
 psyutils/image/_eccentricity.py
 psyutils/image/_filters.py
+psyutils/image/_gabor_filterbank.py
 psyutils/image/_image_utilities.py
 psyutils/image/_misc.py
+psyutils/image/_plot.py
 psyutils/image/_windowing.py
