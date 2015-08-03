@@ -6,7 +6,6 @@ import os as _os
 import psyutils as _pu
 import itertools as _it
 import pandas as _pd
-from __future__ import print_function, division
 
 
 def fixation_cross():

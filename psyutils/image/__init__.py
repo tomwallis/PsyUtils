@@ -8,8 +8,6 @@ for psychophysical experiments.
 ----------
 """
 
-from __future__ import print_function, division
-
 from ._axes import(unpack_container, parse_axes_limits, parse_size,
                    convert_to_polar, convert_to_log, convert_to_exp,
                    convert_to_angular_distance,
