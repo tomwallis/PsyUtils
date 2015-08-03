@@ -2,6 +2,7 @@ import numpy as np
 from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
 import matplotlib.pyplot as plt
 import psyutils as pu
+from __future__ import print_function, division
 
 
 def guess_type(image):
