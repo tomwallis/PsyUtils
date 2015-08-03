@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='PsyUtils',
-    version='1.1.2',
+    version='1.1.3',
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
     packages=['psyutils', 'psyutils.image'],
