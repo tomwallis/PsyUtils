@@ -4,6 +4,12 @@
 from __future__ import print_function, division
 import os as _os
 
+__all__ = ['create_project_folder',
+           'create_gitignore',
+           'nb_stripout_filter',
+           'session_info',
+           'project_directory']
+
 
 def create_project_folder(project_name, path=None, gitignore=True):
     """ Create a new project folder in the current working directory containing
@@ -252,3 +258,33 @@ def session_info():
     f = open(fname, mode='a')
     f.write(info)
     f.close
+
+
+def project_directory(target_dir):
+    """Returns the full path of the top level directory for this project,
+    assuming that this function is being called from somewhere in the project
+    (i.e., from a subdirectory of the target directory).
+
+    Args:
+        target_dir: a string containing the target directory name.
+    Returns:
+        the full path to the target directory.
+
+    """
+
+    orig_dir = _os.getcwd()
+    parent = _os.path.split(orig_dir)[0]
+
+    try:
+        # go up directories, searching for target:
+        while parent[-len(target_dir):] != target_dir:
+            _os.chdir('..')
+            parent = _os.path.split(_os.getcwd())[0]
+
+        top_path = parent
+        # set working directory back to original:
+        _os.chdir(orig_dir)
+    except:
+        _os.chdir(orig_dir)
+    return(top_path)
+
