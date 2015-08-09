@@ -9,6 +9,7 @@ from skimage.color import hsv2rgb
 import matplotlib.pyplot as plt
 from itertools import product
 from scipy.signal import fftconvolve
+import pycircstat as circ
 
 
 #------------------------------------------------------------------------------
@@ -165,6 +166,9 @@ def gaborbank_convolve(img,
 
     """
 
+    if img.ndim > 2:
+        raise ValueError('Currently only works for one-channel images!')
+
     frequencies, orientations = _check_inputs(frequencies,
                                               orientations,
                                               n_orientations)
@@ -189,31 +193,34 @@ def gaborbank_convolve(img,
 def gaborbank_mean_orientation(d):
     """ Compute the mean orientation for each point in the image
     by summing energy over spatial frequencies and then computing the
-    mean resultant vector of orientations for each point.
+    circular mean of orientations for each point, weighted by the filter
+    response.
 
     Args:
         d: the dict output by gaborbank_convolve.
 
     Returns:
         image containing interpolated orientations. Possible values
-        run -pi to pi radians.
+        run 0 to pi radians, increasing counterclockwise (pi/2 is vertical).
     """
     res = d['res']
     theta = d['theta']
 
-    # magnitude not energy (i.e., sqrt) to correspond with Kane:
-    # e = np.sqrt(res.real**2 + res.imag**2)
     e = res.real**2 + res.imag**2
     e = e.sum(axis=2)  # sum energy over scales.
 
-    # compute mean resultant vector. This equation adapted from
-    # Kane et al. (2011), Journal of Vision (Equation A5):
-    s = np.inner(np.sin(2. * theta), e)
-    c = np.inner(np.cos(2. * theta), e)
-    out = 1/2 * np.arctan2(s, c)
-    # the output above runs from -pi/2 (vert) to +pi/2; horizontal = 0.
-    # remap to arctan2 coordinates (0--pi):
-    out[out < 0] += np.pi
+    # reshape the angles into an image plane for each angle:
+    t = np.tile(theta, e.shape[0]*e.shape[1])
+    t = np.reshape(t, e.shape)
+    # t has the same shape as e, with each orientation along axis 2.
+
+    """compute circular mean, with energy as weights. Axial correction
+    is to change direction 0-pi --> orientation 0-2*pi. Correct afterward
+    by folding orientations > pi back around.
+    """
+
+    out = circ.mean(t, w=e, axis=2, axial_correction=2)
+    out[out > np.pi] -= np.pi
     return out
 
 
@@ -227,7 +234,7 @@ def gaborbank_max_orientation(d):
 
     Returns:
         image containing orientations 0--pi where 0/pi is horizontal and
-        pi/2 is vertical.
+        pi/2 is vertical (increasing counterclockwise).
     """
     res = d['res']
     e = res.real**2 + res.imag**2  # energy
@@ -237,6 +244,41 @@ def gaborbank_max_orientation(d):
     inds = e.argmax(axis=2)
 
     return d['theta'][inds]
+
+
+def gaborbank_phase_angle(d):
+    """Compute the phase at each point in the image.
+
+    """
+    res = d['res']
+
+    return np.arctan2(res.real, res.imag)
+
+
+def gaborbank_orientation_variance(d):
+    """ Compute the orientation variance. Orientation variance
+    can be any value from 0 (no variance, all responses point
+    in one direction) to 1 (no dominant direction). Computed
+    using pycircstat's mean resultant vector function.
+
+    """
+    res = d['res']
+    theta = d['theta']
+
+    e = res.real**2 + res.imag**2
+    e = e.sum(axis=2)  # sum energy over scales.
+
+    # reshape the angles into an image plane for each angle:
+    t = np.tile(theta, e.shape[0]*e.shape[1])
+    t = np.reshape(t, e.shape)
+    # t has the same shape as e, with each orientation along axis 2.
+
+    """compute orientation variance with energy as weights. Axial correction
+    is to change direction 0-pi --> orientation 0-2*pi. Correct afterward
+    by folding orientations > pi back around.
+    """
+    out = circ.resultant_vector_length(t, w=e, axis=2, axial_correction=2)
+    return 1 - out
 
 
 def gaborbank_orientation_vis(d, method='mean', legend=True):

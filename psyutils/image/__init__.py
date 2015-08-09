@@ -28,6 +28,8 @@ from ._gabor_filterbank import(gabor_create, gaborbank_vis,
                                gaborbank_convolve,
                                gaborbank_mean_orientation,
                                gaborbank_max_orientation,
+                               gaborbank_phase_angle,
+                               gaborbank_orientation_variance,
                                gaborbank_orientation_vis)
 
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
@@ -76,6 +78,8 @@ __all__ = ['unpack_container',
            'gaborbank_convolve',
            'gaborbank_mean_orientation',
            'gaborbank_max_orientation',
+           'gaborbank_phase_angle',
+           'gaborbank_orientation_variance',
            'gaborbank_orientation_vis',
            'make_filter_generic',
            'make_filter_lowpass',
