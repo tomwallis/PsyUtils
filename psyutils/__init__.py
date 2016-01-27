@@ -1,5 +1,6 @@
-import psyutils.image
-import psyutils.misc
-import psyutils.im_data
-import psyutils.dist
-import psyutils.files
+from . import image
+from . import misc
+from . import im_data
+from . import dist
+from . import files
+from . import psydata
