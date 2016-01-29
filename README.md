@@ -6,9 +6,9 @@ for generating visual stimuli and analysing the results of psychophysical experi
 It is **NOT** an experimental display software package. It is intended
 to compliment something like [PsychoPy](http://www.psychopy.org).
 
-It is intended only for internal use in [my](http://www.tomwallis.info) science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* Everything, including testing, is incomplete.
+It is intended only for internal use in [my](http://www.tomwallis.info) science at this stage. It is provided publicly to facilitate reproducibility of research. *Use these functions at your own risk.* Everything, including testing, is incomplete and open to change at any time.
 
-## Subpackages
+## Submodules
 
  * ``image``. The ``image`` subpackage includes functions for filtering
   images and creating filtered noise stimuli, and otherwise interacting
@@ -16,6 +16,8 @@ It is intended only for internal use in [my](http://www.tomwallis.info) science 
  * ``dist``: functions for creating probability distributions over axes. Currently just used to create filters.
  * ``im_data``. The ``im_data`` subpackage includes images and data for
   testing purposes.
+ * ``files``: contains helper functions for working with directories and file structures.
+ * ``psydata``: helper functions for working with psychophysical data (binary responses as a function of some stimulus). 
  * ``misc``. This is a miscellaneous subpackage.
 
 ## Example Use

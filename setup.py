@@ -6,8 +6,7 @@ setup(
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
     packages=['psyutils', 'psyutils.image'],
-    #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
-    #url='http://pypi.python.org/pypi/TowelStuff/',
+    url='http://github.com/tomwallis/PsyUtils',
     license='LICENSE.txt',
     description='Utility functions for psychophysical experiments and \
                 stimuli.',
@@ -17,6 +16,7 @@ setup(
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
         'matplotlib',
-        'scikit-image >= 0.11.0'
+        'scikit-image >= 0.11.0',
+        'seaborn >= 0.6.0'
     ],
 )
