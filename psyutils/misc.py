@@ -3,10 +3,7 @@
 
 from __future__ import print_function, division
 import numpy as _np
-import os as _os
 import psyutils as _pu
-import itertools as _it
-import pandas as _pd
 
 
 def fixation_cross():
@@ -137,42 +134,6 @@ def pix_per_deg(viewing_distance, screen_wh_px, screen_wh_cm,
         res = ppd
 
     return(res)
-
-
-def expand_grid(data_dict):
-    """ A port of R's expand.grid function for use with Pandas dataframes.
-    Taken from:
-    `http://pandas.pydata.org/pandas-docs/stable/cookbook.html?highlight=expand%20grid`
-
-    Args:
-        data_dict:
-            a dictionary or ordered dictionary of column names and values.
-
-    Returns:
-        A pandas dataframe with all combinations of the values given.
-
-
-    Examples::
-        import psyutils as pu
-
-        print(pu.misc.expand_grid(
-            {'height': [60, 70],
-             'weight': [100, 140, 180],
-             'sex': ['Male', 'Female']})
-
-
-        from collections import OrderedDict
-
-        entries = OrderedDict([('height', [60, 70]),
-                               ('weight', [100, 140, 180]),
-                               ('sex', ['Male', 'Female'])])
-
-        print(pu.misc.expand_grid(entries))
-
-    """
-
-    rows = _it.product(*data_dict.values())
-    return _pd.DataFrame.from_records(rows, columns=data_dict.keys())
 
 
 def rad_ang(xy):
