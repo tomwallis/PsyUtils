@@ -361,9 +361,49 @@ def plot_psy_params(dat, stim_level, correct,
                     grouping_variables=None,
                     function='logistic',
                     fixed=None,
-                    jitter=True,
                     **kwargs):
     """ Plot the parameters of fitted psychometric functions. A wrapper
+    for psy_params and Seaborn's factorplot.
+
+    :param dat:  the Pandas dataframe containing bernoulli trials.
+    :param stim_level:  string, the name of the column containing
+                        stimulus level.
+    :param correct:  string, the name of the column containing bernoulli
+               trial (correct / incorrect).
+    :param x:  string, the variable to plot on the x-axis.
+               Should be categorical.
+    :param y:  string, the parameter to plot on the y-axis (m, w, lam, gam).
+    :param grouping_variables:  a string or list of strings containing columns
+                                of dat to group by.
+    :param function:  psychometric function to fit; either 'logistic' or
+                      'weibull'
+    :param fixed: a dict containing parameters to fix,
+                  e.g. {'gam': .5} for 2AFC.
+    :param kwargs:  keyword arguments passed to sns.factorplot.
+
+    :returns:  a series or dataframe containing threshold m, width w,
+               lower asymptote gam and lapse rate lam, for each grouped cell.
+
+    """
+
+    # get the fitted parameters for each group:
+    params = psy_params(dat, stim_level, correct,
+                        grouping_variables=grouping_variables,
+                        function=function,
+                        fixed=fixed)
+
+    g = sns.factorplot(x, y, data=params, **kwargs)
+    return g
+
+
+def plot_psy(dat, stim_level, correct,
+             x, y,
+             grouping_variables=None,
+             function='logistic',
+             fixed=None,
+             jitter=True,
+             **kwargs):
+    """ Fit and plot psychometric functions. A wrapper
     for psy_params and Seaborn's FacetGrid.
 
     :param dat:  the Pandas dataframe containing bernoulli trials.
@@ -381,7 +421,7 @@ def plot_psy_params(dat, stim_level, correct,
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
     :param jitter:  jitter the x-position of the points (true or false).
-    :param kwargs:  keyword arguments passed to FacetGrid.
+    :param kwargs:  keyword arguments passed to FacetGrid. e.g. facet by rows.
 
     :returns:  a series or dataframe containing threshold m, width w,
                lower asymptote gam and lapse rate lam, for each grouped cell.
