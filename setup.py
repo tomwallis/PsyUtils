@@ -17,6 +17,6 @@ setup(
         'scipy >= 0.13.0',
         'matplotlib',
         'scikit-image >= 0.11.0',
-        'seaborn >= 0.6.0'
+        'seaborn >= 0.7.0'
     ],
 )
