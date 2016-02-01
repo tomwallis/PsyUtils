@@ -198,7 +198,7 @@ def _loss_fun(pars, x, k, n, S, fixed):
 
 
 def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
-            fixed=None):
+            fixed=None, inits=None):
     """ Fit a psychometric function to binomial trials in a Pandas
     dataframe. Implements some hacky bounds on parameters, and is only
     useful for dirty eyeballing of data. For actual thresholds you should
@@ -212,6 +212,10 @@ def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
     :param function:  string, 'logistic' or 'weibull'
     :param fixed: a dictionary of fixed parameters and their values. E.g.
                   fixed={'gam': 0.5} would fix the lower asymptote to 0.5.
+    :param inits: a dict with initial values for free params, passed
+                  to optimiser. If none, default inits are used.
+                  e.g. {'m': 0.05} gives an initial threshold of 0.05.
+                  Currently only for m and w.
     """
 
     if function.lower() == 'logistic':
@@ -226,17 +230,22 @@ def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
     k = dat[k].values
     n = dat[n].values
 
-    if len(x) > 1:
-        m_init = x.mean()
-        w_init = np.abs(x.max() - x.min()) / 2
+    if inits is not None:
+        if 'm' in inits.keys():
+            m_init = inits['m']
+        else:
+            m_init = x.mean()
+
+        if 'w' in inits.keys():
+            w_init = inits['w']
+        else:
+            w_init = np.abs(x.max() - x.min()) * 2
     else:
-        # x is a scalar
         m_init = x.mean()
-        w_init = 2
+        w_init = np.abs(x.max() - x.min()) * 2
 
     if function.lower() == 'weibull':
         m_init = np.log(m_init)
-        w_init = np.log(w_init)
 
     if fixed is None:
         # all parameters are free.
@@ -315,7 +324,8 @@ def _fit_cleaner(*args, **kwargs):
 def psy_params(dat, stim_level, correct,
                grouping_variables=None,
                function='logistic',
-               fixed=None):
+               fixed=None,
+               inits=None):
     """Given a bernoulli Pandas dataframe dat, fit a psychometric function
     to the binomial trials (possibly with subsetting in a groupby operation),
     and return the psychometric function parameters as a new series or
@@ -332,6 +342,10 @@ def psy_params(dat, stim_level, correct,
                       'weibull'
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
+    :param inits: a dict with initial values for free params, passed
+                  to optimiser. If none, default inits are used.
+                  e.g. {'m': 0.05} gives an initial threshold of 0.05.
+                  Currently only for m and w.
 
     :returns:  a series or dataframe containing threshold m, width w,
                lower asymptote gam and lapse rate lam, for each grouped cell.
@@ -340,7 +354,8 @@ def psy_params(dat, stim_level, correct,
     if grouping_variables is None:
         # no group other than the stimulus levels.
         binned = binomial_binning(dat, y=correct, grouping_variables=stim_level)
-        res = _fit_cleaner(binned, x=stim_level, function=function, fixed=fixed)
+        res = _fit_cleaner(binned, x=stim_level, function=function,
+                           fixed=fixed, inits=inits)
     else:
         # group data into binomial trials, adding the stimulus level to the
         # grouping variables:
@@ -350,7 +365,8 @@ def psy_params(dat, stim_level, correct,
         res = binned.groupby(grouping_variables).apply(_fit_cleaner,
                                                        x=stim_level,
                                                        function=function,
-                                                       fixed=fixed)
+                                                       fixed=fixed,
+                                                       inits=inits)
         # reset the multiindex:
         res.reset_index(inplace=True)
 
@@ -364,6 +380,7 @@ def plot_psy_params(dat, stim_level, correct,
                     x, y,
                     function='logistic',
                     fixed=None,
+                    inits=None,
                     **kwargs):
     """ Plot the parameters of fitted psychometric functions. A wrapper
     for psy_params and Seaborn's factorplot.
@@ -381,6 +398,10 @@ def plot_psy_params(dat, stim_level, correct,
                       before plotting.
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
+    :param inits: a dict with initial values for free params, passed
+                  to optimiser. If none, default inits are used.
+                  e.g. {'m': 0.05} gives an initial threshold of 0.05.
+                  Currently only for m and w.
     :param kwargs:  keyword arguments passed to sns.factorplot, e.g. rows.
 
     :returns:  a Seaborn Facetgrid object.
@@ -401,7 +422,7 @@ def plot_psy_params(dat, stim_level, correct,
     params = psy_params(dat, stim_level, correct,
                         grouping_variables=grouping_variables,
                         function=function,
-                        fixed=fixed)
+                        fixed=fixed, inits=inits)
 
     if function == 'weibull':
         params['m'] = np.exp(params['m'])
@@ -414,6 +435,7 @@ def plot_psy_params(dat, stim_level, correct,
 def plot_psy(dat, stim_level, correct,
              function='logistic',
              fixed=None,
+             inits=None,
              errors=True,
              rule_of_succession=False,
              log_x=False,
@@ -430,6 +452,10 @@ def plot_psy(dat, stim_level, correct,
                       'weibull'
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
+    :param inits: a dict with initial values for free params, passed
+                  to optimiser. If none, default inits are used.
+                  e.g. {'m': 0.05} gives an initial threshold of 0.05.
+                  Currently only for m and w.
     :param errors:  If True, plot error bars on data points.
     :param rule_of_succession:
         if true, apply a rule-of-succession correction to the data by
@@ -504,7 +530,8 @@ def plot_psy(dat, stim_level, correct,
     params = psy_params(dat, stim_level, correct,
                         grouping_variables=grouping_variables,
                         function=function,
-                        fixed=fixed)
+                        fixed=fixed,
+                        inits=inits)
 
     print('The fitted parameters are:\n')
     print(params)
