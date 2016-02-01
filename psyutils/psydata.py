@@ -9,7 +9,6 @@ from scipy.stats import beta, binom
 from scipy.optimize import minimize
 import seaborn as sns
 import matplotlib.pyplot as plt
-import pdb
 
 
 def expand_grid(data_dict):
@@ -278,9 +277,6 @@ def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
     if res.success is False:
         raise Warning('Optimiser failed to converge!')
 
-    # if function.lower() == 'weibull':
-    #     res.x[0] = np.exp(res.x[0])
-
     return res
 
 
@@ -299,7 +295,6 @@ def _fit_cleaner(*args, **kwargs):
 
     args and kwargs are passed straight to psy_fit.
     """
-    # pdb.set_trace()
     res = psy_fit(*args, **kwargs)
     pars = res.x
 
@@ -491,7 +486,6 @@ def plot_psy(dat, stim_level, correct,
         grouping_variables = None
 
     ### Do stuff ###
-    # pdb.set_trace()
     # get the fitted parameters for each group:
     params = psy_params(dat, stim_level, correct,
                         grouping_variables=grouping_variables,
