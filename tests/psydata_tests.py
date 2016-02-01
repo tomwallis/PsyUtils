@@ -24,16 +24,16 @@ def test_binomial_binning():
                                  'correct': [0, 0, 1, 1, 1],
                                  'group': ['A', 'B']})
 
-    binned = pu.psydata.binomial_binning(df, grouping_variable='group')
+    binned = pu.psydata.binomial_binning(df, grouping_variables='group')
 
-    desired = pd.DataFrame({'ci_max': {0: 0.83251190593629287, 1: 0.83251190593629287},
-                            'ci_min': {0: 0.30790471501167721, 1: 0.30790471501167721},
-                            'error_max': {0: 0.2491785726029595, 1: 0.2491785726029595},
-                            'error_min': {0: 0.27542861832165616, 1: 0.27542861832165616},
+    desired = pd.DataFrame({'ci_max': {0: 0.86300433773483354, 1: 0.86300433773483354},
+                            'ci_min': {0: 0.29929505620854041, 1: 0.29929505620854041},
+                            'error_max': {0: 0.26300433773483356, 1: 0.26300433773483356},
+                            'error_min': {0: 0.30070494379145957, 1: 0.30070494379145957},
                             'group': {0: 'A', 1: 'B'},
-                            'n_successes': {0: 7, 1: 7},
-                            'n_trials': {0: 12, 1: 12},
-                            'prop_corr': {0: 0.58333333333333337, 1: 0.58333333333333337}})
+                            'n_successes': {0: 6, 1: 6},
+                            'n_trials': {0: 10, 1: 10},
+                            'prop_corr': {0: 0.59999999999999998, 1: 0.59999999999999998}})
 
     binned.sort_index(axis=1, inplace=True)
     desired.sort_index(axis=1, inplace=True)
