@@ -8,6 +8,7 @@ import itertools as it
 from scipy.stats import beta, binom
 from scipy.optimize import minimize
 import seaborn as sns
+import matplotlib.pyplot as plt
 import pdb
 
 
@@ -191,7 +192,7 @@ def _loss_fun(pars, x, k, n, S, fixed):
 
     """
     yhat = psy_pred(pars, x, S, fixed)
-    ll = binom.logcdf(k, n, yhat)
+    ll = binom.logpmf(k, n, yhat)
     return -ll.sum()
 
 
@@ -232,8 +233,9 @@ def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
         m_init = x.mean()
         w_init = 2
 
-    # if function.lower() == 'weibull':
-    #     m_init = np.log(m_init)
+    if function.lower() == 'weibull':
+        m_init = np.log(m_init)
+        w_init = np.log(w_init)
 
     if fixed is None:
         # all parameters are free.
@@ -275,6 +277,10 @@ def psy_fit(dat, x, k='n_successes', n='n_trials', function='logistic',
 
     if res.success is False:
         raise Warning('Optimiser failed to converge!')
+
+    # if function.lower() == 'weibull':
+    #     res.x[0] = np.exp(res.x[0])
+
     return res
 
 
@@ -283,9 +289,6 @@ def psy_pred(pars, x, S, fixed=None):
     parameters pars and the fixed parameter dict.
     """
     m, w, lam, gam = _parameter_assignment(pars, fixed)
-
-    if S.__name__ == 'weibull':
-        m = np.log(m)
 
     return scaled(x, m, w, lam, gam, S)
 
@@ -358,7 +361,6 @@ def psy_params(dat, stim_level, correct,
 
 def plot_psy_params(dat, stim_level, correct,
                     x, y,
-                    grouping_variables=None,
                     function='logistic',
                     fixed=None,
                     **kwargs):
@@ -373,18 +375,26 @@ def plot_psy_params(dat, stim_level, correct,
     :param x:  string, the variable to plot on the x-axis.
                Should be categorical.
     :param y:  string, the parameter to plot on the y-axis (m, w, lam, gam).
-    :param grouping_variables:  a string or list of strings containing columns
-                                of dat to group by.
     :param function:  psychometric function to fit; either 'logistic' or
-                      'weibull'
+                      'weibull'. If Weibull, thresholds will be exponentiated
+                      before plotting.
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
-    :param kwargs:  keyword arguments passed to sns.factorplot.
+    :param kwargs:  keyword arguments passed to sns.factorplot, e.g. rows.
 
-    :returns:  a series or dataframe containing threshold m, width w,
-               lower asymptote gam and lapse rate lam, for each grouped cell.
+    :returns:  a Seaborn Facetgrid object.
 
     """
+
+    # determine grouping variables from kwargs to FacetGrid:
+    grouping_variables = [x]
+
+    if 'hue' in kwargs.keys():
+        grouping_variables.append(kwargs['hue'])
+    if 'row' in kwargs.keys():
+        grouping_variables.append(kwargs['row'])
+    if 'col' in kwargs.keys():
+        grouping_variables.append(kwargs['col'])
 
     # get the fitted parameters for each group:
     params = psy_params(dat, stim_level, correct,
@@ -392,16 +402,19 @@ def plot_psy_params(dat, stim_level, correct,
                         function=function,
                         fixed=fixed)
 
+    if function == 'weibull':
+        params['m'] = np.exp(params['m'])
+
     g = sns.factorplot(x, y, data=params, **kwargs)
+    sns.despine(trim=True, offset=5)
     return g
 
 
 def plot_psy(dat, stim_level, correct,
-             x, y,
-             grouping_variables=None,
              function='logistic',
              fixed=None,
-             jitter=True,
+             errors=True,
+             rule_of_succession=False,
              **kwargs):
     """ Fit and plot psychometric functions. A wrapper
     for psy_params and Seaborn's FacetGrid.
@@ -411,74 +424,147 @@ def plot_psy(dat, stim_level, correct,
                         stimulus level.
     :param correct:  string, the name of the column containing bernoulli
                trial (correct / incorrect).
-    :param x:  string, the variable to plot on the x-axis.
-               Should be categorical.
-    :param y:  string, the parameter to plot on the y-axis (m, w, lam, gam).
-    :param grouping_variables:  a string or list of strings containing columns
-                                of dat to group by.
     :param function:  psychometric function to fit; either 'logistic' or
                       'weibull'
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
-    :param jitter:  jitter the x-position of the points (true or false).
+    :param errors:  If True, plot error bars on data points.
     :param kwargs:  keyword arguments passed to FacetGrid. e.g. facet by rows.
 
-    :returns:  a series or dataframe containing threshold m, width w,
-               lower asymptote gam and lapse rate lam, for each grouped cell.
+    :returns:  a Seaborn FacetGrid object.
 
     """
+    # helper plot subfunctions:
+    def _plot_test(*args, **kwargs):
+        data = kwargs.pop('data')
+        x_col, = args
+        plt.plot(data[x_col], data['yhat'])
 
+    def _plot_chance(*args, **kwargs):
+        data = kwargs.pop('data')
+        x_col, lower_bound = args
+        plt.plot((data[x_col].min(), data[x_col].max()),
+                 (lower_bound, lower_bound),
+                 ls='--', color='0.7')
+
+    def _plot_curves(*args, **kwargs):
+        data = kwargs.pop('data')
+        x_col, y_col = args
+        plt.plot(data[x_col], data[y_col],
+                 ls='-', marker=None, **kwargs)
+
+    def _plot_points(*args, **kwargs):
+        data = kwargs.pop('data')
+        x_col, y_col = args
+        plt.plot(data[x_col], data[y_col],
+                 mew=1,
+                 mec='w',
+                 marker='o',
+                 ls='',
+                 **kwargs)
+
+    def _plot_errors(*args, **kwargs):
+        data = kwargs.pop('data')
+        x_col, y_col = args
+        errors = np.vstack([data['error_min'],
+                            data['error_max']])
+        plt.errorbar(data[x_col],
+                     data[y_col],
+                     yerr=errors,
+                     mew=1,
+                     mec='w',
+                     capsize=0,
+                     marker='o',
+                     ls='',
+                     **kwargs)
+
+    # determine grouping variables from kwargs to FacetGrid:
+    grouping_variables = []
+    if 'hue' in kwargs.keys():
+        grouping_variables.append(kwargs['hue'])
+    if 'row' in kwargs.keys():
+        grouping_variables.append(kwargs['row'])
+    if 'col' in kwargs.keys():
+        grouping_variables.append(kwargs['col'])
+
+    if len(grouping_variables) == 0:
+        grouping_variables = None
+
+    ### Do stuff ###
+    # pdb.set_trace()
     # get the fitted parameters for each group:
     params = psy_params(dat, stim_level, correct,
                         grouping_variables=grouping_variables,
                         function=function,
                         fixed=fixed)
 
-    # plot as a stripplot:
-    g = sns.FacetGrid(params, **kwargs)
-    g.map(sns.stripplot, x, y, jitter=jitter)
+    print('The fitted parameters are:\n')
+    print(params)
+    print('\nRun pu.psydata.psy_params to get this data')
+
+    # generate binned data for plotting:
+    if grouping_variables is None:
+        # no group other than the stimulus levels.
+        binned = binomial_binning(dat,
+                                  y=correct,
+                                  grouping_variables=stim_level,
+                                  rule_of_succession=rule_of_succession)
+    else:
+        # group data into binomial trials, adding the stimulus level to the
+        # grouping variables:
+        binned = binomial_binning(dat,
+                                  y=correct,
+                                  grouping_variables=grouping_variables + [stim_level],
+                                  rule_of_succession=rule_of_succession)
+
+    if function.lower() == 'logistic':
+        S = logistic
+    elif function.lower() == 'weibull':
+        S = weibull
+    else:
+        raise NotImplementedError
+
+    # generate predictions for each level along a longer vector:
+    x_pred = np.linspace(dat[stim_level].min(),
+                         dat[stim_level].max(), num=50)
+
+    cum_pred = pd.DataFrame()
+
+    # probably a much nicer way to do this:
+    if grouping_variables is not None:
+        for i in range(len(params)):
+            pars = np.array([params.ix[i, 'm'], params.ix[i, 'w'],
+                             params.ix[i, 'lam'], params.ix[i, 'gam']])
+            yhat = psy_pred(pars, x_pred, S)
+            this_dat = pd.DataFrame({stim_level: x_pred, 'yhat': yhat})
+
+            # so fugly:
+
+            for j in grouping_variables:
+                this_dat[j] = params.ix[i, j]
+
+            cum_pred = cum_pred.append(this_dat, ignore_index=True)
+    else:
+        pars = np.array([params['m'], params['w'],
+                         params['lam'], params['gam']])
+        yhat = psy_pred(pars, x_pred, S)
+        this_dat = pd.DataFrame({stim_level: x_pred, 'yhat': yhat})
+        cum_pred = cum_pred.append(this_dat, ignore_index=True)
+
+    # append data and predictions for plotting:
+    plot_dat = binned.append(cum_pred)
+
+    # do plot:
+    g = sns.FacetGrid(data=plot_dat, dropna=False, **kwargs)
+    g.map_dataframe(_plot_chance, stim_level, 0.5)
+    g.map_dataframe(_plot_curves, stim_level, 'yhat')
+    if errors is True:
+        g.map_dataframe(_plot_errors, stim_level, 'prop_corr')
+    else:
+        g.map_dataframe(_plot_points, stim_level, 'prop_corr')
+
+    # a few aesthetics; can be changed:
+    g.set(yticks=np.linspace(0, 1, num=5))
+    g.set_ylabels('P(c)')
+    sns.despine(trim=True, offset=5)
     return g
-
-
-# def plot_psy(dat, stim_level, correct,
-#              x, y,
-#              grouping_variables=None,
-#              function='logistic',
-#              fixed=None,
-#              jitter=True,
-#              **kwargs):
-#     """ Fit and plot psychometric functions. A wrapper
-#     for psy_params and Seaborn's FacetGrid.
-
-#     :param dat:  the Pandas dataframe containing bernoulli trials.
-#     :param stim_level:  string, the name of the column containing
-#                         stimulus level.
-#     :param correct:  string, the name of the column containing bernoulli
-#                trial (correct / incorrect).
-#     :param x:  string, the variable to plot on the x-axis.
-#                Should be categorical.
-#     :param y:  string, the parameter to plot on the y-axis (m, w, lam, gam).
-#     :param grouping_variables:  a string or list of strings containing columns
-#                                 of dat to group by.
-#     :param function:  psychometric function to fit; either 'logistic' or
-#                       'weibull'
-#     :param fixed: a dict containing parameters to fix,
-#                   e.g. {'gam': .5} for 2AFC.
-#     :param jitter:  jitter the x-position of the points (true or false).
-#     :param kwargs:  keyword arguments passed to FacetGrid. e.g. facet by rows.
-
-#     :returns:  a series or dataframe containing threshold m, width w,
-#                lower asymptote gam and lapse rate lam, for each grouped cell.
-
-#     """
-
-#     # get the fitted parameters for each group:
-#     params = psy_params(dat, stim_level, correct,
-#                         grouping_variables=grouping_variables,
-#                         function=function,
-#                         fixed=fixed)
-
-#     # plot as a stripplot:
-#     g = sns.FacetGrid(params, **kwargs)
-#     g.map(sns.stripplot, x, y, jitter=jitter)
-#     return g
