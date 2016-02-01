@@ -4,11 +4,13 @@
 from __future__ import print_function, division
 import numpy as np
 import pandas as pd
+import os
 import itertools as it
 from scipy.stats import beta, binom
 from scipy.optimize import minimize
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pdb
 
 
 def expand_grid(data_dict):
@@ -351,6 +353,10 @@ def psy_params(dat, stim_level, correct,
                                                        fixed=fixed)
         # reset the multiindex:
         res.reset_index(inplace=True)
+
+    # need to do some type checking: if m is the only free parameter then
+    # it returns as an array. Avoid this:
+    res.loc[:, 'm'] = res['m'].astype(np.float)
     return res
 
 
@@ -410,6 +416,7 @@ def plot_psy(dat, stim_level, correct,
              fixed=None,
              errors=True,
              rule_of_succession=False,
+             log_x=False,
              **kwargs):
     """ Fit and plot psychometric functions. A wrapper
     for psy_params and Seaborn's FacetGrid.
@@ -424,6 +431,13 @@ def plot_psy(dat, stim_level, correct,
     :param fixed: a dict containing parameters to fix,
                   e.g. {'gam': .5} for 2AFC.
     :param errors:  If True, plot error bars on data points.
+    :param rule_of_succession:
+        if true, apply a rule-of-succession correction to the data by
+        adding 1 success and one failure to the total number of trials.
+        This is essentially a prior acknowledging the possibility of both
+        successes and failures, and is used to correct for values with
+        proportions of 0 or 1 (to e.g. allow estimation of beta errors).
+    :param log_x:  if true, the x-axis will be plotted on a log scale.
     :param kwargs:  keyword arguments passed to FacetGrid. e.g. facet by rows.
 
     :returns:  a Seaborn FacetGrid object.
@@ -519,8 +533,14 @@ def plot_psy(dat, stim_level, correct,
         raise NotImplementedError
 
     # generate predictions for each level along a longer vector:
-    x_pred = np.linspace(dat[stim_level].min(),
-                         dat[stim_level].max(), num=50)
+    if log_x is True:
+        x_pred = np.linspace(np.log(dat[stim_level].min()),
+                             np.log(dat[stim_level].max()), num=50)
+        x_pred = np.exp(x_pred)
+
+    else:
+        x_pred = np.linspace(dat[stim_level].min(),
+                             dat[stim_level].max(), num=50)
 
     cum_pred = pd.DataFrame()
 
@@ -548,6 +568,10 @@ def plot_psy(dat, stim_level, correct,
     # append data and predictions for plotting:
     plot_dat = binned.append(cum_pred)
 
+    if log_x is True:
+        plot_dat['log_x'] = np.log(plot_dat[stim_level])
+        stim_level = 'log_x'
+
     # do plot:
     g = sns.FacetGrid(data=plot_dat, dropna=False, **kwargs)
     g.map_dataframe(_plot_chance, stim_level, 0.5)
@@ -560,9 +584,19 @@ def plot_psy(dat, stim_level, correct,
     # a few aesthetics; can be changed:
     g.set(yticks=np.linspace(0, 1, num=5))
     g.set(ylim=(-0.1, 1.1))
-    x_range = dat[stim_level].max() - dat[stim_level].min()
-    g.set(xlim=(dat[stim_level].min() - x_range * .05,
-                dat[stim_level].max() + x_range * .05))
+    x_range = plot_dat[stim_level].max() - plot_dat[stim_level].min()
+    g.set(xlim=(plot_dat[stim_level].min() - x_range * .05,
+                plot_dat[stim_level].max() + x_range * .05))
     g.set_ylabels('P(c)')
     sns.despine(trim=True, offset=5)
     return g
+
+
+def load_psy_data():
+    """Returns (simulated) psychometric function data as a Pandas
+    dataframe for demo purposes.
+
+    """
+    this_dir = os.path.abspath(os.path.dirname(__file__))
+    fname = os.path.join(this_dir, 'data', 'contrast_data.csv')
+    return pd.read_csv(fname)
