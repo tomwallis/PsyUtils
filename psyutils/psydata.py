@@ -559,6 +559,10 @@ def plot_psy(dat, stim_level, correct,
 
     # a few aesthetics; can be changed:
     g.set(yticks=np.linspace(0, 1, num=5))
+    g.set(ylim=(-0.1, 1.1))
+    x_range = dat[stim_level].max() - dat[stim_level].min()
+    g.set(xlim=(dat[stim_level].min() - x_range * .05,
+                dat[stim_level].max() + x_range * .05))
     g.set_ylabels('P(c)')
     sns.despine(trim=True, offset=5)
     return g

@@ -2,4 +2,4 @@ v0.1.0, 2014.01.19 -- Initial release.
 v1.0.0, 2014.05.12 -- version 1.0 release; abstracted grid creation from filters.
 v1.0.1, 2015.07.26 -- Moved some functions into "plotting" submodule of psyutils.image. Only use freeimage plugin to save 16 bit images; otherwise defaults to scikit-image default plugin. Commented run_tests.sh since this didn't work as intended. Just call nosetests in my normal env for now. Added a dirty hack function to plot orientations.
 ----- somehow missed some version numbers relative to setup.py. oops.
-v1.1.3,  2016.01.27 -- new psydata module, with some common helper functions for dealing with psychophysical data. 
+v1.1.3,  2016.01.27 -- new psydata module, with some common helper functions for dealing with psychophysical data. Pretty hacky and mostly untested.
