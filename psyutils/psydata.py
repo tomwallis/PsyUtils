@@ -356,7 +356,7 @@ def psy_params(dat, stim_level, correct,
 
     # need to do some type checking: if m is the only free parameter then
     # it returns as an array. Avoid this:
-    res.loc[:, 'm'] = res['m'].astype(np.float)
+    res['m'] = res['m'].astype(np.float)
     return res
 
 
