@@ -11,6 +11,7 @@ psyutils/dist.py
 psyutils/files.py
 psyutils/im_data.py
 psyutils/misc.py
+psyutils/psydata.py
 psyutils/image/__init__.py
 psyutils/image/_axes.py
 psyutils/image/_eccentricity.py

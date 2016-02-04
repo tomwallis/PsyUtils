@@ -30,3 +30,5 @@ testing_image_utilities.ipynb
 window tests.ipynb
 
 write_tests.ipynb
+
+build/lib/*

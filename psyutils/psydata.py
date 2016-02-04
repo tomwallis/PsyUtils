@@ -601,7 +601,11 @@ def plot_psy(dat, stim_level, correct,
 
     # do plot:
     g = sns.FacetGrid(data=plot_dat, dropna=False, **kwargs)
-    g.map_dataframe(_plot_chance, stim_level, 0.5)
+
+    if fixed is not None:
+        if 'gam' in fixed.keys():
+            g.map_dataframe(_plot_chance, stim_level, fixed['gam'])
+
     g.map_dataframe(_plot_curves, stim_level, 'yhat')
     if errors is True:
         g.map_dataframe(_plot_errors, stim_level, 'prop_corr')
