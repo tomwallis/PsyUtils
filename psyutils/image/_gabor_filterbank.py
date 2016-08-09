@@ -36,8 +36,8 @@ def _convolve(img, filt):
     Wrapper doing padding. Adapted from David Janssen,
     with thanks. """
 
-    padx = filt.shape[1] / 2
-    pady = filt.shape[0] / 2
+    padx = filt.shape[1] // 2
+    pady = filt.shape[0] // 2
     imat = np.pad(img,
                   ((padx, padx), (pady, pady)),
                   mode='mean')
