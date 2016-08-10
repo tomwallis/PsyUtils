@@ -28,7 +28,9 @@ __all__ = ['tiger',
            'tiger_square',
            'tiger_grey',
            'sloan_letters',
-           'orientation_test']
+           'orientation_test',
+           'orientation_test_2',
+           'single_bar']
 
 
 def _load(f, **kwargs):
@@ -123,6 +125,19 @@ def orientation_test_2():
 
     """
     return _load("orientations_test_2.png", as_grey=True)
+
+
+def single_bar():
+    """Grey image containing single bar. Could be rotated.
+
+    Args:
+        none
+
+    Returns:
+        img : ndarray
+
+    """
+    return _load("single_bar.png", as_grey=True)
 
 
 def sloan_letters():
