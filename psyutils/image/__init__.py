@@ -32,6 +32,10 @@ from ._gabor_filterbank import(gabor_create, gaborbank_vis,
                                gaborbank_orientation_variance,
                                gaborbank_orientation_vis)
 
+from ._spectral_analysis import(spectral_analysis_fft,
+                                spectral_analysis,
+                                spectral_analysis_plot)
+
 from ._windowing import (cos_win_1d, gaussian_2d, cos_win_2d, wedge_win)
 
 from ._filters import (make_filter_generic,
@@ -81,6 +85,9 @@ __all__ = ['unpack_container',
            'gaborbank_phase_angle',
            'gaborbank_orientation_variance',
            'gaborbank_orientation_vis',
+           'spectral_analysis_fft',
+           'spectral_analysis',
+           'spectral_analysis_plot',
            'make_filter_generic',
            'make_filter_lowpass',
            'make_filter_highpass',

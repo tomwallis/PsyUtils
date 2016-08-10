@@ -44,3 +44,5 @@ def show_im(im, n_digits=3, colorbar=False):
 
     if colorbar == True:
         plt.colorbar();
+
+    plt.axis("off")

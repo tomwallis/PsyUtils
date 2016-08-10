@@ -152,7 +152,11 @@ def gaborbank_convolve(img,
         ppd:
             the number of pixels per degree of visual angle
             for the viewing conditions you want. This allows
-            you to specify filter frequencies in cycles per degree.
+            you to specify filter frequencies in cycles per degree. If
+            you set this value to 1, frequencies are specified in cycles
+            per pixel.
+            That is, to set filters in cycles per image,
+            take freq_cpi / imsize and set ppd = 1.
         **kwargs:
             keyword arguments passed to gabor_create.
 

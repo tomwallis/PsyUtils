@@ -34,7 +34,7 @@ You could do things like this::
 
 ## Dependencies
 
-Psyutils depends on numpy, scipy, and scikit-image.
+Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
 
 ## Testing
 
