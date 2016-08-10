@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: PsyUtils
-Version: 1.1.4
+Version: 1.2.1
 Summary: Utility functions for psychophysical experiments and                 stimuli.
 Home-page: http://github.com/tomwallis/PsyUtils
 Author: Thomas S. A. Wallis
@@ -42,7 +42,7 @@ Description: #Psy Utils
         
         ## Dependencies
         
-        Psyutils depends on numpy, scipy, and scikit-image.
+        Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
         
         ## Testing
         

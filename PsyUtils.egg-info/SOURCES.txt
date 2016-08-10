@@ -20,4 +20,5 @@ psyutils/image/_gabor_filterbank.py
 psyutils/image/_image_utilities.py
 psyutils/image/_misc.py
 psyutils/image/_plot.py
+psyutils/image/_spectral_analysis.py
 psyutils/image/_windowing.py
