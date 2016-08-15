@@ -1,5 +1,8 @@
 #Psy Utils
 
+[![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
+
+
 The ``psyutils`` package is a collection of utility functions useful
 for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.
 
