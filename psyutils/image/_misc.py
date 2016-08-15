@@ -83,7 +83,7 @@ def grid_distort(im, x_offset, y_offset,
     return(z_new)
 
 
-def make_filtered_noise(filt):
+def make_filtered_noise(filt, rng=None):
     """Create a patch of filtered noise, the same size as filt.
     This function makes a patch of filtered noise of
     the same shape as filt. It is a wrapper for ``filter_image``
@@ -93,6 +93,8 @@ def make_filtered_noise(filt):
     Args:
         filt (float): a filter, centred in the fourier domain.
         See documentation for make_filter for other arguments.
+        rng: (optional) a numpy random number generator, created by
+            np.random.RandomState.
 
     Returns:
         image (float): a filtered noise image.
@@ -105,10 +107,14 @@ def make_filtered_noise(filt):
         pu.image.show_im(im)
 
     """
-    from numpy.random import rand
     from psyutils.image import filter_image
+    if rng is None:
+        from numpy.random import rand
+        noise = rand(filt.shape[0], filt.shape[1])
+    else:
+        # user specified rng:
+        noise = rng.rand(filt.shape[0], filt.shape[1])
 
-    noise = rand(filt.shape[0], filt.shape[1])
     filt_noise = filter_image(noise, filt)
     return(filt_noise)
 

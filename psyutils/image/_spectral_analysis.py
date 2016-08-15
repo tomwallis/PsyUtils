@@ -7,7 +7,7 @@
 from __future__ import print_function, division
 import numpy as np
 import matplotlib.pyplot as plt
-import warnings
+import psyutils as pu
 
 
 def spectral_analysis_fft(im):
@@ -43,43 +43,50 @@ def spectral_analysis_fft(im):
 
 
 def spectral_analysis(im,
-                      sf_band=5,
+                      sf_band=2,
                       sf_step=1,
-                      ori_band=12,
+                      ori_band=10,
                       ori_step=4,
                       angular_mode="direction"):
     """Return the mean amplitude for different radii,
     averaging over angle; and for different angles
     averaging over radii. That is, returns spectral
     power as a function of spatial frequency (c/img) and
-    orientation.
+    orientation. Averaging is done using Gaussian sliding windows.
 
     Orientation results for the "direction" mode map directly onto
     the fft amplitude space: starting at zero at 3 o'clock ("right")
     and moving counterclockwise through 2 pi. So horizontal energy is
     horizontal modulation (i.e. "vertical" edges), vertical energy is
-    *horizontal* edges, etc.
+    *horizontal* edges, and the distribution for most images will be
+    symmetrical, resulting from the approximately equal power for each
+    edge polarity.
 
-    Warning: the results will critically depend on the bandwidths and
-    step sizes and their interactions with image size.
-
+    Orientation results for the "orientation" mode average over the
+    edges of opposite polarities (using a "bowtie"-shaped filter).
+    The returned angles run from 0 to pi (180 degrees), where horizontal
+    (0 / pi) is horizontal modulation, pi/2 is vertical modulation, etc.
+    For polar plots it may be nicer to multiply this by two.
 
     Args:
         im:
             (2D numpy array). The image to analyse.
         sf_band:
-            the bandwidth of the sliding window for frequency,
+            the bandwidth of the sliding window for frequency
+            (SD of the Gaussian),
             in cycles per image (pixels).
         sf_step:
             the step size of the sliding window for frequency,
             in pixels.
         ori_band:
-            the bandwidth of the angular sliding window,
+            the bandwidth of the angular sliding window
+            (SD of the Gaussian),
             in degrees.
         ori_step:
             the step size of the angular sliding window,
             in degrees.
-
+        angular_mode:
+            Mode of the angular averaging (see above).
     Returns:
         A dict containing:
             'freq': vector of frequencies (c / img)
@@ -93,10 +100,6 @@ def spectral_analysis(im,
 
     """
 
-    # warnings.warn("These functions are not well tested! Orientation results \
-    #     in particular will depend on the \
-    #     orientation bandwidth and step size.")
-
     # check inputs
     if len(im.shape) > 2:
         raise ValueError("not currently defined for > 2D images")
@@ -104,20 +107,16 @@ def spectral_analysis(im,
     # do fft:
     A, P, F = spectral_analysis_fft(im)
 
-    # not using psyutils internal axes because it's easier to
-    # define here with pixel units -- return result as cycles per image.
-    # get centred grid axes:
-    x, y = np.meshgrid(range(A.shape[1]), range(A.shape[0]))
-    x = x - np.max(x)/2
-    y = y - np.max(y)/2
-
-    freq, freq_amp = _do_radial_scan(x, y, A, sf_band, sf_step)
+    freq, freq_amp = _do_radial_scan(A, sf_band, sf_step)
 
     if angular_mode == "direction":
-        ang, ang_amp = _do_angular_scan_1(x, y, A, ori_band, ori_step)
+        ang, ang_amp = _do_angular_scan(A,
+                                        ori_band, ori_step,
+                                        symmetric=False)
     elif angular_mode == "orientation":
-        raise ValueError("Not yet implemented, sorry!")
-        # ang, ang_amp = _do_angular_scan_2(x, y, A, ori_band)
+        ang, ang_amp = _do_angular_scan(A,
+                                        ori_band, ori_step,
+                                        symmetric=True)
     else:
         raise ValueError("unknown angular mode")
 
@@ -127,39 +126,46 @@ def spectral_analysis(im,
             'ang_amp': ang_amp}
 
 
-def _do_radial_scan(x, y, A, sf_band, sf_step):
+def _do_radial_scan(A, sf_band, sf_step):
     """
     Internal function for computing the radial part of the spectral analysis.
+    Uses a radial Gaussian sliding window.
     """
-    # Compute distances from center
-    radius = np.hypot(x, y)
 
     finished = 0
     inc = 0
     freq = []
     freq_amp = []
     while finished == 0:
-        start = 0 + inc
-        end = start + sf_band
-        mid_freq = np.mean([start, end])
-        freq.append(mid_freq)  # this frequency centre
-        mask = np.zeros(A.shape, dtype=bool)
-        mask[(radius <= end) * (radius >= start)] = True
-        # Do not include the zero-th frequency (overall luminance)
-        mask[x.shape[0]//2, y.shape[0]//2] = False
+        peak = 1 + inc  # start from 1 cpi
+        freq.append(peak)  # this frequency centre
 
-        # this average amplitude:
-        freq_amp.append(np.mean(A[mask].flatten())/A.size)
-        inc += sf_step  # in pixel unit of radius increments.
-        if mid_freq >= x.shape[0]/2:
-            # if middle freq greater than or equal to nyquist:
+        mask = pu.image.make_filter_gaussian(A.shape, peak=peak,
+                                             width=sf_band,
+                                             pixel_units=True,
+                                             zero_mean=True)
+        mask[mask < 0.01] = 0  # cut tails of Gaussian
+
+        # mask = pu.image.make_filter_log_cosine(A.shape, peak=peak,
+        #                                        pixel_units=True,
+        #                                        zero_mean=True)
+
+        res = A * mask
+        # take mean of nonzero region:
+        mean = np.mean(res[res > 0])
+        freq_amp.append(mean)
+
+        inc += sf_step  # in pixel unit of radial increments (cpi).
+        if peak >= A.shape[0]/2:
+            # if freq greater than or equal to nyquist:
             finished = 1
     return freq, freq_amp
 
 
-def _do_angular_scan_1(x, y, A, ori_band, ori_step):
+def _do_angular_scan(A, ori_band, ori_step, symmetric):
     """
-    Internal function to scan through orientations.
+    Internal function to scan through orientations by applying
+    an angular Gaussian filter.
 
     This one returns angular values corresponding directly
     to the fourier amplitude spectrum. That is, it scans from
@@ -171,124 +177,47 @@ def _do_angular_scan_1(x, y, A, ori_band, ori_step):
     and e.g. pi/4 is a "/" modulation (i.e. "\" edge).
 
     """
-    # angle goes from 0 through 2*pi, counterclockwise; zero is "right":
-    angle = np.arctan2(y, -x)
-    angle += np.pi
-
-    ori_band *= (np.pi / 180)  # convert deg to rad
-    ori_step *= (np.pi / 180)
 
     # scan through:
     finished = 0
     inc = 0
     ang = []
     ang_amp = []
+
+    if symmetric is True:
+        # bowtie, running 0-180
+        end_angle = 180
+    elif symmetric is False:
+        end_angle = 360
+
     while finished == 0:
-        mid_angle = 0 + inc
-        lower_angle = mid_angle - ori_band / 2
-        upper_angle = mid_angle + ori_band / 2
-        ang.append(mid_angle)
+        peak = 0 + inc
+        ang.append(peak)
 
-        # create a symmetric wedge (average over edge phases):
-        mask = np.zeros(A.shape, dtype=bool)
+        mask = pu.image.make_filter_orientation_gaussian(A.shape,
+                                                         peak=peak,
+                                                         width=ori_band,
+                                                         symmetric=symmetric,
+                                                         pixel_units=True,
+                                                         zero_mean=True)
 
-        # hacky way to get angles of wedge right. I'm sure there's a
-        # more sensible and easier way.
-        if lower_angle < 0:
-            lower_angle = np.mod(lower_angle, 2 * np.pi)  # wrap
-            mask[(angle >= lower_angle) *
-                 (angle <= (2 * np.pi))] = True
-            mask[(angle <= upper_angle) *
-                 (angle >= 0)] = True
-        elif upper_angle > (2 * np.pi):
-            upper_angle = np.mod(upper_angle, 2 * np.pi)  # wrap
-            mask[(angle >= 0) *
-                 (angle <= upper_angle)] = True
-            mask[(angle <= 2 * np.pi) *
-                 (angle >= lower_angle)] = True
-        else:
-            mask[(angle >= lower_angle) * (angle <= upper_angle)] = True
+        mask[mask < 0.01] = 0
 
-        # Do not include the zero-th frequency (overall luminance)
-        mask[x.shape[0]//2, y.shape[0]//2] = False
-
-        # this average amplitude:
-        ang_amp.append(np.mean(A[mask].flatten())/A.size)
+        res = A * mask
+        # take mean of nonzero region:
+        mean = np.mean(res[res > 0])
+        ang_amp.append(mean)
         inc += ori_step
-        if mid_angle >= (2 * np.pi):
+        if peak >= end_angle:
             finished = 1
+
+    # convert deg to radians:
+    ang = np.array(ang, dtype=np.float)
+    ang /= (180 / np.pi)
     return ang, ang_amp
 
 
-# def _do_angular_scan_2(x, y, A, ori_band, ori_step):
-#     """
-#     Internal function to scan through orientations.
-
-#     This one returns "orientation" values by averaging with
-#     "bowtie-shaped" regions (that is, edges of opposite polarities are
-#     averaged over).
-
-#     The returned angles run from 0--2pi, where
-
-#     """
-#     # angle goes from -pi through pi, clockwise; zero is "right":
-#     angle = np.arctan2(y, x)
-
-#     # gives "bowtie" wrap, running 0-->pi clockwise on top,
-#     # 0 --> pi clockwise on bottom. i.e. pi = left / right in
-#     # fourier amplitude space (vertical edges in image domain)
-#     # and pi/2 gives vertical in fourier spectrum (horizontal
-#     # edges in image space).
-#     angle[angle < 0] += np.pi
-
-#     # angles -----------------------------------
-#     ori_band *= (np.pi / 180)  # convert deg to rad
-#     ori_step *= (np.pi / 180)
-
-#     # scan through:
-#     finished = 0
-#     inc = 0
-#     ang = []
-#     ang_amp = []
-#     while finished == 0:
-#         mid_angle = 0 + inc
-#         lower_angle = mid_angle - ori_band / 2
-#         upper_angle = mid_angle + ori_band / 2
-#         ang.append(mid_angle)
-#         print(mid_angle, lower_angle, upper_angle, inc)
-
-#         # create a symmetric wedge (average over edge phases):
-#         mask = np.zeros(A.shape, dtype=bool)
-
-#         # hacky way to get angles of bowtie right. I'm sure there's a
-#         # more sensible and easier way.
-#         if lower_angle < 0:
-#             lower_angle += np.pi
-#             mask[(angle >= lower_angle) *
-#                  (angle <= (mid_angle + np.pi))] = True
-#             mask[(angle <= upper_angle) *
-#                  (angle >= mid_angle)] = True
-#         elif upper_angle > np.pi:
-#             upper_angle -= np.pi
-#             mask[(angle >= (mid_angle - np.pi)) *
-#                  (angle <= upper_angle)] = True
-#             mask[(angle <= mid_angle) *
-#                  (angle >= lower_angle)] = True
-#         else:
-#             mask[(angle >= lower_angle) * (angle <= upper_angle)] = True
-
-#         # Do not include the zero-th frequency (overall luminance)
-#         mask[x.shape[0]//2, y.shape[0]//2] = False
-
-#         # this average amplitude:
-#         ang_amp.append(np.mean(A[mask].flatten())/A.size)
-#         inc += ori_step
-#         if mid_angle >= np.pi:
-#             finished = 1
-#     return ang, ang_amp
-
-
-def spectral_analysis_plot(d):
+def spectral_analysis_plot(d, angular_mode="direction"):
     """
     Plot the power spectrum as a function of spatial frequency and orientation.
 
@@ -301,9 +230,13 @@ def spectral_analysis_plot(d):
     plt.figure(figsize=(10, 5))
 
     plt.subplot(1, 2, 1)
-    plt.plot(np.log(d['freq']), np.log(d['freq_amp']), 'k-')
-    plt.xlabel('Log Frequency Band')
+    plt.plot(np.log2(d['freq']), np.log(d['freq_amp']), 'k-')
+    plt.xlabel('Log2 Frequency Band (Octaves)')
     plt.ylabel('Log Mean Amplitude')
+
+    if angular_mode == "orientation":
+        # correct axes:
+        d['ang'] = d['ang'] * 2
 
     plt.subplot(1, 2, 2, projection="polar")
     plt.plot(d['ang'], d['ang_amp'], 'k-')

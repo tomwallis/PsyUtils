@@ -110,13 +110,24 @@ def parse_size(*args):
 #-----------------------------------------------------------------------------#
 
 
-def convert_to_polar(x, y):
+def convert_to_polar(x, y, mode="1"):
     """Return a polar representation of x, y
 
     Returns a tuple containing: (radial, angular) component
 
     """
-    return np.sqrt(x**2 + y**2), np.arctan2(y, x)
+
+    r = np.hypot(x, y)
+
+    if mode == "1":
+        a = np.arctan2(y, x)
+    elif mode == "2":
+        a = np.arctan2(y, -x)
+        a += np.pi
+    else:
+        raise ValueError("Unknown mode")
+
+    return r, a
 
 
 def convert_to_log(x, zero_case=None):
@@ -206,7 +217,7 @@ def axes_cart(size, axes_limits=1, angle=0):
     return rotate_cartesian(x, y, angle)
 
 
-def axes_polar(size, axes_limits=1, angle=0):
+def axes_polar(size, axes_limits=1, angle=0, mode="1"):
     """Return two numpy arrays of radial and angular coordinates
     Check the documentation on parse_size and parse_axes_limits to see how size
     and lims can be specified.
@@ -219,6 +230,11 @@ def axes_polar(size, axes_limits=1, angle=0):
             (min_x, max_x, min_y, max_y) of the grid. Defaults to -1, 1.
         angle (optional):
             angle to rotate the axes (in radians).
+        mode (optional, can be either "1" or "2"):
+            in mode "1", returned axes run -pi to pi, counterclockwise,
+            starting from left.
+            in mode "2", returned axes run 0-2*pi, counterclockwise,
+            starting from right.
 
     Returns:
         r, a (matrices):
@@ -234,7 +250,7 @@ def axes_polar(size, axes_limits=1, angle=0):
         r, a = pu.image.axes_polar(size=(12, 16), axes_limits=10)
     """
     x, y = axes_cart(size, axes_limits, angle)
-    return convert_to_polar(x, y)
+    return convert_to_polar(x, y, mode)
 
 
 def axes_loglog_cart(size, axes_limits=1, angle=0, zero_case=None):

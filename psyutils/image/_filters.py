@@ -97,11 +97,12 @@ def make_filter_generic(filt_name,
         dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
         filt = np.exp((-dtheta**2) / (2*width_radians**2))  # ang filter 1
 
-        peak_radians += np.pi  # add 180 deg offset for other lobe
-        ds = sin_theta * np.cos(peak_radians) - cos_theta * np.sin(peak_radians)
-        dc = cos_theta * np.cos(peak_radians) + sin_theta * np.sin(peak_radians)
-        dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
-        filt += np.exp((-dtheta**2) / (2*width_radians**2))  # ang filter 2
+        if kwargs['symmetric'] is True:
+            peak_radians += np.pi  # add 180 deg offset for other lobe
+            ds = sin_theta * np.cos(peak_radians) - cos_theta * np.sin(peak_radians)
+            dc = cos_theta * np.cos(peak_radians) + sin_theta * np.sin(peak_radians)
+            dtheta = abs(np.arctan2(ds, dc))  # Absolute angular distance
+            filt += np.exp((-dtheta**2) / (2*width_radians**2))  # ang filter 2
 
     else:
         filt = f(r)
@@ -472,6 +473,7 @@ def make_filter_alpha_over_f(size, alpha,
 
 
 def make_filter_orientation_gaussian(size, peak, width,
+                                     symmetric=True,
                                      pixel_units=True,
                                      zero_mean=True):
     """ Make a gaussian orientation filter, which is a gaussian
@@ -490,6 +492,11 @@ def make_filter_orientation_gaussian(size, peak, width,
             gives "up and right".
         width:
             the width of the filter (sd in degrees).
+        symmetric:
+            should the returned filter be symmetric ("bowtie") shaped? If True,
+            returned filter is a bowtie, and orientations of opposite polarity
+            are pooled. If "False", returned filter is a "wedge" and angles
+            need to run 0-360 to get all directions.
         pixel_units (boolean):
             If True, units are in pixels of the array. This means that the
             parameters of the filter are in pixel units -- so the peak
@@ -516,6 +523,7 @@ def make_filter_orientation_gaussian(size, peak, width,
 
     """
     filt = pu.image.make_filter_generic(filt_name='ori_gaussian',
+                                        symmetric=symmetric,
                                         pixel_units=pixel_units,
                                         zero_mean=zero_mean,
                                         size=size,
