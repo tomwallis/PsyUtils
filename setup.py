@@ -15,6 +15,7 @@ setup(
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
         'matplotlib',
+        'pillow >= 4.0.0',
         'scikit-image >= 0.12.0',
         'seaborn >= 0.7.0',
         'pycircstat',

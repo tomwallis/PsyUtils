@@ -26,7 +26,7 @@ install:
   # Replace dep1 dep2 ... with your dependencies
   - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy setuptools pip matplotlib scikit-image
   - source activate test-environment
-  - pip install nose nose-cov python-coveralls decorator pycircstat
+  - pip install nose nose-cov python-coveralls decorator pycircstat pillow
   - conda info -a
   # install psyutils itself. not sure if this is necessary?
   - pip install .
