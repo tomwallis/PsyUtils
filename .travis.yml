@@ -24,9 +24,9 @@ before_install:
   - conda info -a
 install:
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy setuptools pip
+  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy setuptools pip matplotlib scikit-image
   - source activate test-environment
-  - pip install nose nose-cov python-coveralls decorator
+  - pip install nose nose-cov python-coveralls decorator pycircstat
   - conda info -a
 # command to run tests
 script:
