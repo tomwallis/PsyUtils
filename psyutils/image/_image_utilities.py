@@ -360,7 +360,15 @@ def alpha_blend(fg, bg):
     """ Do alpha blending putting foreground `fg` in front of background
     `bg`.
 
-    Input images should be floats scaled in the 0--1 range.
+    Input images should be floats scaled in the 0--1 range. Note that BG image
+    must have flat alpha (all ones). If you want multiple blends, this can
+    be achieved by successive layering / flattening operations. Useful functions:
+
+    # add alpha layer to RGB image:
+    np.dstack((rgb, ones(shape(2d))))
+
+    # flatten RGBA image to RGB:
+    skimage.color.rgba2rgb(rgba)
 
     Input images are assumed to be images whose third dimension is
     4 (i.e. RGBA).
@@ -379,6 +387,8 @@ def alpha_blend(fg, bg):
 
     out_rgb = (fg_rgb * fg_alpha[..., None] +
                bg_rgb * (1. - fg_alpha[..., None])) / out_alpha[..., None]
+
+    # out_rgb[out_alpha[..., None] == 0] = 0
 
     out = np.zeros_like(bg)
     out[..., :3] = out_rgb
