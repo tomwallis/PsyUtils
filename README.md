@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
 
+[![Build Status](https://travis-ci.org/tomwallis/PsyUtils.svg?branch=master)](https://travis-ci.org/tomwallis/PsyUtils)
 
 The ``psyutils`` package is a collection of utility functions useful
 for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.
@@ -51,7 +52,8 @@ from the command line in the project's parent directory.
 
   * more unit tests for filters, axes, windowing, misc
   * check documentation for filters
-  * improve sphinx docs and linking.
+  * improve sphinx docs and linking
+  * *remove* psydata submodule. This is not needed now that [psignifit](https://github.com/wichmann-lab/python-psignifit) is ported to Python.
 
 ## Contributions
 
