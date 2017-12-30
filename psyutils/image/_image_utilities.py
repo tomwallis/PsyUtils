@@ -1,7 +1,6 @@
 from __future__ import print_function, division
 import numpy as np
 from skimage import img_as_float, io, exposure, img_as_uint, color, img_as_ubyte
-import matplotlib.pyplot as plt
 import psyutils as pu
 
 
@@ -193,18 +192,11 @@ def save_im(fname, im, bitdepth=8):
     """
     Takes a numpy array, converts it to either uint8 or uint16, and
     saves it to a .png file by converting it to
-    an unsigned integer. This is a wrapper for skimage.io.imsave,
-    and calls the freeimage library to allow saving with high
-    bit depth (8 or 16). Both scikit-image and Freeimage must be
-    installed for this to work. On OSX Freeimage can be installed
-    using homebrew.
+    an unsigned integer. This is a wrapper for skimage.io.imsave.
 
     If the array passed is MxN, the resulting file (.png) will be
     greyscale. If the file is MxNx3 it will be RGB, if MxNx4 it's
     RGBA.
-
-    Warning: old versions of scikit-image (pre 0.11.0) will mess up the
-    order of the colour planes and mirror flip images if bitdepth is 16.
 
     Args:
         fname (string):
@@ -215,11 +207,6 @@ def save_im(fname, im, bitdepth=8):
             either 8 or 16.
     """
 
-    # dims = guess_type(im)
-    # im = img_as_float(im)
-    # check scale:
-    # im = exposure.rescale_intensity(im, out_range='float')
-
     if bitdepth is 8:
         # convert to uint8:
         im = img_as_ubyte(im)
@@ -227,11 +214,6 @@ def save_im(fname, im, bitdepth=8):
     elif bitdepth is 16:
         # convert to 16 bit
         im = img_as_uint(im)
-
-        # # to fix bug in current release of scikit-image (issue 1101; closed)
-        # if dims == "RGB" or dims == "RGBA":
-        #     im = np.fliplr(np.flipud(im))
-        io.use_plugin('freeimage')
 
     io.imsave(fname, im)
 
