@@ -1,4 +1,4 @@
-#Psy Utils
+# PsyUtils
 
 [![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
 
@@ -20,7 +20,7 @@ It is intended only for internal use in [my](http://www.tomwallis.info) science 
  * ``im_data``. The ``im_data`` subpackage includes images and data for
   testing purposes.
  * ``files``: contains helper functions for working with directories and file structures.
- * ``psydata``: helper functions for working with psychophysical data (binary responses as a function of some stimulus). 
+ * ``psydata``: helper functions for working with psychophysical data (binary responses as a function of some stimulus).
  * ``misc``. This is a miscellaneous subpackage.
 
 ## Example Use
@@ -41,18 +41,17 @@ Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
 
 ## Testing
 
-You can run unit tests by typing `nosetests -v` (or `nosetests-3.x` for
-testing under Python 3) from the command line in the project's parent directory.
+You can run unit tests by typing `nosetests -v` from the command line in the project's parent directory.
 
 ## TODO
 
-  * unit tests for filters, axes, windowing, misc
+  * more unit tests for filters, axes, windowing, misc
   * check documentation for filters
   * improve sphinx docs and linking.
 
 ## Contributions
 
-Thomas Wallis wrote the package. Many image processing functions are based on Matlab code from Peter Bex's lab. I also adapted some stuff from the scikit-image package. 
+Thomas Wallis wrote the package. Many image processing functions are based on Matlab code from Peter Bex's lab. I also adapted some stuff from the scikit-image package.
 
 ## Thanks To
 

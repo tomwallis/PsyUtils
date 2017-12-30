@@ -2,10 +2,10 @@ from distutils.core import setup
 
 setup(
     name='PsyUtils',
-    version='1.3.1',
+    version='1.3.2',
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
-    packages=['psyutils', 'psyutils.image'],
+    packages=['psyutils'],
     url='http://github.com/tomwallis/PsyUtils',
     license='LICENSE.txt',
     description='Utility functions for psychophysical experiments and \
@@ -16,9 +16,9 @@ setup(
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
         'matplotlib',
-        'scikit-image >= 0.11.0',
+        'scikit-image >= 0.12.0',
         'seaborn >= 0.7.0',
-        'pycircstat', 
+        'pycircstat',
         'nose'
     ],
 )
