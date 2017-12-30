@@ -28,6 +28,8 @@ install:
   - source activate test-environment
   - pip install nose nose-cov python-coveralls decorator pycircstat
   - conda info -a
+  # install psyutils itself. not sure if this is necessary?
+  - pip install .
 # command to run tests
 script:
   - nosetests --with-coverage --cover-package=psyutils

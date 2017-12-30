@@ -12,7 +12,6 @@ setup(
                 stimuli.',
     long_description=open('README.md').read(),
     install_requires=[
-        # 'Python >= 2.7.0',
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
         'matplotlib',
