@@ -41,7 +41,11 @@ Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
 
 ## Testing
 
-You can run unit tests by typing `nosetests -v` from the command line in the project's parent directory.
+You can run unit tests by typing
+
+`nosetests -v --with-coverage --cover-package=psyutils`
+
+from the command line in the project's parent directory.
 
 ## TODO
 

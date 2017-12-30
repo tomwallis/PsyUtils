@@ -32,3 +32,5 @@ window tests.ipynb
 write_tests.ipynb
 
 build/lib/*
+
+.coverage
