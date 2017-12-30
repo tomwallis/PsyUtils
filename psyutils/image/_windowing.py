@@ -55,15 +55,15 @@ def cos_win_1d(size,
                          " but you " +
                          "asked for size " + str(size))
 
-    y = np.ones((size))
+    y = np.ones((int(size)))
 
     # create the ramps:
     up_ramp = np.sin(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
     down_ramp = np.cos(np.linspace(0, 1, round(ramp)) * np.pi/2.0)
 
     # place into y:
-    y[0:ramp] = up_ramp
-    y[-ramp:] = down_ramp
+    y[0:int(ramp)] = up_ramp
+    y[-int(ramp):] = down_ramp
     return(y)
 
 

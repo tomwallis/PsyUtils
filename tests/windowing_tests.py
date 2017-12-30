@@ -12,7 +12,6 @@ if wd[-5:] == 'tests':
 
 test_data_dir = os.path.join(wd, 'tests', 'test_data')
 
-
 def test_cos_1d_1():
     true = np.load(file=os.path.join(test_data_dir, 'cos_1d_test.npy'))
     test = pu.image.cos_win_1d(size=20, ramp=5)
