@@ -1,83 +1,86 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Welcome to Psyutils’s documentation! &mdash; Psyutils 1.0.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <title>Welcome to Psyutils’s documentation! &#8212; Psyutils 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Psyutils 1.0.0 documentation" href="#" /> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
   </head>
   <body>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="#">Psyutils 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Psyutils 1.0.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="welcome-to-psyutils-s-documentation">
-<h1>Welcome to Psyutils&#8217;s documentation!<a class="headerlink" href="#welcome-to-psyutils-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>The <tt class="docutils literal"><span class="pre">psyutils</span></tt> package is a collection of utility functions useful
+<h1>Welcome to Psyutils’s documentation!<a class="headerlink" href="#welcome-to-psyutils-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal"><span class="pre">psyutils</span></code> package is a collection of utility functions useful
 for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.</p>
 <p>It is <strong>NOT</strong> an experimental display software package. It is intended
-to compliment something like [PsychoPy](<a class="reference external" href="http://www.psychopy.org">http://www.psychopy.org</a>).</p>
-<p>It is intended only for internal use in Tom&#8217;s science at this stage. It is provided publicly to facilitate reproducibility of research. <em>Use these functions at your own risk.</em> The unit-testing is incomplete.</p>
+to compliment something like <cite>PsychoPy</cite> &lt;<a class="reference external" href="http://www.psychopy.org">http://www.psychopy.org</a>&gt;_.</p>
+<p>It is intended only for internal use in <cite>my</cite> &lt;<a class="reference external" href="http://www.tomwallis.info">http://www.tomwallis.info</a>&gt;_ science at this stage. It is provided publicly to facilitate reproducibility of research. <em>Use these functions at your own risk.</em> Everything, including testing, is incomplete and open to change at any time.</p>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">image</span></tt>. The <tt class="docutils literal"><span class="pre">image</span></tt> subpackage includes functions for filtering</li>
+<li><code class="docutils literal"><span class="pre">image</span></code>. The <code class="docutils literal"><span class="pre">image</span></code> subpackage includes functions for filtering</li>
 </ul>
 <blockquote>
 <div>images and creating filtered noise stimuli, and otherwise interacting
 with images.</div></blockquote>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">dist</span></tt>: functions for creating probability distributions over axes. Currently just used to create filters.</li>
-<li><tt class="docutils literal"><span class="pre">im_data</span></tt>. The <tt class="docutils literal"><span class="pre">im_data</span></tt> subpackage includes images and data for</li>
+<li><code class="docutils literal"><span class="pre">dist</span></code>: functions for creating probability distributions over axes. Currently just used to create filters.</li>
+<li><code class="docutils literal"><span class="pre">im_data</span></code>. The <code class="docutils literal"><span class="pre">im_data</span></code> subpackage includes images and data for</li>
 </ul>
 <blockquote>
 <div>testing purposes.</div></blockquote>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a><code class="docutils literal"><span class="pre">files</span></code>.  Contains helper functions for working with directories and file structures.</p>
+</div></blockquote>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">misc</span></tt>. This is a miscellaneous subpackage.</li>
+<li><code class="docutils literal"><span class="pre">psydata</span></code>: helper functions for working with psychophysical data (binary responses as a function of some stimulus).</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">misc</span></code>. This is a miscellaneous subpackage.</li>
 </ul>
 </div></blockquote>
 <div class="toctree-wrapper compound">
-<ul class="simple">
-</ul>
 </div>
 </div>
 <div class="section" id="example-use">
 <h2>Example Use<a class="headerlink" href="#example-use" title="Permalink to this headline">¶</a></h2>
 <p>You could do things like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">psyutils</span> <span class="kn">as</span> <span class="nn">pu</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">psyutils</span> <span class="k">as</span> <span class="nn">pu</span>
 <span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
 <span class="n">filt</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">make_filter_lowpass</span><span class="p">(</span><span class="n">im_size</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">im2</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">filter_image</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">filt</span><span class="p">)</span>
@@ -87,17 +90,18 @@ with images.</div></blockquote>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Psyutils depends on numpy, scipy, and scikit-image.</p>
+<p>Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>You can run unit tests by typing <cite>nosetests -v</cite> (or <cite>nosetests-3.x</cite> for
-testing under Python 3) from the command line in the project&#8217;s parent directory.</p>
+<p>You can run unit tests by typing</p>
+<p><cite>nosetests -v –with-coverage –cover-package=psyutils</cite></p>
+<p>from the command line in the project’s parent directory.</p>
 </div>
 <div class="section" id="contributions">
 <h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h2>
 <p>Thomas Wallis wrote these functions based somewhat on shared code used in
-Matlab by Peter Bex&#8217;s lab at the Schepens Eye Research Institute. I also
+Matlab by Peter Bex’s lab at the Schepens Eye Research Institute. I also
 borrowed some stuff from the scikit-image package. Function abstraction,
 pythonic niceness and other sweet programming improvements were suggested
 by David Janssen.</p>
@@ -112,9 +116,9 @@ and suggestions.</p>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 </div>
 
@@ -122,11 +126,11 @@ and suggestions.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to Psyutils&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#">Welcome to Psyutils’s documentation!</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#example-use">Example Use</a></li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
@@ -138,40 +142,39 @@ and suggestions.</p>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="#">Psyutils 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Psyutils 1.0.0 documentation</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2014, Thomas S. A. Wallis.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Thomas S. A. Wallis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
     </div>
   </body>
 </html>
