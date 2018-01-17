@@ -1,5 +1,6 @@
 CHANGES.txt
 MANIFEST.in
+README.md
 PsyUtils.egg-info/PKG-INFO
 PsyUtils.egg-info/SOURCES.txt
 PsyUtils.egg-info/dependency_links.txt

@@ -1,12 +1,17 @@
 Metadata-Version: 1.0
 Name: PsyUtils
-Version: 1.3.1
+Version: 1.3.2
 Summary: Utility functions for psychophysical experiments and                 stimuli.
 Home-page: http://github.com/tomwallis/PsyUtils
 Author: Thomas S. A. Wallis
 Author-email: thomas.wallis@uni-tuebingen.de
 License: LICENSE.txt
-Description: #Psy Utils
+Description-Content-Type: UNKNOWN
+Description: # PsyUtils
+        
+        [![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
+        
+        [![Build Status](https://travis-ci.org/tomwallis/PsyUtils.svg?branch=master)](https://travis-ci.org/tomwallis/PsyUtils)
         
         The ``psyutils`` package is a collection of utility functions useful
         for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.
@@ -25,7 +30,7 @@ Description: #Psy Utils
          * ``im_data``. The ``im_data`` subpackage includes images and data for
           testing purposes.
          * ``files``: contains helper functions for working with directories and file structures.
-         * ``psydata``: helper functions for working with psychophysical data (binary responses as a function of some stimulus). 
+         * ``psydata``: helper functions for working with psychophysical data (binary responses as a function of some stimulus).
          * ``misc``. This is a miscellaneous subpackage.
         
         ## Example Use
@@ -46,18 +51,22 @@ Description: #Psy Utils
         
         ## Testing
         
-        You can run unit tests by typing `nosetests -v` (or `nosetests-3.x` for
-        testing under Python 3) from the command line in the project's parent directory.
+        You can run unit tests by typing
+        
+        `nosetests -v --with-coverage --cover-package=psyutils`
+        
+        from the command line in the project's parent directory.
         
         ## TODO
         
-          * unit tests for filters, axes, windowing, misc
+          * more unit tests for filters, axes, windowing, misc
           * check documentation for filters
-          * improve sphinx docs and linking.
+          * improve sphinx docs and linking
+          * *remove* psydata submodule. This is not needed now that [psignifit](https://github.com/wichmann-lab/python-psignifit) is ported to Python.
         
         ## Contributions
         
-        Thomas Wallis wrote the package. Many image processing functions are based on Matlab code from Peter Bex's lab. I also adapted some stuff from the scikit-image package. 
+        Thomas Wallis wrote the package. Many image processing functions are based on Matlab code from Peter Bex's lab. I also adapted some stuff from the scikit-image package.
         
         ## Thanks To
         
