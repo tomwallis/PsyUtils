@@ -212,8 +212,15 @@ def save_im(fname, im, bitdepth=8):
         im = img_as_ubyte(im)
 
     elif bitdepth is 16:
-        # convert to 16 bit
-        im = img_as_uint(im)
+        # PIL doesn't yet support multichannel 16-bit PNG, so check and warn:
+        if im.ndim == 3:
+            raise Exception("The PIL (via pillow package) is used "
+                            "to save images as 16-bit. Currently this does "
+                            "not support multichannel 16-bit images. You "
+                            "passed an image with %i dimensions." % im.ndim)
+        else:
+            # convert to 16 bit
+            im = img_as_uint(im)
 
     io.imsave(fname, im)
 

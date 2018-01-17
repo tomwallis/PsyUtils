@@ -1,7 +1,6 @@
 # tests for psydata functions.
 
 import psyutils as pu
-from nose.tools import *
 from pandas.util.testing import assert_frame_equal
 import pandas as pd
 
@@ -12,7 +11,6 @@ def test_expand_grid():
 
     desired = pd.DataFrame({'height': [60, 60, 60, 70, 70, 70],
                             'weight': [100, 140, 180, 100, 140, 180]})
-
 
     # Because dicts don't follow a consistent order (specified at runtime to
     # reduce memory requirements), we need to sort these and their indices

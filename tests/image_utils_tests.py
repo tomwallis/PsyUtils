@@ -143,6 +143,7 @@ def test_save_im_colour_8bit():
     assert im.all() == im2.all()
 
 
+@raises(Exception)
 def test_save_im_colour_16bit():
     im = np.random.uniform(size=(256, 256, 3))
     im = img_as_uint(im)
