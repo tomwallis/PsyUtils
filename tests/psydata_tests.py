@@ -13,10 +13,17 @@ def test_expand_grid():
     desired = pd.DataFrame({'height': [60, 60, 60, 70, 70, 70],
                             'weight': [100, 140, 180, 100, 140, 180]})
 
-    # make sure column indices are sorted:
+    # make sure column indices are sorted the same way:
+    # same column order
     df.sort_index(axis=1, inplace=True)
     desired.sort_index(axis=1, inplace=True)
-    assert_frame_equal(df, desired)
+
+    # same row order:
+    df.sort_values(by='height', inplace=True)
+    desired.sort_values(by='height', inplace=True)
+
+    #test
+    assert_frame_equal(df, desired, check_names=False)
 
 
 def test_binomial_binning():
