@@ -198,6 +198,10 @@ def save_im(fname, im, bitdepth=8):
     greyscale. If the file is MxNx3 it will be RGB, if MxNx4 it's
     RGBA.
 
+    Note: this uses the Python Imaging Library (PIL) via the Pillow
+    package as a backend to save images. Currently this does not support
+    saving multichannel images with 16-bits per channel.
+
     Args:
         fname (string):
             the filename to save the image to.
