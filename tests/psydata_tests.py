@@ -13,7 +13,11 @@ def test_expand_grid():
     desired = pd.DataFrame({'height': [60, 60, 60, 70, 70, 70],
                             'weight': [100, 140, 180, 100, 140, 180]})
 
-    # make sure column indices are sorted the same way:
+
+    # Because dicts don't follow a consistent order (specified at runtime to
+    # reduce memory requirements), we need to sort these and their indices
+    # to ensure the assert will pass consistently.
+
     # same column order
     df.sort_index(axis=1, inplace=True)
     desired.sort_index(axis=1, inplace=True)
@@ -22,7 +26,10 @@ def test_expand_grid():
     df.sort_values(by='height', inplace=True)
     desired.sort_values(by='height', inplace=True)
 
-    #test
+    df.reset_index(drop=True, inplace=True)
+    desired.reset_index(drop=True, inplace=True)
+
+    # test
     assert_frame_equal(df, desired, check_names=False)
 
 
