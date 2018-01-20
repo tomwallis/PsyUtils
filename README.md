@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/tomwallis/PsyUtils.svg?branch=master)](https://travis-ci.org/tomwallis/PsyUtils)
 
+[![Coverage Status](https://coveralls.io/repos/github/tomwallis/PsyUtils/badge.svg?branch=master)](https://coveralls.io/github/tomwallis/PsyUtils?branch=master)
+
 The ``psyutils`` package is a collection of utility functions useful
 for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.
 
