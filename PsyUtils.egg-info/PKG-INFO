@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
-Name: PsyUtils
-Version: 1.3.2
+Name: psyutils
+Version: 1.3.3
 Summary: Utility functions for psychophysical experiments and                 stimuli.
 Home-page: http://github.com/tomwallis/PsyUtils
 Author: Thomas S. A. Wallis
@@ -12,6 +12,8 @@ Description: # PsyUtils
         [![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
         
         [![Build Status](https://travis-ci.org/tomwallis/PsyUtils.svg?branch=master)](https://travis-ci.org/tomwallis/PsyUtils)
+        
+        [![Coverage Status](https://coveralls.io/repos/github/tomwallis/PsyUtils/badge.svg?branch=master)](https://coveralls.io/github/tomwallis/PsyUtils?branch=master)
         
         The ``psyutils`` package is a collection of utility functions useful
         for generating visual stimuli and analysing the results of psychophysical experiments. It is a work in progress, and changes as I work. It includes various helper functions for dealing with images, including creating and applying various filters in the frequency domain.

@@ -6,6 +6,7 @@ PsyUtils.egg-info/SOURCES.txt
 PsyUtils.egg-info/dependency_links.txt
 PsyUtils.egg-info/requires.txt
 PsyUtils.egg-info/top_level.txt
+docs/build/html/_sources/index.rst.txt
 docs/build/html/_sources/index.txt
 psyutils/__init__.py
 psyutils/dist.py
@@ -13,6 +14,11 @@ psyutils/files.py
 psyutils/im_data.py
 psyutils/misc.py
 psyutils/psydata.py
+psyutils.egg-info/PKG-INFO
+psyutils.egg-info/SOURCES.txt
+psyutils.egg-info/dependency_links.txt
+psyutils.egg-info/requires.txt
+psyutils.egg-info/top_level.txt
 psyutils/image/__init__.py
 psyutils/image/_axes.py
 psyutils/image/_eccentricity.py
