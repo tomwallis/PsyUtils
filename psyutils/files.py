@@ -110,7 +110,14 @@ def create_gitignore(path=None):
             '*.jpg \n'
             '*.jpeg \n'
             '*.doc \n'
-            '*.docx')
+            '*.docx\n'
+            '*.m~\n'
+            '.Rproj.user/*\n'
+            '*.Rproj\n'
+            '*.RData\n'
+            '*.rdb\n'
+            '*.rdx\n'
+            '*__packages')
     f.close()
 
 

@@ -7,3 +7,4 @@ v1.1.4, 2016.02.04 -- bug fix; chance level not correct when gamma != .5.
 v1.2.1, 2016.08.08 -- new feature in image module to do spectral analysis. Plot power spectrum as a function of spatial frequency and orientation. Added some new test images.
 v1.3.1, 2016.08.10 -- updated spectral analysis functions to use more sensible smooth (Gaussian) sliding windows rather than hard-edged windows. Also allow passing a custom random number generator to filtered noise function, and a "symmetric" argument for the orientation gaussian, and a second mode for angular axes.
 v1.3.2, 2017.12.30 -- some bug fixes to update testing. Getting Travis for CI working.
+v1.3.3, 2018.01.05 -- updated ignored files.
