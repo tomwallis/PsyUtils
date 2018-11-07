@@ -8,4 +8,4 @@ v1.2.1, 2016.08.08 -- new feature in image module to do spectral analysis. Plot 
 v1.3.1, 2016.08.10 -- updated spectral analysis functions to use more sensible smooth (Gaussian) sliding windows rather than hard-edged windows. Also allow passing a custom random number generator to filtered noise function, and a "symmetric" argument for the orientation gaussian, and a second mode for angular axes.
 v1.3.2, 2017.12.30 -- some bug fixes to update testing. Getting Travis for CI working.
 v1.3.3, 2018.01.05 -- updated ignored files.
-v2.0.0, 2018.07.11 -- breaking backwards compatibility by removing psydata module (now I fit my data in R; not needed). Moved expand_grid function to misc. Other changes include wrapping matplotlib in try loops because currently on OSX matplotlib breaks due to backend problem.
+v2.0.0, 2018.07.11 -- breaking backwards compatibility by removing psydata module (now I fit my data in R; not needed). File kept for posterity. Moved expand_grid function to misc. Other changes include wrapping matplotlib in try loops because currently on OSX matplotlib breaks due to backend problem.
