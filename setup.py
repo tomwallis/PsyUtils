@@ -1,16 +1,19 @@
-from distutils.core import setup
+import setuptools
 
-setup(
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     name='psyutils',
-    version='1.3.3',
+    version='2.0.0',
     author='Thomas S. A. Wallis',
     author_email='thomas.wallis@uni-tuebingen.de',
-    packages=['psyutils'],
     url='http://github.com/tomwallis/PsyUtils',
     license='LICENSE.txt',
     description='Utility functions for psychophysical experiments and \
                 stimuli.',
-    long_description=open('README.md').read(),
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     install_requires=[
         'numpy >= 1.8.0',
         'scipy >= 0.13.0',
@@ -21,4 +24,5 @@ setup(
         'pycircstat',
         'nose'
     ],
+    packages=setuptools.find_packages()
 )

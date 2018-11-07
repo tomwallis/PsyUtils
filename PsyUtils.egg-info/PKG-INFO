@@ -1,12 +1,11 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: psyutils
-Version: 1.3.3
+Version: 2.0.0
 Summary: Utility functions for psychophysical experiments and                 stimuli.
 Home-page: http://github.com/tomwallis/PsyUtils
 Author: Thomas S. A. Wallis
 Author-email: thomas.wallis@uni-tuebingen.de
 License: LICENSE.txt
-Description-Content-Type: UNKNOWN
 Description: # PsyUtils
         
         [![DOI](https://zenodo.org/badge/4023/tomwallis/PsyUtils.svg)](https://zenodo.org/badge/latestdoi/4023/tomwallis/PsyUtils)
@@ -49,7 +48,16 @@ Description: # PsyUtils
         
         ## Dependencies
         
-        Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
+        See `setup.py` for current dependencies.
+        
+        ## Building
+        
+        To build the package, use:
+        
+        ```
+        python3 -m pip install --user --upgrade setuptools wheel
+        python3 setup.py sdist bdist_wheel
+        ```
         
         ## Testing
         
@@ -75,3 +83,4 @@ Description: # PsyUtils
         Many of the image processing functions are based on Matlab functions originally written by Peter Bex. Tom Wallis also thanks Matthias Kümmerer and David Janssen for Python help and suggestions.
         
 Platform: UNKNOWN
+Description-Content-Type: text/markdown

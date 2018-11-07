@@ -2,10 +2,8 @@
 
 from __future__ import print_function, division
 import numpy as np
-import matplotlib.pyplot as plt
 import psyutils as pu
 from skimage.color import hsv2rgb
-
 
 # helper function to show an image and report some stats about it:
 def show_im(im, n_digits=3, colorbar=False):
@@ -19,6 +17,14 @@ def show_im(im, n_digits=3, colorbar=False):
             The number of digits to print for numerical output.
 
     """
+    # matplotlib causes platform-specific import problems.
+    # https://github.com/scikit-optimize/scikit-optimize/issues/637#issuecomment-366448262
+    try:
+       import matplotlib.pyplot as plt
+    except ImportError as e:
+       if 'Python is not installed as a framework.' in e.message:
+         warnings.warn("Warning: this OS has an import error with matplotlib,\
+          likely related to backend problem. Search for matplotlib import fix.")
 
     n_digits = int(n_digits)
     dims = pu.image.guess_type(im)

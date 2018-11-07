@@ -34,3 +34,5 @@ write_tests.ipynb
 build/lib/*
 
 .coverage
+*.whl
+*.gz

@@ -6,11 +6,9 @@ import numpy as np
 import psyutils as pu
 from skimage.filters import gabor_kernel
 from skimage.color import hsv2rgb
-import matplotlib.pyplot as plt
 from itertools import product
 from scipy.signal import fftconvolve
 import pycircstat as circ
-
 
 #------------------------------------------------------------------------------
 #  helper functions (internal)
@@ -108,6 +106,15 @@ def gaborbank_vis(frequencies=1, n_orientations=4,
 
         **kwargs are passed to gabor_create.
     """
+
+    # matplotlib causes platform-specific import problems.
+    # https://github.com/scikit-optimize/scikit-optimize/issues/637#issuecomment-366448262
+    try:
+       import matplotlib.pyplot as plt
+    except ImportError as e:
+       if 'Python is not installed as a framework.' in e.message:
+         warnings.warn("Warning: this OS has an import error with matplotlib,\
+          likely related to backend problem. Search for matplotlib import fix.")
 
     frequencies, orientations = _check_inputs(frequencies,
                                               orientations,
@@ -342,5 +349,3 @@ def gaborbank_orientation_vis(d, method='mean', legend=True):
 #------------------------------------------------------------------------------
 
 # function to return frequency and orientation bandwidths from gabor_create.
-
-

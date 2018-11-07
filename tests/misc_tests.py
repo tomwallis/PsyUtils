@@ -21,6 +21,31 @@ def test_pix_per_deg_2():
     np.testing.assert_allclose(res, desired)
 
 
+def test_expand_grid():
+    df = pu.misc.expand_grid({'height': [60, 70],
+                                 'weight': [100, 140, 180]})
+
+    desired = pd.DataFrame({'height': [60, 60, 60, 70, 70, 70],
+                            'weight': [100, 140, 180, 100, 140, 180]})
+
+    # Because dicts don't follow a consistent order (specified at runtime to
+    # reduce memory requirements), we need to sort these and their indices
+    # to ensure the assert will pass consistently.
+
+    # same column order
+    df.sort_index(axis=1, inplace=True)
+    desired.sort_index(axis=1, inplace=True)
+
+    # same row order:
+    df.sort_values(by='height', inplace=True)
+    desired.sort_values(by='height', inplace=True)
+
+    df.reset_index(drop=True, inplace=True)
+    desired.reset_index(drop=True, inplace=True)
+
+    # test
+    assert_frame_equal(df, desired, check_names=False)
+
 # doesn't yet work in python 3.3 run_tests.sh for some reason...
 # def test_expand_grid():
 #     from collections import OrderedDict

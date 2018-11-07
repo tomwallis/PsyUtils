@@ -40,7 +40,16 @@ You could do things like this::
 
 ## Dependencies
 
-Psyutils depends on numpy, scipy, scikit-image and the psycircstat package.
+See `setup.py` for current dependencies.
+
+## Building
+
+To build the package, use:
+
+```
+python3 -m pip install --user --upgrade setuptools wheel
+python3 setup.py sdist bdist_wheel
+```
 
 ## Testing
 

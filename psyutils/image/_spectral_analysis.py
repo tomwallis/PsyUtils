@@ -6,9 +6,7 @@
 
 from __future__ import print_function, division
 import numpy as np
-import matplotlib.pyplot as plt
 import psyutils as pu
-
 
 def spectral_analysis_fft(im):
     """
@@ -227,6 +225,15 @@ def spectral_analysis_plot(d, angular_mode="direction"):
     Returns:
         None (outputs a plot)
     """
+    # matplotlib causes platform-specific import problems.
+    # https://github.com/scikit-optimize/scikit-optimize/issues/637#issuecomment-366448262
+    try:
+       import matplotlib.pyplot as plt
+    except ImportError as e:
+       if 'Python is not installed as a framework.' in e.message:
+         warnings.warn("Warning: this OS has an import error with matplotlib,\
+          likely related to backend problem. Search for matplotlib import fix.")
+
     plt.figure(figsize=(10, 5))
 
     plt.subplot(1, 2, 1)

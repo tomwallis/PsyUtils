@@ -1,10 +1,10 @@
 CHANGES.txt
 MANIFEST.in
 README.md
+setup.py
 PsyUtils.egg-info/PKG-INFO
 PsyUtils.egg-info/SOURCES.txt
 PsyUtils.egg-info/dependency_links.txt
-PsyUtils.egg-info/requires.txt
 PsyUtils.egg-info/top_level.txt
 docs/build/html/_sources/index.rst.txt
 docs/build/html/_sources/index.txt
@@ -29,3 +29,10 @@ psyutils/image/_misc.py
 psyutils/image/_plot.py
 psyutils/image/_spectral_analysis.py
 psyutils/image/_windowing.py
+tests/__init__.py
+tests/axes_tests.py
+tests/filter_tests.py
+tests/im_data_tests.py
+tests/image_utils_tests.py
+tests/misc_tests.py
+tests/windowing_tests.py
